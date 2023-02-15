@@ -1,12 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import NavigationBar from "../Components/NavigationBar";
+import NavBottomContent from "../Components/NavBottomContent";
+import NavTopContent from "../Components/NavTopContent";
+import TimeLine from "../Components/TimeLine";
+
 const Homepage = () => {
     return (
-        <div>
-            <Link to="/NewPost">
-                <h2>Heres the main site</h2>
-            </Link>
+        <div className="bg-var-1 w-full h-full">
+            <NavigationBar navPosition=" absolute top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
+            <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>
+            <TimeLine />
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NewPost = () => {
+const AddPost = () => {
     return (
         <div>
             <h3>Another page</h3>
@@ -9,4 +9,4 @@ const NewPost = () => {
     )
 }
 
-export default NewPost 
+export default AddPost 
