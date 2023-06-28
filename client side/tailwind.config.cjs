@@ -12,12 +12,22 @@ module.exports = {
       },
       height: {
         "nav-height-dsk": "5rem",
-        "nav-height-mob": "8rem"
+        "nav-height-mob": "4rem"
       },
       colors: {
         "var-1": "#fffeee",
         "var-2": "#bbb",
-        "var-3": "#F4BE4D"
+        "var-3": "#F4BE4D",
+        "var-1-dark": "#000111",
+        "var-2-dark": "#aaa"
+      },
+      margin: {
+        "top-margin-dsk": "6rem",
+        "top-margin-mob": "5rem"
+      },
+      width: {
+        "9/10": "90%",
+        "95": "95%"
       }
     },
   },
