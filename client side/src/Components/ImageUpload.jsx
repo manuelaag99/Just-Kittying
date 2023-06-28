@@ -1,9 +1,10 @@
 import React from "react";
 
-export default function ProfileSettings () {
+export default function ImageUpload () {
+
     return (
         <div>
-            
+            <input type="file" />
         </div>
     )
 };

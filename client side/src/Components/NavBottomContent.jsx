@@ -1,10 +1,9 @@
 import React from "react";
 
-const NavBottomContent = props => {
+export default function NavBottomContent () {
     return (
         <div className="flex flex-row h-full w-full">
+        
         </div>
     )
-}
-
-export default NavBottomContent;
+};
