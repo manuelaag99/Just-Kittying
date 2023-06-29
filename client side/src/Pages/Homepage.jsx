@@ -7,10 +7,12 @@ import NavTopContent from "../Components/NavTopContent";
 import TimeLine from "../Components/TimeLine";
 
 const Homepage = () => {
+    const userIsLoggedIn = false; //remove
+
     return (
         <div className="bg-var-1 w-full h-full">
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
-            <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>
+            {userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>}
             <TimeLine />
         </div>
     )
