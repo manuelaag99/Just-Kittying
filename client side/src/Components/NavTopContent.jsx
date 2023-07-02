@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import HomeIcon from '@mui/icons-material/Home';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -8,11 +8,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function NavTopContent () {
+
+    const [ postsToDisplay, setPostsToDisplay ] = useState(null)
+
     return (
         <form className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
-                <button className=" " >
+                <button className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" >
                     <HomeIcon className="mx-4" fontSize="large" />
+                    <p className="hidden md:block">Just Kittying!</p>
                 </button>
             </div>
 

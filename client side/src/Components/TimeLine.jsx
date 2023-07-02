@@ -1,6 +1,5 @@
 import React from "react";
 
-import LeftBar from "./LeftBar";
 import Post from "./Post";
 
 export default function TimeLine () {

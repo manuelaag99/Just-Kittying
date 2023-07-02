@@ -9,7 +9,10 @@ module.exports = {
       postDisplayName: '1.1rem',
       postDate: '0.6rem',
       commentFontSizeDsk: '1rem',
-      commentFontSizeMob: "0.9rem"
+      commentFontSizeMob: "0.9rem",
+      logoSizeLarge: "2rem",
+      logoSizeMedium: "1.4rem",
+      profileDisplayName: "1.3rem"
     },
     borderRadius: {
       circular: "50%",
