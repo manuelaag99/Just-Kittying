@@ -25,7 +25,9 @@ module.exports = {
       },
       height: {
         "nav-height-mob": "4rem",
-        "nav-height-dsk": "5rem"
+        "nav-height-dsk": "5rem",
+        "userProfilePhotosTabPhotoHeight": "12rem",
+        "userProfileFriendsTabPhotoHeight": "3rem"
       },
       colors: {
         "var-1": "#fff",
