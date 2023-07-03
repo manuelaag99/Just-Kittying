@@ -1,0 +1,19 @@
+import React from "react";
+
+import RoundPhoto from "./RoundPhoto";
+
+export default function ({ usersArray }) {
+    return (
+                    <div className="flex flex-col justify-center w-full ">
+                        {usersArray.map((user, index) => {
+                            return <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
+                                <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={user.profilePic} />
+                                <div className="flex flex-col w-fit pl-2 pr-2">
+                                    <div className="font-bold" >{user.name}</div>
+                                    <div className="opacity-30" >{user.username}</div>
+                                </div>
+                            </div>
+                        })}
+                    </div>
+    )
+};
