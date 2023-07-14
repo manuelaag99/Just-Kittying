@@ -7,6 +7,7 @@ import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
 
 export default function Post ({ numberOfLikes }) {
+
     return (
         <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6">
 
