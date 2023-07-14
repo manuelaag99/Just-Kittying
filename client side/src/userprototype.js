@@ -1,10 +1,13 @@
 const userPrototype = {
-    displayName: "Abi Mejia",
+    user_id: "948rje89r3je9djbfhwd89jj99034",
+    display_name: "Abi Mejia",
     username: "abimejia",
-    shortBio: "im just too soft for all of it",
-    profilePicUrl: "https://economictimes.indiatimes.com/thumb/msid-96710895,width-1200,height-900,resizemode-4,imgsize-38032/blackpink-jisoo.jpg?from=mdr",
-    feedPreference: "friends",
-    accountPrivacy: "private",
+    password: "",
+    email: "abimejia@gmail.com",
+    short_bio: "im just too soft for all of it",
+    profile_pic_url: "https://economictimes.indiatimes.com/thumb/msid-96710895,width-1200,height-900,resizemode-4,imgsize-38032/blackpink-jisoo.jpg?from=mdr",
+    feed_preference: "friends",
+    account_privacy: "private",
     friends: [
         {
             name: "Liam Ballesteros",

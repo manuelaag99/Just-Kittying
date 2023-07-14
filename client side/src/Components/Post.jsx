@@ -13,7 +13,7 @@ export default function Post ({ numberOfLikes }) {
             <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                 <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource="https://economictimes.indiatimes.com/thumb/msid-96710895,width-1200,height-900,resizemode-4,imgsize-38032/blackpink-jisoo.jpg?from=mdr"/>
                 <div className="flex flex-col w-8/10 sm:w-9/10 h-full px-2">
-                    <p className="text-postDisplayName font-bold">Abi Mejia</p>
+                    <p className="text-postdisplay_name font-bold">Abi Mejia</p>
                     <p className="text-postDate font-extralight"> 11:05 A.M.</p>
                 </div>
             </div>

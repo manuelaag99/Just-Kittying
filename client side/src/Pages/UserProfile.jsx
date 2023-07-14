@@ -24,12 +24,12 @@ export default function UserProfile () {
                     <div className="flex-col">
                         <div className="flex flex-row h-[100px]">
                             <div className="flex justify-center w-3/10 h-full items-start ">
-                                <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={userPrototype.profilePicUrl} />
+                                <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={userPrototype.profile_pic_url} />
                             </div>
                             <div className="flex flex-col w-7/10 ">
-                                <div className="font-bold text-profileDisplayName">{userPrototype.displayName}</div>
+                                <div className="font-bold text-profiledisplay_name">{userPrototype.display_name}</div>
                                 <div className="font-semibold opacity-30">{userPrototype.username}</div>
-                                <div className="font-light">{userPrototype.shortBio}</div>
+                                <div className="font-light">{userPrototype.short_bio}</div>
                             </div>
                         </div>
                         <div className="flex flex-row mt-16">

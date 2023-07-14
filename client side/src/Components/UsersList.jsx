@@ -3,6 +3,7 @@ import React from "react";
 import RoundPhoto from "./RoundPhoto";
 
 export default function ({ usersArray }) {
+    // add "add friend" and "delete friend" functionality
     return (
                     <div className="flex flex-col justify-center w-full ">
                         {usersArray.map((user, index) => {
