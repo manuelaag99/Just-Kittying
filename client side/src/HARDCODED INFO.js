@@ -60,8 +60,15 @@ export const COMMENTS = [
         comment_id: "64gd76gd67ffd4789j",
         comment_creator_id: "a4ad98h379hdf48fgh1",
         comment_post_id: "893eg365s7hjvfbvbxhnsm",
-        comment_date: "2023-10-10",
-        comment_text: "shes so cutee"
+        comment_date: "2023-11-11",
+        comment_text: "i love her"
+    },
+    {
+        comment_id: "6873eh26sg33dh2jfj",
+        comment_creator_id: "a4ad98h379hdf48fgh1",
+        comment_post_id: "893eg365s7hjvfbvbxhnsm",
+        comment_date: "2023-11-12",
+        comment_text: "beautiful"
     }
 ]
 
