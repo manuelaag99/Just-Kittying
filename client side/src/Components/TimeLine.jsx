@@ -48,10 +48,8 @@ export default function TimeLine () {
             <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">
                 <div>
                 {TIMELINECONTENT.map((post, index) => {
-                    return <Post key={index} numberOfLikes={post.post_likes.length} />
+                    return <Post key={index} postAuthorDisplayName={post.creator_display_name} postComments={post.comments} postDate={post.post_date} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
                 })}
-                    <Post numberOfLikes="2" />
-                    <Post numberOfLikes={null} />
                 </div>
             </div>
         </div>
