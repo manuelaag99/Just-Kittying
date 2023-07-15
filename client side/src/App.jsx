@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { AuthContext } from "./context/AuthContext";
-import Homepage from "./Pages/Homepage";
-import ProfileSettings from "./Pages/ProfileSettings";
-import UserProfile from "./Pages/UserProfile";
+import HomePage from "./Pages/Homepage";
+import ProfileSettingsPage from "./Pages/ProfileSettingsPage";
+import SinglePostPage from "./Pages/SinglePostPage";
+import UserProfilePage from "./Pages/UserProfilePage";
 
 export default function App () {
   const [ token, setToken ] = useState(null);
@@ -45,9 +46,10 @@ export default function App () {
   return <>
     <Router>
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/myprofile" element={<UserProfile />} />
-        <Route path="/profilesettings" element={<ProfileSettings />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/myprofile" element={<UserProfilePage />} />
+        <Route path="/profilesettings" element={<ProfileSettingsPage />} />
+        <Route path="/singlepost" element={<SinglePostPage />} />
       </Routes>
     </Router>
   </>

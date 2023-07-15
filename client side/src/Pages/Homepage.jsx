@@ -4,9 +4,9 @@ import NavigationBar from "../Components/NavigationBar";
 import NavBottomContent from "../Components/NavBottomContent";
 import NavTopContent from "../Components/NavTopContent";
 import TimeLine from "../Components/TimeLine";
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfilePage";
 
-export default function Homepage () {
+export default function HomePage () {
     const userIsLoggedIn = false; //remove
 
     return (

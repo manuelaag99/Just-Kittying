@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
 
 export default function Post ({ postAuthorDisplayName, postComments, postDate, postImageUrl, postNumberOfLikes }) {
+
+    const [favorite, setFavorite] = useState(false)
+    function favoriteButtonHandle () {
+        setFavorite(prevValue => !prevValue)
+    }
+
+    const [showInput, setShowInput] = useState(false)
+    const inputRef = useRef(null)
+    function commentButtonHandle () {
+        setShowInput(true)
+    }
+
+    useEffect(() => {
+        if (showInput) inputRef.current.focus()
+    }, [showInput])
+
+    function submitCommentHandle (e) {
+        e.preventDefault()
+        console.log("comment")
+    }
 
     return (
         <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6">
@@ -25,8 +46,12 @@ export default function Post ({ postAuthorDisplayName, postComments, postDate, p
 
             <div className="flex flex-row justify-start w-full py-2 px-1 border-var-2 border-solid border-y-2 ">
                 <div className="flex flex-row mr-2">
-                    <FavoriteBorderIcon className="mx-1" fontSize="large" />
-                    <ChatBubbleOutlineOutlinedIcon className="mx-1" fontSize="large" />
+                    <button onClick={favoriteButtonHandle}>
+                        {favorite ? <FavoriteIcon className="mx-1" fontSize="large" /> : <FavoriteBorderIcon className="mx-1" fontSize="large" />}
+                    </button>
+                    <button onClick={commentButtonHandle}>
+                        <ChatBubbleOutlineOutlinedIcon className="mx-1" fontSize="large" />
+                    </button>
                 </div>
             </div>
 
@@ -41,6 +66,12 @@ export default function Post ({ postAuthorDisplayName, postComments, postDate, p
                             <p className="font-light">{comment.comment_text}</p>
                         </div>
                     })}
+                        
+                    {/* {showInput && <input className="outline-none" type="text" placeholder="Write your comment..." />} */}
+                    {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
+                        <input className="outline-none w-9/10" placeholder="Write your comment..." ref={inputRef} type="text" />
+                        <button className="font-bold px-1 rounded-[2px] w-1/10 hover:bg-var-2 duration-200" type="submit">Post</button>
+                    </form>}
                 </div>
             </div>
 

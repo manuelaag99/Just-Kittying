@@ -8,7 +8,7 @@ import PostsGrid from "../Components/PostsGrid";
 
 import { userPrototype } from "../userprototype";
 
-export default function UserProfile () {
+export default function UserProfilePage () {
 
     const friendsTab = "friends"
     const photosTab = "photos"
