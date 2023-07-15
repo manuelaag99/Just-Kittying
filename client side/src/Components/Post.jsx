@@ -37,7 +37,7 @@ export default function Post ({ postAuthorDisplayName, postComments, postDate, p
                     </div>}
                     {postComments && postComments.map((comment, index) => {
                         return <div key={index} className="flex flex-row justify-start pb-1 w-full ">
-                            <p className="mr-1 font-bold">{comment.comment_creator_id}</p>
+                            <p className="mr-1 font-bold">{comment.creator_display_name}</p>
                             <p className="font-light">{comment.comment_text}</p>
                         </div>
                     })}

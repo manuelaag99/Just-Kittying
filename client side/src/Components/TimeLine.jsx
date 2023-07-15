@@ -25,6 +25,14 @@ export default function TimeLine () {
             })
         })
 
+        COMMENTS.map((comment) => {
+            USERS.map((user) => {
+                if (user.user_id === comment.comment_creator_id) {
+                    return comment.creator_display_name = user.displayName;
+                }
+            })
+        })
+
         TIMELINECONTENT.map((post) => {
             COMMENTS.map((comment) => {
                 if (post.post_id === comment.comment_post_id) {
@@ -32,13 +40,10 @@ export default function TimeLine () {
                     if (!post.comments.includes([comment.comment_id])) {
                         return post.comments.push(comment);
                     }
-                    // if (!post.comments.includes(comment.comment_id)) {
-                    //     console.log("added comment");
-                    //     post.comments.push(comment);
-                    // }
                 }
             })
         })
+        setTimelineContent(TIMELINECONTENT)
     }, [])
 
     console.log(TIMELINECONTENT)
@@ -47,7 +52,7 @@ export default function TimeLine () {
         <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
             <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">
                 <div>
-                {TIMELINECONTENT.map((post, index) => {
+                {timelineContent.map((post, index) => {
                     return <Post key={index} postAuthorDisplayName={post.creator_display_name} postComments={post.comments} postDate={post.post_date} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
                 })}
                 </div>
