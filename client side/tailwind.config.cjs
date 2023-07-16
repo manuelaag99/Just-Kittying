@@ -12,16 +12,20 @@ module.exports = {
       commentFontSizeMob: "0.9rem",
       logoSizeLarge: "2rem",
       logoSizeMedium: "1.4rem",
-      profileDisplayName: "1.3rem"
+      profileDisplayName: "1.3rem",
+      navBottomDsk: "1rem",
+      navBottomMob: "1rem"
     },
     borderRadius: {
       circular: "50%",
-      round: "25%"
+      round: "25%",
+      button: "12px"
     },
     extend: {
       dropShadow: {
         "card": "1px 1px 5px #111",
-        "navbar": "1px 1px 2px #111"
+        "navbar": "1px 1px 2px #111",
+        "button": "0.6px 0.6px 1px #111"
       },
       height: {
         "nav-height-mob": "4rem",
