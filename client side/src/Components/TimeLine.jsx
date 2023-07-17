@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import Menu from "./Portals/Menu";
 import Post from "./Post";
 
 import { COMMENTS } from "../HARDCODED INFO";
@@ -48,6 +49,7 @@ export default function TimeLine () {
 
     console.log(TIMELINECONTENT)
 
+    
     return (
         <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
             <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">

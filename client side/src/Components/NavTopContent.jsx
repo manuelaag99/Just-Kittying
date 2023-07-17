@@ -8,12 +8,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Link } from "react-router-dom";
 
-export default function NavTopContent () {
+import Menu from "./Portals/Menu";
 
-    const [ postsToDisplay, setPostsToDisplay ] = useState(null)
+export default function NavTopContent () {
+    const [ showMenu, setShowMenu ] = useState(false);
+    function closeMenuHandle () {
+        setShowMenu(false)
+    }
+
+    function openMenuHandle () {
+        setShowMenu(true)
+    }
+
 
     return (
-        <form className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
+        <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
+            <Menu onClose={closeMenuHandle} open={showMenu} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
                 <Link to="/">
                     <button className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" >
@@ -44,10 +54,10 @@ export default function NavTopContent () {
                         <SettingsIcon className="mx-4" fontSize="large" />
                     </Link>
                 </button>
-                <button className="mx-4 block md:hidden " >
+                <button className="mx-4 block md:hidden " onClick={openMenuHandle} >
                     <MenuOutlinedIcon fontSize="large" />
                 </button>
             </div>
-        </form>
+        </div>
     )
 };
