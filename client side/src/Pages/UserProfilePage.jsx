@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
@@ -7,12 +7,36 @@ import UsersList from "../Components/UsersList";
 import PostsGrid from "../Components/PostsGrid";
 
 import { userPrototype } from "../userprototype";
+import { POSTS } from "../HARDCODED INFO";
+import { USERS } from "../HARDCODED INFO";
+
 
 export default function UserProfilePage () {
 
+
+    let username = "abimejia"
+    let userPosts = [];
+    let userFriends = [];
+
+    // let selectedUser = USERS.filter((user) => user.username === username)
+    let selectedUser = USERS.find((user) => user.username === username)
+    
+    userPosts = POSTS.filter((post) => post.post_username === username)
+    
+    console.log(selectedUser)
+    if (selectedUser) {
+        userFriends = USERS.filter((friend) => {
+            return selectedUser.user_friends.includes(friend.user_id);
+        })
+    }
+    
+
+    console.log(userFriends)
+    
+
     const friendsTab = "friends"
     const photosTab = "photos"
-    const [ tabsSection, setTabsSection ] = useState(photosTab);
+    const [tabsSection, setTabsSection] = useState(photosTab);
     function photosTabHandle () {setTabsSection(photosTab)};
     function friendsTabHandle () {setTabsSection(friendsTab)};
 
@@ -20,7 +44,7 @@ export default function UserProfilePage () {
         <div>
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
             <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
-                <div className="flex flex-col w-full sm:w-1/2 bg-var-1 h-[1000px]">
+                <div className="flex flex-col w-full sm:mt-3 sm:w-1/2 bg-var-1 h-[1000px]">
                     <div className="flex-col">
                         <div className="flex flex-row h-[100px]">
                             <div className="flex justify-center w-3/10 h-full items-start ">
@@ -48,8 +72,8 @@ export default function UserProfilePage () {
                         </div>
                     </div>
                     
-                    {(tabsSection === photosTab) && <PostsGrid postsArray={userPrototype.posts}/>}
-                    {(tabsSection === friendsTab) && <UsersList usersArray={userPrototype.friends} />}
+                    {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts}/>}
+                    {(tabsSection === friendsTab) && <UsersList usersArray={userFriends} />}
 
                 </div>
             </div>

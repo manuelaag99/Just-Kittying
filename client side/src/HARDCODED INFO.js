@@ -76,6 +76,7 @@ export const POSTS = [
     {
         post_id: "098j094jjk98j0kj98h9r4",
         post_creator_id: "a4ad98h379hdf48fgh1",
+        post_username: "eduardomejia",
         post_date: "2023-09-09",
         post_photo_url: "https://previews.123rf.com/images/points/points1607/points160700039/61955527-the-small-black-white-kitten-on-a-white-background.jpg",
         post_likes: [
@@ -87,9 +88,21 @@ export const POSTS = [
     {
         post_id: "893eg365s7hjvfbvbxhnsm",
         post_creator_id: "0994e89e03ie3830e90",
+        post_username: "abimejia",
         post_date: "2022-12-09",
-        post_photo_url: "https://previews.123rf.com/images/points/points1607/points160700039/61955527-the-small-black-white-kitten-on-a-white-background.jpg",
+        post_photo_url: "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg",
         post_likes: [],
         post_description: "I love her"
+    },
+    {
+        post_id: "893eg365s7hjvfbvbxhnsm",
+        post_creator_id: "0994e89e03ie3830e90",
+        post_username: "abimejia",
+        post_date: "2022-12-28",
+        post_photo_url: "https://hips.hearstapps.com/hmg-prod/images/beautiful-smooth-haired-red-cat-lies-on-the-sofa-royalty-free-image-1678488026.jpg?crop=0.88847xw:1xh;center,top&resize=1200:*",
+        post_likes: [
+            "6te748ey849eui940ei"
+        ],
+        post_description: "isnt she amazing?"
     }
 ]

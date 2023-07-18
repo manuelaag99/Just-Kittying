@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 
+import NavigationBar from "../Components/NavigationBar";
+import NavTopContent from "../Components/NavTopContent";
 import Post from "../Components/Post";
 import { COMMENTS } from "../HARDCODED INFO";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
 
-export default function SinglePostPage () {
+export default function PostOrPostsPage () {
     // fetch specific post 
 
     const [timelineContent, setTimelineContent] = useState([]);
@@ -46,8 +48,15 @@ export default function SinglePostPage () {
     console.log(post)
 
     return (
-        <div>
-            <Post postAuthorDisplayName={post.creator_display_name} postComments={post.comments} postDate={post.post_date} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length}/>
+        <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
+            <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">
+                <div>
+                {timelineContent.map((post, index) => {
+                    return <Post key={index} postAuthorDisplayName={post.creator_display_name} postComments={post.comments} postDate={post.post_date} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
+                })}
+                </div>
+            </div>
         </div>
     )
-}
+};

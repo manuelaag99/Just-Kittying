@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import HomePage from "./Pages/Homepage";
 import ProfileSettingsPage from "./Pages/ProfileSettingsPage";
-import SinglePostPage from "./Pages/SinglePostPage";
+import PostOrPostsPage from "./Pages/PostOrPostsPage";
 import UserProfilePage from "./Pages/UserProfilePage";
 
 export default function App () {
@@ -49,7 +49,7 @@ export default function App () {
         <Route path="/" element={<HomePage />} />
         <Route path="/myprofile" element={<UserProfilePage />} />
         <Route path="/profilesettings" element={<ProfileSettingsPage />} />
-        <Route path="/singlepost" element={<SinglePostPage />} />
+        <Route path="/singlepost" element={<PostOrPostsPage />} />
       </Routes>
     </Router>
   </>
