@@ -69,8 +69,8 @@ export default function Post ({ postAuthorDisplayName, postComments, postDate, p
                         
                     {/* {showInput && <input className="outline-none" type="text" placeholder="Write your comment..." />} */}
                     {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
-                        <input className="outline-none w-9/10" placeholder="Write your comment..." ref={inputRef} type="text" />
-                        <button className="font-bold px-1 rounded-[2px] w-1/10 hover:bg-var-2 duration-200" type="submit">Post</button>
+                        <input className="outline-none w-8/10 h-fit" placeholder="Write your comment..." ref={inputRef} type="text" />
+                        <button className="font-bold px-1 rounded-[2px] w-2/10 hover:bg-var-2 duration-200" type="submit">Post</button>
                     </form>}
                 </div>
             </div>

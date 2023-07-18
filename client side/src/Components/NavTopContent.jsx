@@ -34,9 +34,9 @@ export default function NavTopContent () {
             </div>
 
             <div className="flex flex-row sm:w-1/2 w-3/5 sm:h-full h-3/4 my-auto bg-var-1 border-solid border-2 border-var-2 rounded-[20px] ">
-                <input className=" w-full h-full outline-none pl-6 pr-4 rounded-[20px]"/>
+                <input className=" w-full h-full outline-none pl-6 pr-4 rounded-input "/>
                 <button>
-                    <SearchIcon className="mx-1" fontSize="large"/>
+                    <SearchIcon className="mx-1 rounded-circular px-1 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
                 </button>
             </div>
 
@@ -54,7 +54,7 @@ export default function NavTopContent () {
                         <SettingsIcon className="mx-4" fontSize="large" />
                     </Link>
                 </button>
-                <button className="mx-4 block md:hidden " onClick={openMenuHandle} >
+                <button className="mx-4 px-1 block md:hidden rounded-circular hover:bg-var-2 hover:text-var-1 duration-200 " onClick={openMenuHandle} >
                     <MenuOutlinedIcon fontSize="large" />
                 </button>
             </div>

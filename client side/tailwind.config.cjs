@@ -14,12 +14,14 @@ module.exports = {
       logoSizeMedium: "1.4rem",
       profileDisplayName: "1.3rem",
       navBottomDsk: "1rem",
-      navBottomMob: "1rem"
+      navBottomMob: "1rem",
+      signInOrRegisterDsk: "1rem"
     },
     borderRadius: {
       circular: "50%",
       round: "25%",
-      button: "12px"
+      button: "12px",
+      input: "20px"
     },
     extend: {
       dropShadow: {
@@ -31,14 +33,25 @@ module.exports = {
         "nav-height-mob": "4rem",
         "nav-height-dsk": "5rem",
         "userProfilePhotosTabPhotoHeight": "12rem",
-        "userProfileFriendsTabPhotoHeight": "3rem"
+        "userProfileFriendsTabPhotoHeight": "3rem",
+        "1/10": "10%",
+        "2/10": "20%",
+        "3/10": "30%",
+        "4/10": "40%",
+        "5/10": "50%",
+        "6/10": "60%",
+        "7/10": "70%",
+        "8/10": "80%",
+        "9/10": "90%"
       },
       colors: {
         "var-1": "#fff",
         "var-2": "#bbb",
         "var-3": "#F4BE4D",
         "var-1-dark": "#000111",
-        "var-2-dark": "#aaa"
+        "var-2-dark": "#aaa",
+        "facebook": "#3b5998",
+        "facebook-hover": "#1C53a9"
       },
       margin: {
         "top-margin-dsk": "6rem",
