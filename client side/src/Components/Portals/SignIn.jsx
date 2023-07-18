@@ -15,8 +15,8 @@ export default function SignIn({ open, onClose, switchToSignUp }) {
     }
     const signIn = (
         <div>
-            <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
-            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-7/10 bg-var-1 rounded-button  text-signInOrsignUpMob sm:text-signInOrsignUpDsk">
+            <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500"></div>
+            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-7/10 bg-var-1 rounded-button  text-signInOrsignUpMob sm:text-signInOrsignUpDsk duration-500">
                 <div className="w-7/10 h-1/10">
                     <img src="../../../" alt="" />
                 </div>
