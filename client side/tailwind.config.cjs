@@ -13,6 +13,7 @@ module.exports = {
       logoSizeLarge: "2rem",
       logoSizeMedium: "1.4rem",
       profileDisplayName: "1.3rem",
+      profileOtherText: "1rem",
       navBottomDsk: "1rem",
       navBottomMob: "1rem",
       signInOrsignUpDsk: "1rem",

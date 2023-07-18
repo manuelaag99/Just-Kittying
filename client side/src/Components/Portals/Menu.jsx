@@ -1,5 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
 
 import HomeIcon from '@mui/icons-material/Home';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -22,20 +23,20 @@ export default function Menu({ open, onClose }) {
                         <LightModeIcon className="mx-4" fontSize="large" />
                     </div>
 
-                    <div className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200">
+                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/">
                         <p className="w-fit pr-4">Home</p>
                         <HomeIcon className="mx-4" fontSize="large" />
-                    </div>
+                    </Link>
 
-                    <div className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200">
+                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/myprofile">
                         <p className="w-fit pr-4">My profile</p>
                         <PersonIcon className="mx-4" fontSize="large" />
-                    </div>
+                    </Link>
 
-                    <div className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200">
+                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/settings" >
                         <p className="w-fit pr-4">Settings</p>
                         <SettingsIcon className="mx-4" fontSize="large" /> 
-                    </div>
+                    </Link>
 
                     <div className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" onClick={onClose}>
                         <p className="w-fit pr-4" onClick={onClose}>Hide</p>

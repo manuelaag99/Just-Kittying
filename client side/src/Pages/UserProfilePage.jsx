@@ -21,20 +21,6 @@ export default function UserProfilePage () {
     selectedUser = USERS.find((user) => user.username === username)
     userPosts = POSTS.filter((post) => post.post_username === username)
     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
-    // let selectedUser = USERS.filter((user) => user.username === username)
-    // useEffect(() => {
-        
-        
-    // }, [])
-
-    // useEffect(() => {
-    //     userPosts = POSTS.filter((post) => post.post_username === username)
-    //     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
-    // }, [])
-
-    // if (selectedUser) {
-    //     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
-    // }
     
 
     const friendsTab = "friends"
@@ -53,10 +39,10 @@ export default function UserProfilePage () {
                             <div className="flex justify-center w-3/10 h-full items-start ">
                                 <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={userPrototype.profile_pic_url} />
                             </div>
-                            <div className="flex flex-col w-7/10 ">
-                                <div className="font-bold text-profiledisplay_name">{userPrototype.display_name}</div>
-                                <div className="font-semibold opacity-30">{userPrototype.username}</div>
-                                <div className="font-light">{userPrototype.short_bio}</div>
+                            <div className="flex flex-col w-7/10 pr-8">
+                                <div className="font-bold text-profileDisplayName">{userPrototype.display_name}</div>
+                                <div className="font-semibold opacity-30 text-profileOtherText">{userPrototype.username}</div>
+                                <div className="font-light text-profileOtherText">{userPrototype.short_bio}</div>
                             </div>
                         </div>
                         <div className="flex flex-row mt-16">
