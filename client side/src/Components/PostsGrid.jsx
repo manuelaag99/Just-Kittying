@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function PostsGrid ({ postsArray }) {
-    console.log(postsArray)
     return (
         <div>
             <div className="flex w-full">

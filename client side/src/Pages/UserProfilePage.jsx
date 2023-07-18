@@ -6,12 +6,28 @@ import RoundPhoto from "../Components/RoundPhoto";
 import UsersList from "../Components/UsersList";
 import PostsGrid from "../Components/PostsGrid";
 
+import { supabase } from "../supabase/client";
+
 import { userPrototype } from "../userprototype";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
 
 
 export default function UserProfilePage () {
+
+    const [usersInfo, setUsersInfo] = useState();
+    useEffect(() => {
+      async function fetchData () {
+        try {
+          const { data, error } = await supabase.from('jk-users').select("*")
+          setUsersInfo(data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchData();
+    }, [])
+
 
     let selectedUser
     let username = "abimejia"
