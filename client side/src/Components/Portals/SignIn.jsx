@@ -7,7 +7,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
-export default function SignIn({ open, onClose }) {
+export default function SignIn({ open, onClose, switchToSignUp }) {
     const [passwordVisibility, setPasswordVisibility] = useState(false)
 
     function changeVisibilityHandle () {
@@ -42,11 +42,11 @@ export default function SignIn({ open, onClose }) {
 
                 </div>
                 <div className="h-1/10 flex flex-col text-center">
-                    <button className="my-1 hover:text-var-3 duration-200">
-                        Forgot your password?
+                    <button className="my-1 hover:text-var-3 duration-200" onClick={switchToSignUp}>
+                        Don't have an account?
                     </button>
                     <button className="my-1 hover:text-var-3 duration-200">
-                        Don't have an account?
+                        Forgot your password?
                     </button>
                 </div>
             </div>
