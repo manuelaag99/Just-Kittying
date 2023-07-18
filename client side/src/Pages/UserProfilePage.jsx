@@ -13,25 +13,28 @@ import { USERS } from "../HARDCODED INFO";
 
 export default function UserProfilePage () {
 
-
+    let selectedUser
     let username = "abimejia"
     let userPosts = [];
     let userFriends = [];
 
-    // let selectedUser = USERS.filter((user) => user.username === username)
-    let selectedUser = USERS.find((user) => user.username === username)
-    
+    selectedUser = USERS.find((user) => user.username === username)
     userPosts = POSTS.filter((post) => post.post_username === username)
-    
-    console.log(selectedUser)
-    if (selectedUser) {
-        userFriends = USERS.filter((friend) => {
-            return selectedUser.user_friends.includes(friend.user_id);
-        })
-    }
-    
+    userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
+    // let selectedUser = USERS.filter((user) => user.username === username)
+    // useEffect(() => {
+        
+        
+    // }, [])
 
-    console.log(userFriends)
+    // useEffect(() => {
+    //     userPosts = POSTS.filter((post) => post.post_username === username)
+    //     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
+    // }, [])
+
+    // if (selectedUser) {
+    //     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
+    // }
     
 
     const friendsTab = "friends"
