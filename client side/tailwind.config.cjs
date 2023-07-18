@@ -15,7 +15,8 @@ module.exports = {
       profileDisplayName: "1.3rem",
       navBottomDsk: "1rem",
       navBottomMob: "1rem",
-      signInOrRegisterDsk: "1rem"
+      signInOrsignUpDsk: "1rem",
+      signInOrsignUpMob: "0.9rem"
     },
     borderRadius: {
       circular: "50%",
@@ -68,6 +69,8 @@ module.exports = {
         "7/10": "70%",
         "8/10": "80%",
         "9/10": "90%",
+        "15": "15%",
+        "85": "85%",
         "95": "95%"
       }
     },
