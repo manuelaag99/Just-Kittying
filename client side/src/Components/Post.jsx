@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import EditSharpIcon from '@mui/icons-material/EditSharp';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
+import filterArrayByUniqueByKey from "../functions";
 import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
 
 export default function Post ({ postAuthorDisplayName, postComments, postDate, postImageUrl, postNumberOfLikes }) {
+
+    const [comments, setComments] = useState([])
+    useEffect(() => {
+        setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
+    }, [])
 
     const [favorite, setFavorite] = useState(false)
     function favoriteButtonHandle () {
@@ -60,10 +68,17 @@ export default function Post ({ postAuthorDisplayName, postComments, postDate, p
                     {(postNumberOfLikes > 0) && <div className="mb-1">
                         <p className="mr-1 font-black">{postNumberOfLikes} likes</p>
                     </div>}
-                    {postComments && postComments.map((comment, index) => {
-                        return <div key={index} className="flex flex-row justify-start pb-1 w-full ">
-                            <p className="mr-1 font-bold">{comment.creator_display_name}</p>
-                            <p className="font-light">{comment.comment_text}</p>
+                    {comments && comments.map((comment, index) => {
+                        return <div key={index} className="flex flex-row justify-center pb-1 w-full ">
+                            <div className="flex flex-row justify-start w-8/10 pr-2">
+                                <p className="mr-1 font-bold">{comment.creator_display_name}</p>
+                                <p className="font-light">{comment.comment_text}</p>
+                            </div>
+                            <div className="flex flex-row w-2/10">
+                                <EditSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                                <DeleteSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                            </div>
+                            
                         </div>
                     })}
                         
