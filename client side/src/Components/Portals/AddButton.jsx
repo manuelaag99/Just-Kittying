@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 
 import AddSharpIcon from '@mui/icons-material/AddSharp';
-import CreatePost from "./CreatePost";
+import CreateOrUpdatePost from "./CreateOrUpdatePost";
 
 export default function AddButton({ open }) {
     const [createPostWindow, setCreatePostWindow] = useState(false)
@@ -14,8 +14,7 @@ export default function AddButton({ open }) {
 
     const addButton = (
         <div>
-            <CreatePost onClose={closeCreatePostWindowHandle} open={createPostWindow} />
-            {/* <div className="fixed top-0 bottom-0 w-screen h-screen z-20"></div> */}
+            <CreateOrUpdatePost onClose={closeCreatePostWindowHandle} open={createPostWindow} />
             <div className="flex fixed justify-center items-center z-50 bottom-[2%] right-[2%] w-fit p-1 bg-var-3 hover:bg-var-3-hovered duration-200 cursor-pointer aspect-square rounded-circular drop-shadow-button " onClick={addButtonHandle} >
                 <AddSharpIcon className="text-var-1 pr-[1px]" fontSize="large" />
             </div>

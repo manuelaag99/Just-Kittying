@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { createPortal } from "react-dom";
 
 import AddAPhotoSharpIcon from '@mui/icons-material/AddAPhotoSharp';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
-export default function CreatePost ({ open, onClose }) {
+export default function CreateOrUpdatePost ({ open, onClose }) {
+    const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: null, isFormValid: false });
+
+    
+    const [postCaption, setPostCaption] = useState(null);
+
+    function postTextHandle (e) {
+        setPostCaption(e.target.value);
+    }
+
     const createPost = (
         <div>
             <div className="bg-black opacity-10 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500" onClick={onClose}></div>
@@ -16,7 +25,7 @@ export default function CreatePost ({ open, onClose }) {
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center w-full h-1/10 mb-6">
-                    <input className="w-7/10 py-1 px-2 mr-2 outline-none" placeholder="Write down a caption..." type="text" />
+                    <input className="w-7/10 py-1 px-2 mr-2 outline-none" placeholder="Write down a caption..." type="text" onChange={postTextHandle} />
                     <button className="aspect-square w-fit rounded-circular p-2 cursor-pointer bg-var-3 hover:bg-var-3-hovered duration-200">
                         <SendRoundedIcon className="text-var-1" />
                     </button>
