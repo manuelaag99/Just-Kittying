@@ -21,7 +21,7 @@ export default function TimeLine () {
         TIMELINECONTENT.map((post) => {
             USERS.map((user) => {
                 if (user.user_id === post.post_creator_id) {
-                    return post.creator_display_name = user.displayName;
+                    return [post.creator_display_name = user.displayName, post.creator_profile_pic_url = user.profile_pic_url]
                 }
             })
         })
@@ -29,7 +29,7 @@ export default function TimeLine () {
         COMMENTS.map((comment) => {
             USERS.map((user) => {
                 if (user.user_id === comment.comment_creator_id) {
-                    return comment.creator_display_name = user.displayName;
+                    return comment.creator_display_name = user.displayName
                 }
             })
         })
@@ -47,14 +47,13 @@ export default function TimeLine () {
         })
         setTimelineContent(TIMELINECONTENT)
     }, [])
-
     
     return (
         <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
             <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">
                 <div>
                 {timelineContent.map((post, index) => {
-                    return <Post key={index} postAuthorDisplayName={post.creator_display_name} postComments={post.comments} postDate={post.post_date} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
+                    return <Post key={index} postAuthorDisplayName={post.creator_display_name} postAuthorPhotoUrl={post.creator_profile_pic_url} postComments={post.comments} postDate={post.post_date} postDescription={post.post_description} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
                 })}
                 </div>
             </div>

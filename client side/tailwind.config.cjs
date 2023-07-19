@@ -23,7 +23,8 @@ module.exports = {
       circular: "50%",
       round: "25%",
       button: "12px",
-      input: "20px"
+      input: "20px",
+      post: "8px"
     },
     extend: {
       dropShadow: {
