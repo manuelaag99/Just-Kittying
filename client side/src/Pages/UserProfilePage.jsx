@@ -52,7 +52,7 @@ export default function UserProfilePage () {
             <AddButton open={true} />
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
             <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
-                <div className="flex flex-col w-full sm:mt-3 sm:w-1/2 bg-var-1 h-[1000px]">
+                <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
                     <div className="flex-col">
                         <div className="flex flex-row h-[100px]">
                             <div className="flex justify-center w-3/10 h-full items-start ">

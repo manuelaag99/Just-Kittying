@@ -68,7 +68,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
                     {(postNumberOfLikes > 0) && <div className="mb-1">
                         <p className="mr-1 font-black">{postNumberOfLikes} likes</p>
                     </div>}
-                    {postDescription && <div className="flex flex-row justify-start">
+                    {postDescription && <div className="flex flex-row justify-start pb-1">
                         <p className="mr-2 font-bold">{postAuthorDisplayName}</p>
                         <p className="font-light">{postDescription}</p>
                     </div> }
@@ -78,11 +78,10 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
                                 <p className="mr-2 font-bold">{comment.creator_display_name}</p>
                                 <p className="font-light">{comment.comment_text}</p>
                             </div>
-                            <div className="flex flex-row w-2/10">
+                            <div className="flex flex-row w-2/10 justify-end">
                                 <EditSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
                                 <DeleteSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
                             </div>
-                            
                         </div>
                     })}
                         

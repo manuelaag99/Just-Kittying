@@ -50,7 +50,7 @@ export default function TimeLine () {
     
     return (
         <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
-            <div className="sm:w-1/2 w-95 mx-auto bg-var-1 h-[1500px] ">
+            <div className="sm:w-2/3 w-95 mx-auto bg-var-1 h-[1500px] ">
                 <div>
                 {timelineContent.map((post, index) => {
                     return <Post key={index} postAuthorDisplayName={post.creator_display_name} postAuthorPhotoUrl={post.creator_profile_pic_url} postComments={post.comments} postDate={post.post_date} postDescription={post.post_description} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
