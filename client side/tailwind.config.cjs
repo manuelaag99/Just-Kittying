@@ -52,6 +52,7 @@ module.exports = {
         "var-3": "#F4BE4D",
         "var-1-dark": "#000111",
         "var-2-dark": "#aaa",
+        "var-3-hovered": "#F39F1F",
         "facebook": "#3b5998",
         "facebook-hover": "#1C53a9"
       },

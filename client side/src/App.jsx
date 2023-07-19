@@ -51,6 +51,8 @@ export default function App () {
         <Route path="/myprofile" element={<UserProfilePage />} />
         <Route path="/profilesettings" element={<ProfileSettingsPage />} />
         <Route path="/singlepost" element={<PostOrPostsPage />} />
+        {/* <Route path="/createpost" element={< />} /> */}
+        
       </Routes>
     </Router>
   </>

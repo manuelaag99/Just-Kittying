@@ -11,6 +11,7 @@ import { supabase } from "../supabase/client";
 import { userPrototype } from "../userprototype";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
+import AddButton from "../Components/Portals/AddButton";
 
 
 export default function UserProfilePage () {
@@ -38,6 +39,7 @@ export default function UserProfilePage () {
     userPosts = POSTS.filter((post) => post.post_username === username)
     userFriends = USERS.filter((friend) => selectedUser.user_friends.includes(friend.user_id))
     
+    console.log(usersInfo)
 
     const friendsTab = "friends"
     const photosTab = "photos"
@@ -47,6 +49,7 @@ export default function UserProfilePage () {
 
     return (
         <div>
+            <AddButton open={true} />
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
             <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                 <div className="flex flex-col w-full sm:mt-3 sm:w-1/2 bg-var-1 h-[1000px]">
