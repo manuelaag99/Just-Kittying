@@ -17,7 +17,8 @@ module.exports = {
       navBottomDsk: "1rem",
       navBottomMob: "1rem",
       signInOrsignUpDsk: "1rem",
-      signInOrsignUpMob: "0.9rem"
+      signInOrsignUpMob: "0.9rem",
+      errorFont: "0.8rem"
     },
     borderRadius: {
       circular: "50%",
