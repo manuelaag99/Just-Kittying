@@ -60,7 +60,9 @@ export default function UserProfilePage () {
     function friendsTabHandle () {setTabsSection(friendsTab)};
 
     if (!selectedUser) {
-        return null;
+        return (
+            <LoadingSpinner open={loading} />
+        )
     } else {
         return (
             <div>
@@ -71,7 +73,7 @@ export default function UserProfilePage () {
                         <div className="flex-col">
                             <div className="flex flex-row h-[100px]">
                                 <div className="flex justify-center w-3/10 h-full items-start ">
-                                    <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={selectedUser.profile_pic_url || null} />
+                                    <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={selectedUser.profile_pic_url || "images/Generic-Profile-v2.png"} />
                                 </div>
                                 <div className="flex flex-col w-7/10 pr-8">
                                     <div className="font-bold text-profileDisplayName">{selectedUser.display_name}</div>

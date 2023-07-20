@@ -17,10 +17,10 @@ export default function SignUp({ open, onClose, switchToSignIn }) {
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
             <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-7/10 bg-var-1 rounded-button  text-signInOrsignUpMob sm:text-signInOrsignUpDsk">
-                <div className="w-7/10 h-1/10">
-                    <img src="../../../" alt="" />
+            <div className=" flex justify-center items-center w-7/10 h-1/10">
+                    <img className="h-full object-cover " src="images/logo.png" alt="" />
                 </div>
-                <div className="w-8/10 h-fit">
+                <div className="w-8/10 h-fit mt-4">
                     <input className="h-fit w-full py-[9px] sm:py-2 px-2 pl-4 mb-4 rounded-input border-var-2 border-2 border-solid" placeholder="Write your e-mail..." type="text" />
                     <div className="h-fit w-full py-2 mb-4 rounded-input border-var-2 border-2 border-solid" >
                         <input className="w-85 sm:w-9/10 h-full px-2 pl-4 rounded-input outline-none" placeholder="Create a password..." type={passwordVisibility ? "text" : "password"} />

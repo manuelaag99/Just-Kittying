@@ -13,9 +13,9 @@ body {
 .circle {
     width: 100px;
     height: 100px;
-    border: 10px solid #888;
+    border: 10px solid #fff;
     border-radius: 50%;
-    border-top-color: #000;
+    border-top-color: rgb(244, 191, 78);
     animation: loading 1s ease infinite;
   }
   
