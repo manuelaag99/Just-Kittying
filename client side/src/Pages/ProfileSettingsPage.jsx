@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CheckIcon from '@mui/icons-material/Check';
@@ -6,17 +6,30 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import RoundPhoto from "../Components/RoundPhoto";
-import Button from "../Components/Button";
-
-
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
 
+    const [profileFormData, setProfileFormData] = useState({ displayname: "", username: "", shortbio: "", accountprivacy: "", feedpreference: ""});
+
     function DoneButtonHandle () {
-        console.log("done")
         navigate("/")
     }
+
+    // function changeHandle (e) {
+    //     console.log(e.target.name)
+    //     console.log(profileFormData)
+    // }
+
+    function changeHandle (e) {
+        const { name, value } = e.target;
+        setProfileFormData((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+    };
+
+    console.log(profileFormData)
 
     return (
         <div className="flex flex-col justify-center items-center w-full h-fit">
@@ -41,28 +54,28 @@ export default function ProfileSettingsPage () {
                 <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                     <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                         <label className="w-3/10 pr-2" htmlFor=""> Display name:  </label>
-                        <input className="w-7/10 px-2 py-1 outline-none" placeholder="Enter your display name..." type="text" />
+                        <input name="displayname" className="w-7/10 px-2 py-1 outline-none" onChange={changeHandle} placeholder="Enter your display name..." type="text" />
                     </div>
                     <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                         <label className="w-3/10 pr-2" htmlFor=""> Username:  </label>
-                        <input className="w-7/10 px-2 py-1 outline-none" placeholder="Enter a user name..." type="text" />
+                        <input name="username" className="w-7/10 px-2 py-1 outline-none" onChange={changeHandle} placeholder="Enter a user name..." type="text" />
                     </div>
                     <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                         <label className="w-3/10 pr-2" htmlFor=""> Short bio:  </label>
-                        <input className="w-7/10 px-2 py-1 outline-none" placeholder="Enter a short bio..." type="text" />
+                        <input name="shortbio" className="w-7/10 px-2 py-1 outline-none" onChange={changeHandle} placeholder="Enter a short bio..." type="text" />
                     </div>
                     <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
-                        <label className="w-3/10 pr-2" htmlFor="account-privacy"> Account privacy:  </label>
-                        <select className="w-7/10 px-2 py-1 outline-none" name="account-privacy" id="account-privacy" >
-                            <option value="">Private</option>
-                            <option value="">Public</option>
+                        <label className="w-3/10 pr-2" htmlFor="accountprivacy"> Account privacy:  </label>
+                        <select className="w-7/10 px-2 py-1 outline-none" name="accountprivacy" id="accountprivacy" onChange={changeHandle}  >
+                            <option value="private">Private</option>
+                            <option value="public">Public</option>
                         </select>
                     </div>
                     <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
-                    <label className="w-3/10 pr-2" htmlFor="feed-preference"> Feed preference:  </label>
-                        <select className="w-7/10 px-2 py-1 outline-none" name="feed-preference" id="feed-preference" >
-                            <option value="">Friends only</option>
-                            <option value="">All</option>
+                    <label className="w-3/10 pr-2" htmlFor="feedpreference"> Feed preference:  </label>
+                        <select className="w-7/10 px-2 py-1 outline-none" name="feedpreference" id="feedpreference" onChange={changeHandle}  >
+                            <option value="friends">Friends only</option>
+                            <option value="all">All</option>
                         </select>
                     </div>
 
