@@ -6,25 +6,59 @@ import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
+import { supabase } from "../supabase/client";
 import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false)
-    const [profileFormData, setProfileFormData] = useState({ displayname: "", username: "", shortbio: "", accountprivacy: "", feedpreference: ""});
+    let user_id = "74rh4889wh36d7g389shd"
+    const [userInfo, setUserInfo] = useState()
+    useEffect(() => {
+        async function fetchData () {
+          try {
+            const { data, error } = await supabase.from('jk-users').select().eq('user_id', user_id)
+            setUserInfo(data[0])
+          } catch (err) {
+            console.log(err)
+          }
+        }
+        fetchData();
+    }, []);
+
+
+    const [loading, setLoading] = useState(true)
+    const [profileFormData, setProfileFormData] = useState({
+        displayname: "",
+        username: "",
+        shortbio: "",
+        accountprivacy: "",
+        feedpreference: ""});
     const [formErrors, setFormError] = useState(false);
 
+    console.log(userInfo)
     useEffect(() => {
-        if ((profileFormData.displayname === "") || (profileFormData.username === "")) setFormError(true)
-    }, [])
-
-    function DoneButtonHandle () {
-        if (!formErrors) {
-            navigate("/")
+        if (userInfo) {
+            setProfileFormData({
+                displayname: userInfo.display_name,
+                username: userInfo.username,
+                shortbio: userInfo.short_bio,
+                accountprivacy: userInfo.account_privacy,
+                feedpreference: userInfo.feed_preference
+            })
         }
-    }
+    }, [userInfo]);
+
+    useEffect(() => {
+        if ((profileFormData.displayname === "") || (profileFormData.username === "")) {
+            console.log("error")
+            setFormError(true)
+        } else {
+            setFormError(false)
+        }
+    }, [profileFormData])
+
 
     function changeHandle (e) {
         const { name, value } = e.target;
@@ -38,10 +72,15 @@ export default function ProfileSettingsPage () {
         }
     };
 
-    console.log(profileFormData)
-    console.log(formErrors)
+    function DoneButtonHandle () {
+        if (!formErrors) {
+            navigate("/")
+        }
+    }
 
-    if (loading) {
+    console.log(profileFormData)
+
+    if (!userInfo) {
         return (<LoadingSpinner open={loading} />)
     } else {
         return (
@@ -68,7 +107,7 @@ export default function ProfileSettingsPage () {
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Display name:  </label>
                             <div className="flex flex-col w-6/10 px-2">
-                                <input name="displayname" className={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter your display name..." type="text" />
+                                <input value={profileFormData.displayname} name="displayname" className={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter your display name..." type="text" />
                                 <div className="flex flex-row items-center">
                                     {(profileFormData.displayname === "") && <CancelIcon className="text-red-700" fontSize="small"/>}
                                     {(profileFormData.displayname === "") && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
@@ -78,7 +117,7 @@ export default function ProfileSettingsPage () {
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Username:  </label>
                             <div className="flex flex-col w-6/10 px-2">
-                                <input name="username" className={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter a user name..." type="text" />
+                                <input name="username" className={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter a user name..." type="text" value={profileFormData.username} />
                                 <div className="flex flex-row items-center">
                                     {(profileFormData.username === "") && <CancelIcon className="text-red-700" fontSize="small"/>}
                                     {(profileFormData.username === "") && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
@@ -87,18 +126,18 @@ export default function ProfileSettingsPage () {
                         </div>
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Short bio:  </label>
-                            <input name="shortbio" className="w-6/10 px-2 pt-1 outline-none" onChange={changeHandle} placeholder="Enter a short bio..." type="text" />
+                            <input name="shortbio" className="w-6/10 px-2 pt-1 outline-none" onChange={changeHandle} placeholder="Enter a short bio..." type="text" value={profileFormData.shortbio} />
                         </div>
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor="accountprivacy"> Account privacy:  </label>
-                            <select className="w-6/10 px-2 pt-1 outline-none" name="accountprivacy" id="accountprivacy" onChange={changeHandle}  >
+                            <select className="w-6/10 px-2 pt-1 outline-none" name="accountprivacy" id="accountprivacy" onChange={changeHandle} value={profileFormData.accountprivacy} >
                                 <option value="private">Private</option>
                                 <option value="public">Public</option>
                             </select>
                         </div>
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                         <label className="w-4/10 pr-2" htmlFor="feedpreference"> Feed preference:  </label>
-                            <select className="w-6/10 px-2 pt-1 outline-none" name="feedpreference" id="feedpreference" onChange={changeHandle}  >
+                            <select className="w-6/10 px-2 pt-1 outline-none" name="feedpreference" id="feedpreference" onChange={changeHandle} value={profileFormData.feedpreference} >
                                 <option value="friends">Friends only</option>
                                 <option value="all">All</option>
                             </select>
