@@ -49,7 +49,7 @@ export default function App () {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/myprofile" element={<UserProfilePage />} />
-        <Route path="/profilesettings" element={<ProfileSettingsPage />} />
+        <Route path="/settings" element={<ProfileSettingsPage />} />
         <Route path="/singlepost" element={<PostOrPostsPage />} />
         {/* <Route path="/createpost" element={< />} /> */}
         
