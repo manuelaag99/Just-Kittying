@@ -51,6 +51,7 @@ module.exports = {
         "var-1": "#fff",
         "var-2": "#bbb",
         "var-3": "#F4BE4D",
+        "var-4": "#eee",
         "var-1-dark": "#000111",
         "var-2-dark": "#aaa",
         "var-3-hovered": "#F39F1F",
