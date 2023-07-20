@@ -3,11 +3,12 @@ import { createPortal } from "react-dom";
 
 import AddAPhotoSharpIcon from '@mui/icons-material/AddAPhotoSharp';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import ImageUpload from "../ImageUpload";
 
 export default function CreateOrUpdatePost ({ open, onClose }) {
     const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: null, isFormValid: false });
 
-    
+
     const [postCaption, setPostCaption] = useState(null);
 
     function postTextHandle (e) {
@@ -20,8 +21,9 @@ export default function CreateOrUpdatePost ({ open, onClose }) {
             <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
                 <div className="flex justify-center items-center w-9/10 h-6/10 my-6">
                     <div className="flex flex-col justify-center items-center w-8/10 aspect-square bg-var-2 mx-auto">
-                        <AddAPhotoSharpIcon fontSize="large" />
-                        <p>Upload a photo</p>
+                        <ImageUpload />
+                        {/* <AddAPhotoSharpIcon fontSize="large" />
+                        <p>Upload a photo</p> */}
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center w-full h-1/10 mb-6">

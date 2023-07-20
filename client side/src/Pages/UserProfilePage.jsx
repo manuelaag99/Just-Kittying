@@ -64,7 +64,7 @@ export default function UserProfilePage () {
                                 <div className="font-light text-profileOtherText">{userPrototype.short_bio}</div>
                             </div>
                         </div>
-                        <div className="flex flex-row mt-16">
+                        <div className="flex flex-row mt-16 sm:mt-24">
                             <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Photos ({userPrototype.posts.length})</button>
                             <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userPrototype.friends.length})</button>
                         </div>
