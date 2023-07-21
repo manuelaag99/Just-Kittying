@@ -25,11 +25,12 @@ export default function NavTopContent () {
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
             <Menu onClose={closeMenuHandle} open={showMenu} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
-                <Link to="/">
-                    <button className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" >
-                        <HomeIcon className="mx-4" fontSize="large" />
-                        <p className="hidden md:block">Just Kittying!</p>
-                    </button>
+                <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/" >
+                    {/* <HomeIcon className="mx-4" fontSize="large" /> */}
+                    <div className="flex w-7/10 sm:w-2/10 items-center">
+                        <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
+                    </div>
+                    <p className="sm:w-fit hidden md:block sm:pl-2">Just Kittying!</p>
                 </Link>
             </div>
 

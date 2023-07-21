@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
@@ -60,6 +63,14 @@ export default function UserProfilePage () {
     function photosTabHandle () {setTabsSection(photosTab)};
     function friendsTabHandle () {setTabsSection(friendsTab)};
 
+    function addPersonHandle () {
+        console.log("added friend!")
+    }
+
+    function removePersonHandle () {
+        console.log("removed friend!")
+    }
+
     if (!selectedUser) {
         return (
             <LoadingSpinner open={loading} />
@@ -77,7 +88,13 @@ export default function UserProfilePage () {
                                     <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={selectedUser.profile_pic_url || "images/Generic-Profile-v2.png"} />
                                 </div>
                                 <div className="flex flex-col w-7/10 pr-8">
-                                    <div className="font-bold text-profileDisplayName">{selectedUser.display_name}</div>
+                                    <div className="flex flex-row justify-start font-bold text-profileDisplayName">
+                                        <p>{selectedUser.display_name}</p>
+                                        <button className="ml-3" onClick={addPersonHandle}>
+                                            <PersonAddAlt1Icon className="text-black hover:text-var-2 duration-100" fontSize="medium" />
+                                        </button>
+                                    </div>
+                                    
                                     <div className="font-semibold opacity-30 text-profileOtherText">{selectedUser.username}</div>
                                     <div className="font-light text-profileOtherText">{selectedUser.short_bio}</div>
                                 </div>
@@ -100,7 +117,7 @@ export default function UserProfilePage () {
                         
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts}/>}
                         {(tabsSection === friendsTab) && <UsersList usersArray={userFriends} />}
-    
+
                     </div>
                 </div>
                     
