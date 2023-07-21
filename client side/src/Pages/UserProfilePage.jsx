@@ -45,6 +45,7 @@ export default function UserProfilePage () {
             if (usersInfo.user_friends) {
                 setUserFriends(usersInfo.filter((friend) => selectedUser.user_friends.includes(friend.user_id)));
             }
+            setUserFriends(userPrototype.friends)
         }
         userPosts = POSTS.filter((post) => post.post_creator_id === user_id);
         

@@ -10,19 +10,19 @@ const userPrototype = {
     account_privacy: "private",
     friends: [
         {
-            name: "Liam Ballesteros",
+            displayName: "Liam Ballesteros",
             username: "asideofliam",
-            profilePic: "https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?w=2000"
+            profile_pic_url: "https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?w=2000"
         },
         {
-            name: "Mike Gaona",
+            displayName: "Mike Gaona",
             username: "unmikemas",
-            profilePic: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            profile_pic_url: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
         },
         {
-            name: "Max Zambada",
+            displayName: "Max Zambada",
             username: "mazamba",
-            profilePic: "https://st.depositphotos.com/1144472/2003/i/950/depositphotos_20030237-stock-photo-cheerful-young-man-over-white.jpg"
+            profile_pic_url: "https://st.depositphotos.com/1144472/2003/i/950/depositphotos_20030237-stock-photo-cheerful-young-man-over-white.jpg"
         }
     ],
     posts: [
