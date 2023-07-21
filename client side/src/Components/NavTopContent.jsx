@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import HomeIcon from '@mui/icons-material/Home';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import PersonIcon from '@mui/icons-material/Person';
@@ -26,7 +25,6 @@ export default function NavTopContent () {
             <Menu onClose={closeMenuHandle} open={showMenu} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
                 <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/" >
-                    {/* <HomeIcon className="mx-4" fontSize="large" /> */}
                     <div className="flex w-7/10 sm:w-2/10 items-center">
                         <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
                     </div>
