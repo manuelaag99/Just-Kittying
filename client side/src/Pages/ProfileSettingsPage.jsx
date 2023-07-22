@@ -87,13 +87,15 @@ export default function ProfileSettingsPage () {
 
     useEffect(() => {
         if (userInfo) {
-            setProfileFormData({
-                displayname: { value: userInfo.display_name, isValid: true },
-                username: { value: userInfo.username, isValid: true },
-                shortbio: { value: userInfo.short_bio, isValid: true },
-                accountprivacy: { value: userInfo.account_privacy, isValid: true },
-                feedpreference: { value: userInfo.feed_preference, isValid: true }
-            }, true)
+            setFormState({
+                inputs: {
+                    displayname: { value: userInfo.display_name, isValid: true },
+                    username: { value: userInfo.username, isValid: true },
+                    shortbio: { value: userInfo.short_bio, isValid: true },
+                    accountprivacy: { value: userInfo.account_privacy, isValid: true },
+                    feedpreference: { value: userInfo.feed_preference, isValid: true }
+                }, isFormValid: true
+            })
         }
     }, [userInfo]);
 
@@ -126,15 +128,7 @@ export default function ProfileSettingsPage () {
         }
     }
 
-    // console.log(profileFormData)
-    
-    function inputFunction (value, isValid, inputName) {
-        console.log(value, isValid, inputName)
-        setProfileFormData((prevState) => ({
-            ...prevState, [inputName]: value,
-        }));
-    }
-
+    console.log(formState)
     console.log(stateOfForm)
 
     if (!userInfo) {
@@ -162,11 +156,13 @@ export default function ProfileSettingsPage () {
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={profileFormData.displayname} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={formState.inputs.displayname.value} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
 
-                        <InputForForm individualInputAction={formHandler} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={profileFormData.username} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Username: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={formState.inputs.username.value} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Username: " />
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={profileFormData.shortbio} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={formState.inputs.shortbio.value} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
+
+                        {/* <InputForForm individualInputAction={formHandler} inputClassnames="w-6/10 px-2 pt-1 outline-none" inputName="accountprivacy" inputValue={formState.inputs.accountprivacy.value} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Account privacy: " /> */}
                         
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor="accountprivacy"> Account privacy:  </label>
@@ -183,7 +179,8 @@ export default function ProfileSettingsPage () {
                                 <option value="all">All</option>
                             </select>
                         </div>
-    
+
+
                         <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p>Change password</p>
                             <KeyboardArrowRightIcon />

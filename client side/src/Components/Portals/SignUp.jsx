@@ -64,6 +64,7 @@ export default function SignUp({ open, onClose, switchToSignIn }) {
                     <img className="h-full object-cover " src="images/logo.png" alt="" />
                 </div>
                 <div className="w-8/10 h-fit mt-4">
+                    
                     <div className="h-fit w-full mb-4 py-[9px] sm:py-2 rounded-input border-var-2 border-2 border-solid" >
                         <input className="h-full w-full px-2 pl-4 rounded-input outline-none " name="email" onChange={changeHandle} placeholder="Write your e-mail..." type="text" value={signUpFormState.email} />
                         {formErrors.email && <div className="absolute bg-var-1 p-2 border-black border-2 border-solid top-0">{formErrors.email}</div>}

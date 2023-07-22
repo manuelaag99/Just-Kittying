@@ -28,7 +28,7 @@ function reducer (state, action) {
     }
   }
 
-export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValue, isInSettingsPage, labelClassnames, labelText }) {
+export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValue, isInSettingsPage, isSelect, labelClassnames, labelText }) {
     const [individualInputState, dispatch] = useReducer(reducer, initialState);
     const {value, isValid} = individualInputState
 
@@ -46,16 +46,19 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
 
     useEffect(() => individualInputAction(value, isValid, inputName), [value, isValid, inputName]);
 
+    console.log(individualInputState.value)
 
     return (
         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 s">
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
             <div className="flex flex-col w-6/10 px-2">
-                <input autoComplete="off" className={inputClassnames} name={inputName} onBlur={inputBlurHandle} onChange={inputChangeHandle} onFocus={inputFocusHandle} placeholder={inputPlaceholder} type={inputType} value={value} />
-                {isInSettingsPage && <div className="flex flex-row items-center">
-                    {/* {(profileFormData.displayname === "") && <CancelIcon className="text-red-700" fontSize="small"/>}
-                    {(profileFormData.displayname === "") && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>} */}
+
+                {!isSelect && <input autoComplete="off" className={inputClassnames} name={inputName} onBlur={inputBlurHandle} onChange={inputChangeHandle} onFocus={inputFocusHandle} placeholder={inputPlaceholder} type={inputType} value={inputValue} />}
+                {isInSettingsPage && (inputName === "displayname" || inputName === "username") && <div className="flex flex-row items-center">
+                    {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <CancelIcon className="text-red-700" fontSize="small"/>}
+                    {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
                 </div>}
+
             </div>
         </div>
     )
