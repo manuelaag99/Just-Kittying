@@ -9,6 +9,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { supabase } from "../supabase/client";
 import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
+import InputForForm from "../Components/InputForForm";
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
@@ -78,7 +79,11 @@ export default function ProfileSettingsPage () {
         }
     }
 
-    console.log(profileFormData)
+    // console.log(profileFormData)
+    
+    function inputFunction (value, isValid, inputName) {
+        console.log(value, isValid, inputName)
+    }
 
     if (!userInfo) {
         return (<LoadingSpinner open={loading} />)
@@ -104,7 +109,14 @@ export default function ProfileSettingsPage () {
                         <button className="text-black hover:text-var-3 duration-200">Change my profile picture</button>
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
-                        <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
+                        
+                        <InputForForm individualInputAction={inputFunction} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={profileFormData.displayname} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
+
+                        <InputForForm individualInputAction={inputFunction} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={profileFormData.username} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Username: " />
+                        
+                        <InputForForm individualInputAction={inputFunction} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={profileFormData.shortbio} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
+
+                        {/* <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Display name:  </label>
                             <div className="flex flex-col w-6/10 px-2">
                                 <input value={profileFormData.displayname} name="displayname" className={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter your display name..." type="text" />
@@ -114,6 +126,7 @@ export default function ProfileSettingsPage () {
                                 </div>
                             </div>
                         </div>
+                        
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Username:  </label>
                             <div className="flex flex-col w-6/10 px-2">
@@ -124,10 +137,12 @@ export default function ProfileSettingsPage () {
                                 </div>
                             </div>
                         </div>
+
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor=""> Short bio:  </label>
                             <input name="shortbio" className="w-6/10 px-2 pt-1 outline-none" onChange={changeHandle} placeholder="Enter a short bio..." type="text" value={profileFormData.shortbio} />
-                        </div>
+                        </div> */}
+                        
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor="accountprivacy"> Account privacy:  </label>
                             <select className="w-6/10 px-2 pt-1 outline-none" name="accountprivacy" id="accountprivacy" onChange={changeHandle} value={profileFormData.accountprivacy} >
@@ -135,6 +150,7 @@ export default function ProfileSettingsPage () {
                                 <option value="public">Public</option>
                             </select>
                         </div>
+                        
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                         <label className="w-4/10 pr-2" htmlFor="feedpreference"> Feed preference:  </label>
                             <select className="w-6/10 px-2 pt-1 outline-none" name="feedpreference" id="feedpreference" onChange={changeHandle} value={profileFormData.feedpreference} >
