@@ -10,34 +10,10 @@ import { supabase } from "../supabase/client";
 import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import InputForForm from "../Components/InputForForm";
-
-function formReducer (state, action) {
-    switch (action.type) {
-        case "formChange":
-            let formIsValid = true
-            for (const specificInput in state.inputs) {
-                if (specificInput === action.inputName) {
-                    formIsValid = formIsValid && action.isValid
-                } else {
-                    formIsValid = formIsValid && state.inputs[specificInput].isValid
-                }
-            }
-            return {
-                ...state,
-                inputs: {
-                    ...state.inputs,
-                    [action.inputName]: { value: action.value, isValid: action.isValid }
-                },
-                isFormValid: formIsValid
-            }
-        default:
-            return state
-    }
-}
+import { formReducer } from "../reducers";
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
-
     let user_id = "74rh4889wh36d7g389shd"
     const [userInfo, setUserInfo] = useState()
     useEffect(() => {
@@ -52,32 +28,27 @@ export default function ProfileSettingsPage () {
         fetchData();
     }, []);
 
-
-    const [formState, setFormState] = useState({
+    const [stateOfForm, dispatch] = useReducer(formReducer, {
         inputs: {
             displayname: { value: "", isValid: false },
             username: { value: "", isValid: false },
-            shortbio: { value: "", isValid: false },
+            shortbio: { value: "", isValid: true },
             accountprivacy: { value: "", isValid: false },
             feedpreference: { value: "", isValid: false }
         },
         isFormValid: false
     });
 
-    const [stateOfForm, dispatch] = useReducer(formReducer, formState);
-
     const formHandler = useCallback((value, isValid, inputName) => {
-        console.log(value, isValid, inputName)
         dispatch({ type: "formChange", inputName: inputName, value: value, isValid: isValid })
     }, [dispatch])
+
 
     function DoneButtonHandle () {
         if (stateOfForm.isFormValid) {
             navigate("/")
         }
     }
-
-    console.log(userInfo)
 
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)

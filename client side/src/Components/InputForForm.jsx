@@ -2,47 +2,12 @@ import React, { useEffect, useReducer } from "react";
 
 import CancelIcon from '@mui/icons-material/Cancel';
 
-import { isTextAnEmail, isTextAPassword, minLengthText, nonEmptyText } from "../CheckValidity";
-
-
-function reducer (state, action) {
-    switch (action.type) {
-        case "change":
-            let checkValidity;
-            if (action.placeholder === "Enter your e-mail") {
-                checkValidity = isTextAnEmail(action.val);
-            } else if (action.placeholder === "Create a username") {
-                checkValidity = minLengthText(action.val, 6);
-            } else if (action.placeholder === "Create a password") {
-                checkValidity = isTextAPassword(action.val);
-            } else {
-                checkValidity = nonEmptyText(action.val);
-            }
-            return {
-                ...state,
-                value: action.value,
-                isValid: checkValidity
-            };
-        case "focus":
-            return {
-                ...state,
-                isActive: true,
-                isTouched: false
-            };
-        case "blur":
-            return {
-                ...state,
-                isTouched: true
-            };
-        default:
-            return state;
-    }
-  }
+import { inputReducer } from "../reducers";
 
 export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, isInSettingsPage, isSelect, labelClassnames, labelText, optionsForSelect }) {
     const initialState = { value: inputValue, isValid: inputValidity };
 
-    const [individualInputState, dispatch] = useReducer(reducer, initialState);
+    const [individualInputState, dispatch] = useReducer(inputReducer, initialState);
     const {value, isValid} = individualInputState
 
     function inputBlurHandle () {
