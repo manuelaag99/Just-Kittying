@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -10,6 +10,30 @@ import { supabase } from "../supabase/client";
 import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import InputForForm from "../Components/InputForForm";
+
+function formReducer (state, action) {
+    switch (action.type) {
+        case "formChange":
+            let formIsValid = true
+            for (const specificInput in state.inputs) {
+                if (specificInput === action.inputName) {
+                    formIsValid = formIsValid && action.isValid
+                } else {
+                    formIsValid = formIsValid && state.inputs[specificInput].isValid
+                }
+            }
+            return {
+                ...state,
+                inputs: {
+                    ...state.inputs,
+                    [action.inputName]: { value: action.value, isValid: action.isValid }
+                },
+                isFormValid: formIsValid
+            }
+        default:
+            return state
+    }
+}
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
@@ -31,26 +55,49 @@ export default function ProfileSettingsPage () {
 
     const [loading, setLoading] = useState(true)
     const [profileFormData, setProfileFormData] = useState({
-        displayname: "",
-        username: "",
-        shortbio: "",
-        accountprivacy: "",
-        feedpreference: ""});
-    const [formErrors, setFormError] = useState(false);
+        inputs: {
+            displayname: { value: "", isValid: false },
+            username: { value: "", isValid: false },
+            shortbio: { value: "", isValid: false },
+            accountprivacy: { value: "", isValid: false },
+            feedpreference: { value: "", isValid: false }
+        },
+        isFormValid: false
+    });
 
-    console.log(userInfo)
+
+    const [formState, setFormState] = useState({
+        inputs: {
+            displayname: { value: "", isValid: false },
+            username: { value: "", isValid: false },
+            shortbio: { value: "", isValid: false },
+            accountprivacy: { value: "", isValid: false },
+            feedpreference: { value: "", isValid: false }
+        },
+        isFormValid: false
+    });
+
+    const [stateOfForm, dispatch] = useReducer(formReducer, formState);
+
+    const formHandler = useCallback((value, isValid, inputName) => {
+        console.log(value, isValid, inputName)
+        dispatch({ type: "formChange", inputName: inputName, value: value, isValid: isValid })
+    }, [dispatch])
+
+
     useEffect(() => {
         if (userInfo) {
             setProfileFormData({
-                displayname: userInfo.display_name,
-                username: userInfo.username,
-                shortbio: userInfo.short_bio,
-                accountprivacy: userInfo.account_privacy,
-                feedpreference: userInfo.feed_preference
-            })
+                displayname: { value: userInfo.display_name, isValid: true },
+                username: { value: userInfo.username, isValid: true },
+                shortbio: { value: userInfo.short_bio, isValid: true },
+                accountprivacy: { value: userInfo.account_privacy, isValid: true },
+                feedpreference: { value: userInfo.feed_preference, isValid: true }
+            }, true)
         }
     }, [userInfo]);
 
+    const [formErrors, setFormError] = useState(false);
     useEffect(() => {
         if ((profileFormData.displayname === "") || (profileFormData.username === "")) {
             console.log("error")
@@ -83,7 +130,12 @@ export default function ProfileSettingsPage () {
     
     function inputFunction (value, isValid, inputName) {
         console.log(value, isValid, inputName)
+        setProfileFormData((prevState) => ({
+            ...prevState, [inputName]: value,
+        }));
     }
+
+    console.log(stateOfForm)
 
     if (!userInfo) {
         return (<LoadingSpinner open={loading} />)
@@ -110,38 +162,11 @@ export default function ProfileSettingsPage () {
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                         
-                        <InputForForm individualInputAction={inputFunction} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={profileFormData.displayname} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={profileFormData.displayname} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
 
-                        <InputForForm individualInputAction={inputFunction} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={profileFormData.username} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Username: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={profileFormData.username} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Username: " />
                         
-                        <InputForForm individualInputAction={inputFunction} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={profileFormData.shortbio} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
-
-                        {/* <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
-                            <label className="w-4/10 pr-2" htmlFor=""> Display name:  </label>
-                            <div className="flex flex-col w-6/10 px-2">
-                                <input value={profileFormData.displayname} name="displayname" className={"w-full pt-1 outline-none " + ((profileFormData.displayname === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter your display name..." type="text" />
-                                <div className="flex flex-row items-center">
-                                    {(profileFormData.displayname === "") && <CancelIcon className="text-red-700" fontSize="small"/>}
-                                    {(profileFormData.displayname === "") && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
-                            <label className="w-4/10 pr-2" htmlFor=""> Username:  </label>
-                            <div className="flex flex-col w-6/10 px-2">
-                                <input name="username" className={"w-full pt-1 outline-none " + ((profileFormData.username === "") && "border-red-600 border-b-2 border-solid")} onChange={changeHandle} placeholder="Enter a user name..." type="text" value={profileFormData.username} />
-                                <div className="flex flex-row items-center">
-                                    {(profileFormData.username === "") && <CancelIcon className="text-red-700" fontSize="small"/>}
-                                    {(profileFormData.username === "") && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
-                            <label className="w-4/10 pr-2" htmlFor=""> Short bio:  </label>
-                            <input name="shortbio" className="w-6/10 px-2 pt-1 outline-none" onChange={changeHandle} placeholder="Enter a short bio..." type="text" value={profileFormData.shortbio} />
-                        </div> */}
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={profileFormData.shortbio} isInSettingsPage={true} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
                         
                         <div className="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3">
                             <label className="w-4/10 pr-2" htmlFor="accountprivacy"> Account privacy:  </label>
