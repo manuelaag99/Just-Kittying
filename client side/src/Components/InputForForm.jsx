@@ -39,8 +39,8 @@ function reducer (state, action) {
     }
   }
 
-export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValue, isInSettingsPage, isSelect, labelClassnames, labelText, optionsForSelect }) {
-    const initialState = { value: inputValue, isValid: false };
+export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, isInSettingsPage, isSelect, labelClassnames, labelText, optionsForSelect }) {
+    const initialState = { value: inputValue, isValid: inputValidity };
 
     const [individualInputState, dispatch] = useReducer(reducer, initialState);
     const {value, isValid} = individualInputState

@@ -77,8 +77,7 @@ export default function ProfileSettingsPage () {
         }
     }
 
-    console.log(formState)
-    console.log(stateOfForm)
+    console.log(userInfo)
 
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
@@ -105,15 +104,15 @@ export default function ProfileSettingsPage () {
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValue={userInfo.display_name || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValidity={(userInfo.display_name && true) || false} inputValue={userInfo.display_name || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
 
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValue={userInfo.username || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Username: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValidity={(userInfo.username && true) || false} inputValue={userInfo.username || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Username: " />
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValue={userInfo.short_bio || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValidity={(userInfo.short_bio && true) || false} inputValue={userInfo.short_bio || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
 
-                        <InputForForm optionsForSelect={[{ value: "private", text: "Private"}, { value: "public", text: "Public"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="accountprivacy" inputValue={userInfo.account_privacy} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Account privacy: " />
+                        <InputForForm optionsForSelect={[{ value: "private", text: "Private"}, { value: "public", text: "Public"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="accountprivacy" inputValidity={(userInfo.account_privacy && true) || false} inputValue={userInfo.account_privacy} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Account privacy: " />
                         
-                        <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValue={userInfo.user_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " />
+                        <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValidity={(userInfo.feed_preference && true) || false} inputValue={userInfo.feed_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " />
 
                         <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p>Change password</p>
