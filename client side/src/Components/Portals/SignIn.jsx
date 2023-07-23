@@ -27,10 +27,8 @@ export default function SignIn({ open, onClose, switchToSignUp }) {
                     <img className="h-full object-cover " src="images/logo.png" alt="" />
                 </div>
                 <div className="w-8/10 h-fit mt-4">
-
                     <InputForForm smallDivClassnames="w-full h-full py-2 mb-4 px-2.5 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
                     <InputForForm smallDivClassnames="w-full h-full py-2 mb-4 px-2.5 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                    
                     <button className="w-full py-2 px-2 mb-4 rounded-input bg-black text-var-1 hover:bg-var-3 duration-500 border-black border-solid border-2">Sign in</button>
                     <button className="flex flex-row justify-center items-center w-full py-2 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2">
                         <FacebookSharpIcon className="mr-2"/>
