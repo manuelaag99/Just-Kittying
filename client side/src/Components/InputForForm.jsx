@@ -31,9 +31,6 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
         setPasswordVisibility(prevValue => !prevValue);
     }
 
-    console.log(passwordVisibility)
-    console.log(inputType)
-
     return (
         <div className={largeDivClassnames} >
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
