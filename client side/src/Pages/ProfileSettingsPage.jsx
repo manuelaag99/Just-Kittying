@@ -67,7 +67,7 @@ export default function ProfileSettingsPage () {
                 <div className="flex flex-row justify-between w-full h-fit bg-var-1 drop-shadow-navbar z-10">
                     <Link className="flex flex-row items-center w-fit pl-1 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100" onClick={DoneButtonHandle} to="/">
                         <KeyboardArrowLeftIcon />
-                        <p className=" pt-0.5">Cancel</p>
+                        <p className=" pt-0.5">Back</p>
                     </Link>
                     <div className="flex flex-row items-center justify-center w-2/10 pt-0.5">
                         Settings
@@ -94,15 +94,15 @@ export default function ProfileSettingsPage () {
                         
                         <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValidity={(userInfo.feed_preference && true) || false} inputValue={userInfo.feed_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
 
-                        <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
+                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p>Change password</p>
                             <KeyboardArrowRightIcon />
                         </div>
-                        <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
+                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p>Log Out</p>
                             <KeyboardArrowRightIcon />
                         </div>
-                        <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
+                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p className="text-red-700">Delete my account</p>
                             <KeyboardArrowRightIcon />
                         </div>

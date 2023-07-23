@@ -55,7 +55,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
 
                 </div>
                 <div className="h-1/10 mb-5 flex flex-col text-center">
-                    {(textForSignInOrSignUpButton === "Sign up") && <button className="mt-5 hover:text-var-3 duration-200" onClick={switchToSignIn}>
+                    {(textForSignInOrSignUpButton === "Sign up") && <button className="my-1 hover:text-var-3 duration-200" onClick={switchToSignIn}>
                         Already have an account?
                     </button>}
                     {(textForSignInOrSignUpButton === "Sign in") && <button className="my-1 hover:text-var-3 duration-200" onClick={switchToSignUp}>

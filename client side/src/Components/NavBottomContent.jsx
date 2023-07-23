@@ -1,36 +1,22 @@
 import React, { useState } from "react";
 import Button from "./Button";
-import SignIn from "./Portals/SignIn";
-import SignUp from "./Portals/signUp";
 import SignInOrSignUpWindow from "./Portals/SignInOrSignUpWindow";
 
 export default function NavBottomContent () {
-    const [ signInWindow, setSignInWindow ] = useState(false);
+    const [signInWindow, setSignInWindow] = useState(false);
     function closeSignInHandle () {
         setSignInWindow(false);
     }
-
     function openSignInHandle () {
         setSignInWindow(true);
     }
 
-    const [ signUpWindow, setSignUpWindow ] = useState(false);
+    const [signUpWindow, setSignUpWindow] = useState(false);
     function closeSignUpHandle () {
         setSignUpWindow(false);
     }
-
     function openSignUpHandle () {
         setSignUpWindow(true);
-    }
-
-    function switchToSignUpHandle () {
-        setSignInWindow(false);
-        setSignUpWindow(true);
-    }
-
-    function switchToSignInHandle () {
-        setSignUpWindow(false);
-        setSignInWindow(true);
     }
 
     function switchHandle () {
@@ -40,8 +26,6 @@ export default function NavBottomContent () {
 
     return (
         <div className="flex flex-row h-full w-full justify-center items-center">
-            {/* <SignIn onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
-            <SignUp onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} /> */}
             <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign in"} onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
             <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
             <div className="flex flex-row sm:w-8/10 w-fit h-fit sm:justify-center justify-between items-center sm:text-navBottomDsk text-navBottomMob">
