@@ -6,6 +6,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
+import { useForm } from "../Components/custom-hooks";
+
 import { supabase } from "../supabase/client";
 import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
@@ -28,7 +30,7 @@ export default function ProfileSettingsPage () {
         fetchData();
     }, []);
 
-    const [stateOfForm, dispatch] = useReducer(formReducer, {
+    const initialFormState = {
         inputs: {
             displayname: { value: "", isValid: false },
             username: { value: "", isValid: false },
@@ -37,11 +39,16 @@ export default function ProfileSettingsPage () {
             feedpreference: { value: "", isValid: false }
         },
         isFormValid: false
-    });
+    }
 
-    const formHandler = useCallback((value, isValid, inputName) => {
-        dispatch({ type: "formChange", inputName: inputName, value: value, isValid: isValid })
-    }, [dispatch])
+    const [stateOfForm, formHandler] = useForm(initialFormState);
+
+
+    // const [stateOfForm, dispatch] = useReducer(formReducer, initialFormState);
+
+    // const formHandler = useCallback((value, isValid, inputName) => {
+    //     dispatch({ type: "formChange", inputName: inputName, value: value, isValid: isValid })
+    // }, [dispatch])
 
 
     function DoneButtonHandle () {
@@ -49,6 +56,8 @@ export default function ProfileSettingsPage () {
             navigate("/")
         }
     }
+
+    console.log(stateOfForm)
 
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
@@ -75,15 +84,15 @@ export default function ProfileSettingsPage () {
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValidity={(userInfo.display_name && true) || false} inputValue={userInfo.display_name || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Display name: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="displayname" inputPlaceholder="Enter your display name..." inputType="text" inputValidity={(userInfo.display_name && true) || false} inputValue={userInfo.display_name || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Display name: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
 
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValidity={(userInfo.username && true) || false} inputValue={userInfo.username || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Username: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none " inputName="username" inputPlaceholder="Enter a user name..." inputType="text" inputValidity={(userInfo.username && true) || false} inputValue={userInfo.username || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Username: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
                         
-                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValidity={(userInfo.short_bio && true) || false} inputValue={userInfo.short_bio || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Short bio: " />
+                        <InputForForm individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="shortbio" inputPlaceholder="Enter a short bio..." inputType="text" inputValidity={(userInfo.short_bio && true) || false} inputValue={userInfo.short_bio || ""} isInSettingsPage={true} isSelect={false} labelClassnames="w-4/10 pr-2" labelText="Short bio: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
 
-                        <InputForForm optionsForSelect={[{ value: "private", text: "Private"}, { value: "public", text: "Public"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="accountprivacy" inputValidity={(userInfo.account_privacy && true) || false} inputValue={userInfo.account_privacy} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Account privacy: " />
+                        <InputForForm optionsForSelect={[{ value: "private", text: "Private"}, { value: "public", text: "Public"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="accountprivacy" inputValidity={(userInfo.account_privacy && true) || false} inputValue={userInfo.account_privacy} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Account privacy: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
                         
-                        <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValidity={(userInfo.feed_preference && true) || false} inputValue={userInfo.feed_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " />
+                        <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValidity={(userInfo.feed_preference && true) || false} inputValue={userInfo.feed_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
 
                         <div className="flex flex-row justify-between w-full h-fit pt-3 pb-2 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
                             <p>Change password</p>

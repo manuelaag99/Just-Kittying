@@ -3,16 +3,22 @@ import { createPortal } from "react-dom";
 
 import FacebookSharpIcon from '@mui/icons-material/FacebookSharp';
 import GoogleIcon from '@mui/icons-material/Google';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import InputForForm from "../InputForForm";
+import { useForm } from "../custom-hooks";
 
 
 export default function SignIn({ open, onClose, switchToSignUp }) {
-    const [passwordVisibility, setPasswordVisibility] = useState(false)
 
-    function changeVisibilityHandle () {
-        setPasswordVisibility(prevValue => !prevValue);
+    const initialSignInFormState = {
+        inputs: {
+            email: { value: "", isValid: false },
+            password: { value: "", isValid: false }
+        }
     }
+    const [stateOfForm, formHandler] = useForm(initialSignInFormState);
+    
+    console.log(stateOfForm)
+
     const signIn = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500"></div>
@@ -21,14 +27,9 @@ export default function SignIn({ open, onClose, switchToSignUp }) {
                     <img className="h-full object-cover " src="images/logo.png" alt="" />
                 </div>
                 <div className="w-8/10 h-fit mt-4">
-                    <input className="h-fit w-full py-[9px] sm:py-2 px-2 pl-4 mb-4 rounded-input border-var-2 border-2 border-solid" placeholder="Write in your e-mail..." type="text" />
-                    <div className="w-full py-2 mb-4 pr-2 sm:pr-0 rounded-input border-var-2 border-2 border-solid" >
-                        <input className="w-85 sm:w-9/10 h-full px-2 pl-4 rounded-input outline-none" placeholder="Write in your password..." type={passwordVisibility ? "text" : "password"} />
-                        <button onClick={changeVisibilityHandle} className="w-15 sm:w-1/10 ">
-                            {!passwordVisibility && <VisibilityIcon className="hover:bg-var-2 duration-200 rounded-circular" />}
-                            {passwordVisibility && <VisibilityOffIcon className="hover:bg-var-2 duration-200 rounded-circular" />}
-                        </button>
-                    </div>
+
+                    <InputForForm smallDivClassnames="w-full h-full py-2 mb-4 px-2.5 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
+                    <InputForForm smallDivClassnames="w-full h-full py-2 mb-4 px-2.5 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
                     
                     <button className="w-full py-2 px-2 mb-4 rounded-input bg-black text-var-1 hover:bg-var-3 duration-500 border-black border-solid border-2">Sign in</button>
                     <button className="flex flex-row justify-center items-center w-full py-2 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2">

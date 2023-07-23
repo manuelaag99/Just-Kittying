@@ -7,10 +7,12 @@ export function nonEmptyText (value) {
 }
 
 export function minLengthText (value, requiredLength) {
-    if (value.length < requiredLength) {
-        return false
-    } else {
-        return true
+    if (value) {
+        if (value.length < requiredLength) {
+            return false
+        } else {
+            return true
+        }
     }
 }
 

@@ -5,13 +5,15 @@ export function inputReducer (state, action) {
         case "change":
             let checkValidity;
             if (action.placeholder === "Enter your e-mail") {
-                checkValidity = isTextAnEmail(action.val);
-            } else if (action.placeholder === "Create a username") {
-                checkValidity = minLengthText(action.val, 6);
+                checkValidity = isTextAnEmail(action.value);
+            } else if (action.placeholder === "Create a username" || action.placeholder === "Enter a user name...") {
+                checkValidity = minLengthText(action.value, 6);
             } else if (action.placeholder === "Create a password") {
-                checkValidity = isTextAPassword(action.val);
+                checkValidity = isTextAPassword(action.value);
+            } else if (action.placeholder === "Enter a short bio...") {
+                checkValidity = true;
             } else {
-                checkValidity = nonEmptyText(action.val);
+                checkValidity = nonEmptyText(action.value);
             }
             return {
                 ...state,
