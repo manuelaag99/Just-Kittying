@@ -37,7 +37,6 @@ export default function TimeLine () {
         TIMELINECONTENT.map((post) => {
             COMMENTS.map((comment) => {
                 if (post.post_id === comment.comment_post_id) {
-                    console.log(post.comments)
                     if (!post.comments) post.comments = [];
                     // if (!post.comments.includes(comment.comment_id)) {
                         return post.comments.push(comment);

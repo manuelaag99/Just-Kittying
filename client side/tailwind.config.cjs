@@ -57,7 +57,8 @@ module.exports = {
         "var-2-dark": "#aaa",
         "var-3-hovered": "#F39F1F",
         "facebook": "#3b5998",
-        "facebook-hover": "#1C53a9"
+        "facebook-hover": "#1C53a9",
+        "black-inactive": "#333"
       },
       margin: {
         "top-margin-dsk": "6rem",
