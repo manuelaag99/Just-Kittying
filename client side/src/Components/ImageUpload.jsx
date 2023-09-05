@@ -6,8 +6,8 @@ export default function ImageUpload () {
     const [previewPhotoUrl, setPreviewPhotoUrl] = useState();
 
     return (
-        <div>
-            <input type="file" />
+        <div className="flex justify-center w-full">
+            <input className="w-9/10 text-center" type="file" />
         </div>
     )
 };

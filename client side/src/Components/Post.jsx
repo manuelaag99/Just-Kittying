@@ -9,17 +9,39 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import filterArrayByUniqueByKey from "../functions";
 import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
+import { supabase } from "../supabase/client";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postComments, postDate, postDescription, postImageUrl, postNumberOfLikes }) {
+export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postComments, postDate, postDescription, postId, postImageUrl, postNumberOfLikes, userId }) {
 
     const [comments, setComments] = useState([])
     useEffect(() => {
         setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
     }, [])
 
+    const [newComment, setNewComment] = useState();
+    function postCommentHandle (e) {
+        console.log(event.target.value)
+        setNewComment(e.target.value);
+    }
+
+    let comment_id;
+    async function commentPost () {
+        comment_id = uuidv4();
+        try {
+            const { error } = await supabase.from("jk-comments").insert({ comment_id: comment_id, comment_post_id: postId, comment_creator_id: userId , comment_text: newComment });
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+
     const [favorite, setFavorite] = useState(false)
     function favoriteButtonHandle () {
         setFavorite(prevValue => !prevValue)
+
     }
 
     const [showInput, setShowInput] = useState(false)
@@ -87,8 +109,8 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
                         
                     {/* {showInput && <input className="outline-none" type="text" placeholder="Write your comment..." />} */}
                     {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
-                        <input className="outline-none w-8/10 h-fit" placeholder="Write your comment..." ref={inputRef} type="text" />
-                        <button className="font-bold px-1 rounded-[2px] w-2/10 hover:bg-var-2 duration-200" type="submit">Post</button>
+                        <input className="outline-none sm:w-9/10 w-8/10 h-fit" onChange={postCommentHandle} placeholder="Write your comment..." ref={inputRef} type="text" />
+                        <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">Post</button>
                     </form>}
                 </div>
             </div>

@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import AddAPhotoSharpIcon from '@mui/icons-material/AddAPhotoSharp';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import { v4 as uuidv4 } from "uuid";
 import ImageUpload from "../ImageUpload";
+import { supabase } from "../../supabase/client";
 
 export default function CreateOrUpdatePost ({ open, onClose }) {
-    const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: null, isFormValid: false });
-
-
-    const [postCaption, setPostCaption] = useState(null);
-
+    const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: null });
+    useEffect(() => {
+        setPostContentState({ ...postContentState, postContentPhoto: "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg"});
+    }, [])
     function postTextHandle (e) {
-        setPostCaption(e.target.value);
+        console.log(e.target.value);
+        setPostContentState({ ...postContentState, postContentCaption: e.target.value});
+    }
+
+    let post_id;
+    async function createOrUpdatePost () {
+        post_id = uuidv4();
+        try {
+            const { error } = await supabase.from("jk-posts").insert({ post_id: post_id, post_creator_id: user_id, post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption });
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const createPost = (
         <div>
             <div className="bg-black opacity-10 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500" onClick={onClose}></div>
-            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
+            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[30%] left-[5%] sm:w-4/10 w-9/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
                 <div className="flex justify-center items-center w-9/10 h-6/10 my-6">
                     <div className="flex flex-col justify-center items-center w-8/10 aspect-square bg-var-2 mx-auto">
                         <ImageUpload />
@@ -28,7 +41,7 @@ export default function CreateOrUpdatePost ({ open, onClose }) {
                 </div>
                 <div className="flex flex-row justify-center items-center w-full h-1/10 mb-6">
                     <input className="w-7/10 py-1 px-2 mr-2 outline-none" placeholder="Write down a caption..." type="text" onChange={postTextHandle} />
-                    <button className="aspect-square w-fit rounded-circular p-2 cursor-pointer bg-var-3 hover:bg-var-3-hovered duration-200">
+                    <button className="aspect-square w-fit rounded-circular p-2 cursor-pointer bg-var-3 hover:bg-var-3-hovered duration-200" onClick={createOrUpdatePost}>
                         <SendRoundedIcon className="text-var-1" />
                     </button>
                 </div>
