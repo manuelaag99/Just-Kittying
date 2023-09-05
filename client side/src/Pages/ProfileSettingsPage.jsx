@@ -21,7 +21,7 @@ export default function ProfileSettingsPage () {
     useEffect(() => {
         async function fetchData () {
           try {
-            const { data, error } = await supabase.from('jk-users').select().eq('user_id', user_id)
+            const { data, error } = await supabase.from("jk-users").select().eq("user_id", user_id)
             setUserInfo(data[0])
           } catch (err) {
             console.log(err)
@@ -29,6 +29,15 @@ export default function ProfileSettingsPage () {
         }
         fetchData();
     }, []);
+
+    async function updateUserInfo () {
+        try {
+            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", user_id);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     const initialFormState = {
         inputs: {
@@ -43,21 +52,12 @@ export default function ProfileSettingsPage () {
 
     const [stateOfForm, formHandler] = useForm(initialFormState);
 
-
-    // const [stateOfForm, dispatch] = useReducer(formReducer, initialFormState);
-
-    // const formHandler = useCallback((value, isValid, inputName) => {
-    //     dispatch({ type: "formChange", inputName: inputName, value: value, isValid: isValid })
-    // }, [dispatch])
-
-
     function DoneButtonHandle () {
         if (stateOfForm.isFormValid) {
+            updateUserInfo();
             navigate("/")
         }
     }
-
-    console.log(stateOfForm)
 
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
