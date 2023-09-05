@@ -1,6 +1,7 @@
 import React from "react";
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 import RoundPhoto from "./RoundPhoto";
 
@@ -24,8 +25,11 @@ export default function ({ usersArray }) {
                                 <div className="opacity-30" >{user.username}</div>
                             </div>
                         </div>
-                        <div className="flex justify-center sm:justify-end sm:pr-4 w-2/10 items-center">
-                            <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" />
+                        <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
+                            <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
+                        </div>
+                        <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
+                            <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </div>
                     </div>
                 })}

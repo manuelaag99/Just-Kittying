@@ -106,7 +106,7 @@ export default function UserProfilePage () {
                                 </div>
                             </div>
                             <div className="flex flex-row mt-16 sm:mt-24">
-                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Photos ({selectedUser.posts ? selectedUser.posts.length : "0"})</button>
+                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Posts ({selectedUser.posts ? selectedUser.posts.length : "0"})</button>
                                 <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.length : "0"})</button>
                             </div>
                             <div className="flex w-full">

@@ -36,8 +36,6 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
         }
     }
 
-
-
     const [favorite, setFavorite] = useState(false)
     function favoriteButtonHandle () {
         setFavorite(prevValue => !prevValue)
