@@ -21,8 +21,6 @@ import AddButton from "../Components/Portals/AddButton";
 export default function UserProfilePage () {
     const [usersInfo, setUsersInfo] = useState();
     const [selectedUser, setSelectedUser] = useState();
-    const [userFriends, setUserFriends] = useState();
-    const [userPosts, setUserPosts] = useState();
     const [loading, setLoading] = useState(true);
 
     let user_id = "74rh4889wh36d7g389shd"
@@ -38,6 +36,7 @@ export default function UserProfilePage () {
       fetchSelectedUserData();
     }, []);
 
+    const [userFriends, setUserFriends] = useState();
     useEffect(() => {
         async function fetchAllUsers () {
           try {
@@ -48,6 +47,19 @@ export default function UserProfilePage () {
           }
         }
         fetchAllUsers();
+      }, []);
+
+      const [userPosts, setUserPosts] = useState();
+      useEffect(() => {
+        async function fetchUserPosts () {
+          try {
+            const { data, error } = await supabase.from('jk-posts').select("*").eq("post_creator_id", user_id);
+            setUserPosts(data);
+          } catch (err) {
+            console.log(err)
+          }
+        }
+        fetchUserPosts();
       }, []);
 
     console.log(userPosts)
@@ -106,7 +118,7 @@ export default function UserProfilePage () {
                                 </div>
                             </div>
                             <div className="flex flex-row mt-16 sm:mt-24">
-                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Posts ({selectedUser.posts ? selectedUser.posts.length : "0"})</button>
+                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Posts ({userPosts ? userPosts.length : "0"})</button>
                                 <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.length : "0"})</button>
                             </div>
                             <div className="flex w-full">
