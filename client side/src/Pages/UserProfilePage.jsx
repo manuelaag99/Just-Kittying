@@ -19,43 +19,49 @@ import AddButton from "../Components/Portals/AddButton";
 
 
 export default function UserProfilePage () {
-
     const [usersInfo, setUsersInfo] = useState();
     const [selectedUser, setSelectedUser] = useState();
     const [userFriends, setUserFriends] = useState();
+    const [userPosts, setUserPosts] = useState();
     const [loading, setLoading] = useState(true);
 
+    let user_id = "74rh4889wh36d7g389shd"
     useEffect(() => {
-      async function fetchData () {
+      async function fetchSelectedUserData () {
         try {
-          const { data, error } = await supabase.from('jk-users').select("*")
-          setUsersInfo(data)
+          const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
+          setSelectedUser(data[0]);
         } catch (err) {
           console.log(err)
         }
       }
-      fetchData();
+      fetchSelectedUserData();
     }, []);
 
-    console.log(usersInfo)
+    useEffect(() => {
+        async function fetchAllUsers () {
+          try {
+            const { data, error } = await supabase.from('jk-users').select("*");
+            setUsersInfo(data);
+          } catch (err) {
+            console.log(err)
+          }
+        }
+        fetchAllUsers();
+      }, []);
 
-    let user_id = "74rh4889wh36d7g389shd"
-    let userPosts = [];
+    console.log(userPosts)
 
     useEffect(() => {
         if (usersInfo) {
-            setSelectedUser(usersInfo.find((user) => user.user_id === user_id));
             if (usersInfo.user_friends) {
                 setUserFriends(usersInfo.filter((friend) => selectedUser.user_friends.includes(friend.user_id)));
             }
             setUserFriends(userPrototype.friends)
         }
-        userPosts = POSTS.filter((post) => post.post_creator_id === user_id);
         
+        setUserPosts(POSTS.filter((post) => post.post_creator_id === user_id));
     }, [usersInfo])
-    
-    console.log(selectedUser)
-    console.log(userFriends)
 
     const friendsTab = "friends"
     const photosTab = "photos"
@@ -78,7 +84,7 @@ export default function UserProfilePage () {
     } else {
         return (
             <div>
-                <AddButton open={true} />
+                <AddButton open={true} userId={user_id} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
@@ -101,7 +107,7 @@ export default function UserProfilePage () {
                             </div>
                             <div className="flex flex-row mt-16 sm:mt-24">
                                 <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Photos ({selectedUser.posts ? selectedUser.posts.length : "0"})</button>
-                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({selectedUser.friends ? selectedUser.friends.length : "0"})</button>
+                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.length : "0"})</button>
                             </div>
                             <div className="flex w-full">
                                 {(tabsSection === photosTab) && <div className="flex flex-row w-full">

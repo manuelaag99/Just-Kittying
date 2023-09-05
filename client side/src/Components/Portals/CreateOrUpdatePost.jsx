@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import ImageUpload from "../ImageUpload";
 import { supabase } from "../../supabase/client";
 
-export default function CreateOrUpdatePost ({ open, onClose }) {
+export default function CreateOrUpdatePost ({ open, onClose, userId }) {
     const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: null });
     useEffect(() => {
         setPostContentState({ ...postContentState, postContentPhoto: "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg"});
@@ -21,7 +21,7 @@ export default function CreateOrUpdatePost ({ open, onClose }) {
     async function createOrUpdatePost () {
         post_id = uuidv4();
         try {
-            const { error } = await supabase.from("jk-posts").insert({ post_id: post_id, post_creator_id: user_id, post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption });
+            const { error } = await supabase.from("jk-posts").insert({ post_id: post_id, post_creator_id: userId, post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption });
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
