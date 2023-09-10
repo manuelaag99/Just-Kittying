@@ -14,9 +14,20 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postComments, postDate, postDescription, postId, postImageUrl, postNumberOfLikes, userId }) {
 
+    async function fetchPostLikes () {
+        try {
+            const { data, error } = await supabase.from("jk-likes").select("*").eq("like_post_id", postId);
+            if (error) console.log(error);
+            console.log("The data is " + data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const [comments, setComments] = useState([])
     useEffect(() => {
         setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
+        fetchPostLikes();
     }, [])
 
     const [newComment, setNewComment] = useState();
