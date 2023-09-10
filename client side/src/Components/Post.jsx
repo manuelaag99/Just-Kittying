@@ -12,23 +12,77 @@ import PostPhoto from "./PostPhoto";
 import { supabase } from "../supabase/client";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postComments, postDate, postDescription, postId, postImageUrl, postNumberOfLikes, userId }) {
+export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postDate, postDescription, postId, postImageUrl, userId }) {
 
+    const [postLikes, setPostLikes] = useState();
     async function fetchPostLikes () {
         try {
             const { data, error } = await supabase.from("jk-likes").select("*").eq("like_post_id", postId);
             if (error) console.log(error);
             console.log("The data is " + data);
+            setPostLikes();
+            if (data) setFavorite(true);
         } catch (err) {
             console.log(err);
         }
     }
 
     const [comments, setComments] = useState([])
+    async function fetchPostComments () {
+        try {
+            const { data, error } = await supabase.from("jk-comments").select("*").eq("comment_post_id", postId);
+            if (error) console.log(error);
+            console.log("The data is " + data);
+            setComments(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
-        setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
+        // setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
         fetchPostLikes();
+        fetchPostComments();
     }, [])
+
+    useEffect(() => {
+        if (postLikes) {
+            postLikes.map((like) => {
+                if (like.like_creator_id === userId) {
+                    setFavorite(true);
+                }
+            })
+        }
+    }, [postLikes])
+
+    let newLikeId;
+    async function likePost() {
+        newLikeId = uuidv4();
+        try {
+            const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: postId });
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function unlikePost() {
+        try {
+            const { error } = await supabase.from("jk-likes").delete().eq("like_creator_id", userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        if (favorite) {
+            likePost();
+        } else if (!favorite) {
+            unlikePost();
+        }
+        fetchPostLikes();
+    }, [favorite])
 
     const [newComment, setNewComment] = useState();
     function postCommentHandle (e) {
@@ -50,7 +104,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
     const [favorite, setFavorite] = useState(false)
     function favoriteButtonHandle () {
         setFavorite(prevValue => !prevValue)
-
+        fetchPostComments();
     }
 
     const [showInput, setShowInput] = useState(false)
@@ -58,15 +112,14 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
     function commentButtonHandle () {
         setShowInput(true)
     }
-
     useEffect(() => {
         if (showInput) inputRef.current.focus()
     }, [showInput])
-
     function submitCommentHandle (e) {
         e.preventDefault()
         console.log("comment")
     }
+
 
     return (
         <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6 rounded-post">
@@ -96,8 +149,8 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postC
 
             <div>
                 <div className="flex flex-col justify-start text-commentFontSizeMob sm:text-commentFontSizeDsk px-3 pt-2 pb-2 ">
-                    {(postNumberOfLikes > 0) && <div className="mb-1">
-                        <p className="mr-1 font-black">{postNumberOfLikes} likes</p>
+                    {(postLikes > 0) && <div className="mb-1">
+                        <p className="mr-1 font-black">{postLikes.length} likes</p>
                     </div>}
                     {postDescription && <div className="flex flex-row justify-start pb-1">
                         <p className="mr-2 font-bold">{postAuthorDisplayName}</p>
