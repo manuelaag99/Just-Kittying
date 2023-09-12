@@ -62,7 +62,6 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
         fetchPostComments();
     }, [])
 
-    console.log(postUserData)
     // useEffect(() => {
     //     if (postLikes) {
     //         postLikes.map((like) => {
@@ -136,7 +135,7 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
         console.log("comment")
     }
 
-    console.log(postLikes.length)
+    console.log(postLikes)
 
     return (
         <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6 rounded-post">
@@ -166,7 +165,7 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
 
             <div>
                 <div className="flex flex-col justify-start text-commentFontSizeMob sm:text-commentFontSizeDsk px-3 pt-2 pb-2 ">
-                    {(postLikes > 0) && <div className="mb-1">
+                    {postLikes && (postLikes.length > 0) && <div className="mb-1">
                         <p className="mr-1 font-black">{postLikes.length} likes</p>
                     </div>}
                     {postDescription && <div className="flex flex-row justify-start pb-1">
