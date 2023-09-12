@@ -12,7 +12,24 @@ import PostPhoto from "./PostPhoto";
 import { supabase } from "../supabase/client";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postDate, postDescription, postId, postImageUrl, userId }) {
+export default function Post ({ postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
+
+    const [postUserData, setPostUserData] = useState();
+    async function fetchPostUserData () {
+        try {
+            const { data, error } = await supabase.from("jk-users").select().eq("user_id", postCreatorId)
+            if (error) console.log(error);
+            setPostUserData(data[0]);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const [favorite, setFavorite] = useState(false)
+    function favoriteButtonHandle () {
+        setFavorite(prevValue => !prevValue)
+        fetchPostLikes();
+    }
 
     const [postLikes, setPostLikes] = useState();
     async function fetchPostLikes () {
@@ -20,8 +37,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
             const { data, error } = await supabase.from("jk-likes").select("*").eq("like_post_id", postId);
             if (error) console.log(error);
             console.log("The data is " + data);
-            setPostLikes();
-            if (data) setFavorite(true);
+            setPostLikes(data);
         } catch (err) {
             console.log(err);
         }
@@ -41,19 +57,21 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
 
     useEffect(() => {
         // setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
+        fetchPostUserData();
         fetchPostLikes();
         fetchPostComments();
     }, [])
 
-    useEffect(() => {
-        if (postLikes) {
-            postLikes.map((like) => {
-                if (like.like_creator_id === userId) {
-                    setFavorite(true);
-                }
-            })
-        }
-    }, [postLikes])
+    console.log(postUserData)
+    // useEffect(() => {
+    //     if (postLikes) {
+    //         postLikes.map((like) => {
+    //             if (like.like_creator_id === userId) {
+    //                 setFavorite(true);
+    //             }
+    //         })
+    //     }
+    // }, [postLikes])
 
     let newLikeId;
     async function likePost() {
@@ -64,6 +82,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
         } catch (err) {
             console.log(err);
         }
+        fetchPostLikes();
     }
 
     async function unlikePost() {
@@ -73,6 +92,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
         } catch (err) {
             console.log(err);
         }
+        fetchPostLikes();
     }
 
     useEffect(() => {
@@ -88,6 +108,8 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
     function postCommentHandle (e) {
         console.log(event.target.value)
         setNewComment(e.target.value);
+        commentPost();
+        fetchPostComments();
     }
 
     let comment_id;
@@ -99,12 +121,6 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
         } catch (err) {
             console.log(err);
         }
-    }
-
-    const [favorite, setFavorite] = useState(false)
-    function favoriteButtonHandle () {
-        setFavorite(prevValue => !prevValue)
-        fetchPostComments();
     }
 
     const [showInput, setShowInput] = useState(false)
@@ -120,15 +136,16 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
         console.log("comment")
     }
 
+    console.log(postLikes.length)
 
     return (
         <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6 rounded-post">
 
             <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
-                <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={postAuthorPhotoUrl} />
+                <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={postUserData.profile_pic_url || null} />
                 <div className="flex flex-col w-8/10 sm:w-9/10 h-full px-2">
-                    <p className="text-postdisplay_name font-bold">{postAuthorDisplayName}</p>
-                    <p className="text-postDate font-extralight">{postDate}</p>
+                    <p className="text-postdisplay_name font-bold">{postUserData.display_name}</p>
+                    <p className="text-postCreationDate font-extralight">{postUserData.username}</p>
                 </div>
             </div>
 
@@ -153,7 +170,7 @@ export default function Post ({ postAuthorDisplayName, postAuthorPhotoUrl, postD
                         <p className="mr-1 font-black">{postLikes.length} likes</p>
                     </div>}
                     {postDescription && <div className="flex flex-row justify-start pb-1">
-                        <p className="mr-2 font-bold">{postAuthorDisplayName}</p>
+                        <p className="mr-2 font-bold">{postUserData.display_name}</p>
                         <p className="font-light">{postDescription}</p>
                     </div> }
                     {comments && comments.map((comment, index) => {

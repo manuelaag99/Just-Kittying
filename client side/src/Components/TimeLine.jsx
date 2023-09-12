@@ -6,8 +6,9 @@ import Post from "./Post";
 import { COMMENTS } from "../HARDCODED INFO";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
+import LoadingSpinner from "./Portals/LoadingSpinner";
 
-export default function TimeLine () {
+export default function TimeLine ({ posts, userId }) {
     // fetch posts (based on if its logged in or not, and if it is logged in then based on their preferences)
     // fetch users 
     // fetch comments
@@ -47,15 +48,25 @@ export default function TimeLine () {
         setTimelineContent(TIMELINECONTENT)
     }, [])
     
-    return (
-        <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
-            <div className="sm:w-2/3 w-95 mx-auto bg-var-1 h-[1500px] ">
-                <div>
-                {timelineContent.map((post, index) => {
-                    return <Post key={index} postAuthorDisplayName={post.creator_display_name} postAuthorPhotoUrl={post.creator_profile_pic_url} postComments={post.comments} postDate={post.post_date} postDescription={post.post_description} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
-                })}
+    console.log(posts)
+    if (!posts) {
+        return (
+            <LoadingSpinner open={true} />
+        )
+    } else {
+        return (
+            <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
+                <div className="sm:w-2/3 w-95 mx-auto bg-var-1 h-[1500px] ">
+                    <div>
+                    {/* {timelineContent.map((post, index) => {
+                        return <Post key={index} postAuthorDisplayName={post.creator_display_name} postAuthorPhotoUrl={post.creator_profile_pic_url} postComments={post.comments} postDate={post.post_date} postDescription={post.post_description} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
+                    })} */}
+                    {posts && posts.map((post, index) => {
+                        return <Post key={index} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
+                    })}
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 };
