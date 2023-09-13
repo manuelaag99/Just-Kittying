@@ -6,7 +6,7 @@ module.exports = {
   ],
   theme: {
     fontSize: {
-      postDisplayName: '1.1rem',
+      postDisplayOrUserName: '0.85rem',
       postDate: '0.6rem',
       commentFontSizeDsk: '1rem',
       commentFontSizeMob: "0.9rem",

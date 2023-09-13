@@ -7,6 +7,7 @@ import { COMMENTS } from "../HARDCODED INFO";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
 import LoadingSpinner from "./Portals/LoadingSpinner";
+import LoadingPost from "./LoadingPost";
 
 export default function TimeLine ({ posts, userId }) {
     // fetch posts (based on if its logged in or not, and if it is logged in then based on their preferences)
@@ -64,6 +65,7 @@ export default function TimeLine ({ posts, userId }) {
                     {posts && posts.map((post, index) => {
                         return <Post key={index} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
                     })}
+                    <LoadingPost />
                     </div>
                 </div>
             </div>
