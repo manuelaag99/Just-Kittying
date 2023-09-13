@@ -44,9 +44,6 @@ export default function PostOrPostsPage () {
         setTimelineContent(TIMELINECONTENT)
     }, [])
 
-    console.log(TIMELINECONTENT)
-    console.log(post)
-
     return (
         <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>

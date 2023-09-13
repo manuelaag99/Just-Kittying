@@ -17,8 +17,6 @@ export default function SignIn({ open, onClose, switchToSignUp }) {
         isFormValid: false
     }
     const [stateOfForm, formHandler] = useForm(initialSignInFormState);
-    
-    console.log(stateOfForm)
 
     function signUpHandle () {
         console.log(uuidv4())

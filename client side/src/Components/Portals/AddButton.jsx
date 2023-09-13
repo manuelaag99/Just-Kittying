@@ -12,7 +12,6 @@ export default function AddButton({ open, userId }) {
 
     function closeCreatePostWindowHandle () {setCreatePostWindow(false)};
 
-    console.log(userId)
     const addButton = (
         <div>
             <CreateOrUpdatePost onClose={closeCreatePostWindowHandle} open={createPostWindow} userId={userId} />
