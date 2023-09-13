@@ -31,16 +31,16 @@ export default function CreateOrUpdatePost ({ open, onClose, userId }) {
     const createPost = (
         <div>
             <div className="bg-black opacity-10 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500" onClick={onClose}></div>
-            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
-                <div className="flex justify-center items-center w-9/10 h-6/10 sm:my-6 my-3">
+            <div className="flex flex-col fixed justify-center items-center z-50 top-[10%] md:left-[30%] left-[10%] md:w-4/10 w-8/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
+                <div className="flex justify-center items-center w-9/10 h-6/10 md:my-6 mt-6 mb-4">
                     <div className="flex flex-col justify-center items-center w-9/10 aspect-square bg-var-2 mx-auto">
                         <ImageUpload />
                         {/* <AddAPhotoSharpIcon fontSize="large" />
                         <p>Upload a photo</p> */}
                     </div>
                 </div>
-                <div className="flex flex-row justify-center items-center w-9/10 h-1/10 mb-6">
-                    <input className="w-7/10 py-1 px-2 mr-2 outline-none" placeholder="Write down a caption..." type="text" onChange={postTextHandle} />
+                <div className="flex flex-row justify-center items-center w-9/10 h-1/10 mb-5">
+                    <input className="w-8/10 py-1 px-2 mr-2 outline-none" placeholder="Write down a caption..." type="text" onChange={postTextHandle} />
                     <button className="aspect-square w-fit rounded-circular p-2 cursor-pointer bg-var-3 hover:bg-var-3-hovered duration-200" onClick={createOrUpdatePost}>
                         <SendRoundedIcon className="text-var-1" />
                     </button>
