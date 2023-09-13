@@ -11,8 +11,8 @@ import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
 import { supabase } from "../supabase/client";
 import { v4 as uuidv4 } from "uuid";
-import LoadingSpinner from "./Portals/LoadingSpinner";
 import LoadingPost from "./LoadingPost";
+import Comment from "./Comment";
 
 export default function Post ({ postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
 
@@ -56,6 +56,8 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
             console.log(err);
         }
     }
+
+    console.log(comments)
 
     useEffect(() => {
         // setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
@@ -180,7 +182,8 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
                             <p className="font-light">{postDescription}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
-                            return <div key={index} className="flex flex-row justify-center pb-1 w-full ">
+                            return <Comment commentData={comment} index={index} />
+                            {/* return <div key={index} className="flex flex-row justify-center pb-1 w-full ">
                                 <div className="flex flex-row justify-start w-8/10 pr-2">
                                     <p className="mr-2 font-bold">{comment.creator_display_name}</p>
                                     <p className="font-light">{comment.comment_text}</p>
@@ -189,10 +192,9 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
                                     <EditSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
                                     <DeleteSharpIcon className="ml-1 text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
                                 </div>
-                            </div>
+                            </div> */}
                         })}
-                            
-                        {/* {showInput && <input className="outline-none" type="text" placeholder="Write your comment..." />} */}
+                        
                         {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
                             <input className="outline-none sm:w-9/10 w-8/10 h-fit" onChange={postCommentHandle} placeholder="Write your comment..." ref={inputRef} type="text" />
                             <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">Post</button>

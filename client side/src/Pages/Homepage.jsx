@@ -11,8 +11,18 @@ export default function HomePage ({ }) {
     let user_id = "74rh4889wh36d7g389shd"
     const userIsLoggedIn = false; //remove 
 
-    const [timelinePosts, setTimelinePosts] = useState();
+    const [users, setUsers] = useState();
+    async function fetchUsers() {
+        try {
+            const { data, error } = await supabase.from("jk-users").select("*");
+            if (error) console.log(error);
+            setUsers(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
+    const [timelinePosts, setTimelinePosts] = useState();
     async function fetchPosts() {
         try {
             const { data, error } = await supabase.from("jk-posts").select("*");
@@ -24,6 +34,7 @@ export default function HomePage ({ }) {
     }
 
     useEffect(() => {
+        fetchUsers();
         fetchPosts();
     }, [])
 
