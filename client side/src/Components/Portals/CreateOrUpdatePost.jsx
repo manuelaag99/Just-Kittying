@@ -8,7 +8,7 @@ import ImageUpload from "../ImageUpload";
 import { supabase } from "../../supabase/client";
 import LoadingSpinner from "./LoadingSpinner";
 
-export default function CreateOrUpdatePost ({ open, onClose, post, userId }) {
+export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, userId }) {
     const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: "" });
     useEffect(() => {
         setPostContentState({ ...postContentState, postContentPhoto: "https://static01.nyt.com/images/2021/09/14/science/07CAT-STRIPES/07CAT-STRIPES-mediumSquareAt3X-v2.jpg" });
@@ -26,15 +26,26 @@ export default function CreateOrUpdatePost ({ open, onClose, post, userId }) {
         }
     }, [])
 
-    let post_id;
+    let new_post_id;
     async function createOrUpdatePost () {
-        post_id = uuidv4();
-        try {
-            const { error } = await supabase.from("jk-posts").insert({ post_id: post_id, post_creator_id: userId, post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption });
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err);
+        if (post) {
+            try {
+                const { error } = await supabase.from("jk-posts").update({ post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption }).eq("post_id", post.post_id);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
+        } else if (!post) {
+            new_post_id = uuidv4();
+            try {
+                const { error } = await supabase.from("jk-posts").insert({ post_id: new_post_id, post_creator_id: userId, post_photo_url: postContentState.postContentPhoto, post_caption: postContentState.postContentCaption });
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
         }
+        onClose();
+        fetchAgain();
     }
 
     const createPost = (

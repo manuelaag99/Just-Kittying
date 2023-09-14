@@ -217,7 +217,7 @@ export default function Post ({ fetchAgain, post, postCreationDate, postCreatorI
                     </div>
                 </div>
 
-                <CreateOrUpdatePost onClose={() => setUpdatePostWindowVisibility(false)} open={updatePostWindowVisibility} post={post} userId={userId} />
+                <CreateOrUpdatePost fetchAgain={() => fetchAgain()} onClose={() => setUpdatePostWindowVisibility(false)} open={updatePostWindowVisibility} post={post} userId={userId} />
             </div>
         )
     }
