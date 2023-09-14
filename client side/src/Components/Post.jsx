@@ -6,6 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import filterArrayByUniqueByKey from "../functions";
+import CreateOrUpdatePost from "./Portals/CreateOrUpdatePost";
 import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
 import { supabase } from "../supabase/client";
@@ -13,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 
-export default function Post ({ postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
+export default function Post ({ fetchAgain, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
 
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -135,6 +136,19 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
     }
 
     const [postOptions, setPostOptions] = useState(false);
+    const [updatePostWindowVisibility, setUpdatePostWindowVisibility] = useState(false);
+
+    
+
+    async function deletePost () {
+        try {
+            const { error } = await supabase.from("jk-posts").delete().eq("post_id", postId);
+            if (error) console.log(error);
+            fetchAgain();
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     if (!postUserData) {
         return (<LoadingPost />)
@@ -144,23 +158,30 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
     
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
-                    <div className="flex flex-col w-8/10 h-full px-2">
+                    <div className="flex flex-col w-8/10 h-full px-2" onClick={() => setPostOptions(false)}>
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
-                        <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
+                        <div className="flex flex-row w-full">
+                            <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
+                            <p className="text-postDisplayOrUserName font-extralight text-gray-500">, {postCreationDate.split("T")[0]}</p>    
+                        </div>
                     </div>
                     <div className="flex w-1/10 h-full items-center justify-center relative">
                         <button className="flex justify-center items-center aspect-square rounded-circular bg-white hover:bg-gray-300 duration-300" onClick={() => setPostOptions((prevValue) => !prevValue)}>
                             <MoreVertIcon className="mx-1 hover:text-gray-700" fontSize="medium" />
                         </button>
 
-                        {postOptions && <div className="h-fit w-[130px] right-0 top-[40px] bg-white shadow-2xl absolute rounded-post ">
-                            <div className="px-4 py-1 hover:bg-gray-300 cursor-pointer duration-300 rounded-post">Edit post</div>
-                            <div className="px-4 py-1 hover:bg-gray-300 cursor-pointer duration-300 rounded-post">Delete post</div>
+                        {postOptions && <div className="h-fit w-[100px] right-0 top-[40px] bg-white shadow-2xl absolute rounded-post ">
+                            <button className="px-4 pt-1.5 pb-1 w-full flex items-center text-optionsFontSize hover:bg-gray-300 cursor-pointer duration-300 rounded-post" onClick={() => setUpdatePostWindowVisibility((prevValue) => !prevValue)}>
+                                Edit post
+                            </button>
+                            <button className="px-4 pt-1.5 pb-1 w-full flex items-center text-optionsFontSize hover:bg-red-500 hover:text-white cursor-pointer duration-300 rounded-post" onClick={deletePost}>
+                                Delete post
+                            </button>
                         </div>}
                     </div>
                 </div>
     
-                <div className="flex justify-center w-full sm:h-[500px] h-[250px] ">
+                <div className="flex justify-center w-full sm:h-[500px] h-[250px] " onClick={() => setPostOptions(false)}>
                     <PostPhoto imageSource={postImageUrl} />
                 </div>
     
@@ -195,7 +216,8 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
                         </form>}
                     </div>
                 </div>
-    
+
+                <CreateOrUpdatePost open={updatePostWindowVisibility} onClose={() => setUpdatePostWindowVisibility(false)} userId={userId} />
             </div>
         )
     }

@@ -10,6 +10,7 @@ module.exports = {
       postDate: '0.6rem',
       commentFontSizeDsk: '1rem',
       commentFontSizeMob: "0.9rem",
+      optionsFontSize: '0.8rem',
       logoSizeLarge: "2rem",
       logoSizeMedium: "1.4rem",
       profileDisplayName: "1.3rem",
