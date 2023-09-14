@@ -91,7 +91,7 @@ export default function TimeLine ({ posts, userId }) {
                         return <Post key={index} postAuthorDisplayName={post.creator_display_name} postAuthorPhotoUrl={post.creator_profile_pic_url} postComments={post.comments} postDate={post.post_date} postDescription={post.post_description} postImageUrl={post.post_photo_url} postNumberOfLikes={post.post_likes.length} />
                     })} */}
                     {timelinePosts && timelinePosts.map((post, index) => {
-                        return <Post fetchAgain={updatePosts} key={index} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
+                        return <Post fetchAgain={updatePosts} key={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
                     })}
                     </div>
                 </div>

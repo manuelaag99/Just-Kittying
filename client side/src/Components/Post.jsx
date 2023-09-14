@@ -14,12 +14,12 @@ import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 
-export default function Post ({ fetchAgain, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
+export default function Post ({ fetchAgain, post, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
 
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
         try {
-            const { data, error } = await supabase.from("jk-users").select().eq("user_id", postCreatorId)
+            const { data, error } = await supabase.from("jk-users").select().eq("user_id", post.post_creator_id)
             if (error) console.log(error);
             setPostUserData(data[0]);
         } catch (err) {
@@ -36,7 +36,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
     const [postLikes, setPostLikes] = useState();
     async function fetchPostLikes () {
         try {
-            const { data, error } = await supabase.from("jk-likes").select("*").eq("like_post_id", postId);
+            const { data, error } = await supabase.from("jk-likes").select("*").eq("like_post_id", post.post_id);
             if (error) console.log(error);
             setPostLikes(data);
         } catch (err) {
@@ -47,7 +47,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
     const [comments, setComments] = useState([])
     async function fetchPostComments () {
         try {
-            const { data, error } = await supabase.from("jk-comments").select("*").eq("comment_post_id", postId);
+            const { data, error } = await supabase.from("jk-comments").select("*").eq("comment_post_id", post.post_id);
             if (error) console.log(error);
             setComments(data);
         } catch (err) {
@@ -76,7 +76,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
     async function likePost() {
         newLikeId = uuidv4();
         try {
-            const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: postId });
+            const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: post.post_id });
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
@@ -112,7 +112,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
     async function commentPost () {
         comment_id = uuidv4();
         try {
-            const { error } = await supabase.from("jk-comments").insert({ comment_id: comment_id, comment_post_id: postId, comment_creator_id: userId , comment_text: newComment });
+            const { error } = await supabase.from("jk-comments").insert({ comment_id: comment_id, comment_post_id: post.post_id, comment_creator_id: userId , comment_text: newComment });
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
@@ -142,7 +142,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
 
     async function deletePost () {
         try {
-            const { error } = await supabase.from("jk-posts").delete().eq("post_id", postId);
+            const { error } = await supabase.from("jk-posts").delete().eq("post_id", post.post_id);
             if (error) console.log(error);
             fetchAgain();
         } catch (err) {
@@ -162,7 +162,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
                         <div className="flex flex-row w-full">
                             <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
-                            <p className="text-postDisplayOrUserName font-extralight text-gray-500">, {postCreationDate.split("T")[0]}</p>    
+                            <p className="text-postDisplayOrUserName font-extralight text-gray-500">, {post.post_creation_date.split("T")[0]}</p>    
                         </div>
                     </div>
                     <div className="flex w-1/10 h-full items-center justify-center relative">
@@ -182,7 +182,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
                 </div>
     
                 <div className="flex justify-center w-full sm:h-[500px] h-[250px] " onClick={() => setPostOptions(false)}>
-                    <PostPhoto imageSource={postImageUrl} />
+                    <PostPhoto imageSource={post.post_photo_url} />
                 </div>
     
                 <div className="flex flex-row justify-start h-[50px] w-full py-2 px-1 border-var-2 border-solid border-y-2 ">
@@ -202,9 +202,9 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
                             {postLikes.length == 1 && <p className="mr-1 font-black">{postLikes.length} like</p>}
                             {postLikes.length > 1 && <p className="mr-1 font-black">{postLikes.length} likes</p>}
                         </div>}
-                        {postDescription && <div className="flex flex-row justify-start pb-1">
+                        {(post.post_caption) && <div className="flex flex-row justify-start pb-1">
                             <p className="mr-2 font-bold">{postUserData.display_name}</p>
-                            <p className="font-light">{postDescription}</p>
+                            <p className="font-light">{post.post_caption}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
                             return <Comment commentData={comment} fetchAgain={() => fetchPostComments()} index={index} userId={userId} />
@@ -217,7 +217,7 @@ export default function Post ({ fetchAgain, postCreationDate, postCreatorId, pos
                     </div>
                 </div>
 
-                <CreateOrUpdatePost open={updatePostWindowVisibility} onClose={() => setUpdatePostWindowVisibility(false)} userId={userId} />
+                <CreateOrUpdatePost onClose={() => setUpdatePostWindowVisibility(false)} open={updatePostWindowVisibility} post={post} userId={userId} />
             </div>
         )
     }
