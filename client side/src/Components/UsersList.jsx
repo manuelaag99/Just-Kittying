@@ -9,8 +9,10 @@ export default function ({ usersArray }) {
     // add "add friend" and "delete friend" functionality
     if (!usersArray) {
         return (
-            <div>
-                No users to show.
+            <div className="flex justify-center mt-8">
+                <p className="text-gray-400 text-center">
+                    No users to show.
+                </p>
             </div>
         )
     } else {

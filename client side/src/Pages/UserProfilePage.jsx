@@ -19,15 +19,16 @@ import AddButton from "../Components/Portals/AddButton";
 
 
 export default function UserProfilePage () {
-    const [usersInfo, setUsersInfo] = useState();
-    const [selectedUser, setSelectedUser] = useState();
     const [loading, setLoading] = useState(true);
 
     let user_id = "74rh4889wh36d7g389shd"
+
+    const [selectedUser, setSelectedUser] = useState();
     useEffect(() => {
       async function fetchSelectedUserData () {
         try {
           const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
+          if (error) console.log(error);
           setSelectedUser(data[0]);
         } catch (err) {
           console.log(err)
@@ -36,11 +37,13 @@ export default function UserProfilePage () {
       fetchSelectedUserData();
     }, []);
 
+    const [usersInfo, setUsersInfo] = useState();
     const [userFriends, setUserFriends] = useState();
     useEffect(() => {
         async function fetchAllUsers () {
           try {
             const { data, error } = await supabase.from('jk-users').select("*");
+            if (error) console.log(error);
             setUsersInfo(data);
           } catch (err) {
             console.log(err)
@@ -54,6 +57,7 @@ export default function UserProfilePage () {
         async function fetchUserPosts () {
           try {
             const { data, error } = await supabase.from('jk-posts').select("*").eq("post_creator_id", user_id);
+            if (error) console.log(error);
             setUserPosts(data);
           } catch (err) {
             console.log(err)
@@ -62,8 +66,6 @@ export default function UserProfilePage () {
         fetchUserPosts();
       }, []);
 
-    console.log(userPosts)
-
     useEffect(() => {
         if (usersInfo) {
             if (usersInfo.user_friends) {
@@ -71,8 +73,6 @@ export default function UserProfilePage () {
             }
             setUserFriends(userPrototype.friends)
         }
-        
-        setUserPosts(POSTS.filter((post) => post.post_creator_id === user_id));
     }, [usersInfo])
 
     const friendsTab = "friends"
