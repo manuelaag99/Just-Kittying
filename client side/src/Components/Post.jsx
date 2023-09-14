@@ -173,7 +173,7 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
                             <p className="font-light">{postDescription}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
-                            return <Comment commentData={comment} fetchAgain={() => fetchPostComments()} index={index} />
+                            return <Comment commentData={comment} fetchAgain={() => fetchPostComments()} index={index} userId={userId} />
                         })}
                         
                         {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>

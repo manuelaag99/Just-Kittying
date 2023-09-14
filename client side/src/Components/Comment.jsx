@@ -4,7 +4,7 @@ import { supabase } from "../supabase/client";
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import EditSharpIcon from '@mui/icons-material/EditSharp';
 
-export default function Comment ({ commentData, fetchAgain, index }) {
+export default function Comment ({ commentData, fetchAgain, index, userId }) {
     const [commentUserData, setCommentUserData] = useState();
     async function fetchCommentUserData () {
         try {
@@ -48,12 +48,12 @@ export default function Comment ({ commentData, fetchAgain, index }) {
                     <p className="font-light">{commentData.comment_text}</p>
                 </div>
                 <div className="flex flex-row w-2/10 justify-end">
-                    <button className="ml-1">
-                        <EditSharpIcon className="text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
-                    </button>
-                    <button className="ml-1" onClick={deleteComment}>
-                        <DeleteSharpIcon className="text-black hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
-                    </button>
+                    {(commentData.comment_creator_id === userId) && <button className="ml-1">
+                        <EditSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                    </button>}
+                    {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={deleteComment}>
+                        <DeleteSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                    </button>}
                 </div>
             </div>
         )
