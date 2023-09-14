@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import filterArrayByUniqueByKey from "../functions";
 import RoundPhoto from "./RoundPhoto";
@@ -130,8 +131,10 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
         e.preventDefault();
         commentPost();
         fetchPostComments();
-        setNewComment();
+        setNewComment("");
     }
+
+    const [postOptions, setPostOptions] = useState(false);
 
     if (!postUserData) {
         return (<LoadingPost />)
@@ -141,9 +144,19 @@ export default function Post ({ postCreationDate, postCreatorId, postDescription
     
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
-                    <div className="flex flex-col w-8/10 sm:w-9/10 h-full px-2">
+                    <div className="flex flex-col w-8/10 h-full px-2">
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
                         <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
+                    </div>
+                    <div className="flex w-1/10 h-full items-center justify-center relative">
+                        <button className="flex justify-center items-center aspect-square rounded-circular bg-white hover:bg-gray-300 duration-300" onClick={() => setPostOptions((prevValue) => !prevValue)}>
+                            <MoreVertIcon className="mx-1 hover:text-gray-700" fontSize="medium" />
+                        </button>
+
+                        {postOptions && <div className="h-fit w-[130px] right-0 top-[40px] bg-white shadow-2xl absolute rounded-post ">
+                            <div className="px-4 py-1 hover:bg-gray-300 cursor-pointer duration-300 rounded-post">Edit post</div>
+                            <div className="px-4 py-1 hover:bg-gray-300 cursor-pointer duration-300 rounded-post">Delete post</div>
+                        </div>}
                     </div>
                 </div>
     
