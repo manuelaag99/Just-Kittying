@@ -30,7 +30,6 @@ export default function Comment ({ commentData, fetchAgain, index, userId }) {
         fetchAgain();
     }
 
-    console.log(commentData)
     if (!commentUserData) {
         return (
             <div key={index} className="flex flex-row justify-center pb-1 w-full ">

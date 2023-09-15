@@ -18,8 +18,6 @@ export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, u
         setPostContentState({ ...postContentState, postContentCaption: e.target.value });
     }
 
-    if (post) console.log(post)
-
     useEffect(() => {
         if (post) {
             setPostContentState({ postContentPhoto: post.post_photo_url, postContentCaption: post.post_caption });

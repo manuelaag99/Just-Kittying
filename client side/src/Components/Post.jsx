@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 
-export default function Post ({ fetchAgain, post, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
+export default function Post ({ classnames, fetchAgain, post, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
 
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -150,11 +150,12 @@ export default function Post ({ fetchAgain, post, postCreationDate, postCreatorI
         }
     }
 
+    console.log(classnames)
     if (!postUserData) {
         return (<LoadingPost />)
     } else if (postUserData) {
         return (
-            <div className="w-full h-fit flex flex-col border-var-2 border-2 border-solid mb-6 rounded-post">
+            <div className={"w-full h-fit flex flex-col border-var-2 border-2 border-solid rounded-post " + classnames}>
     
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
