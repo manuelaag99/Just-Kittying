@@ -34,9 +34,9 @@ export default function NavTopContent () {
 
             <div className="flex flex-row sm:w-1/2 w-3/5 sm:h-full h-3/4 my-auto bg-var-1 border-solid border-2 border-var-2 rounded-[20px] ">
                 <input className=" w-full h-full outline-none pl-6 pr-4 rounded-input "/>
-                <button>
-                    <SearchIcon className="mx-1 rounded-circular px-1 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
-                </button>
+                <Link to="/searchresults">
+                    <SearchIcon className="mx-1 rounded-circular mt-0.5 px-1 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
+                </Link>
             </div>
 
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">

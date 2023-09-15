@@ -150,7 +150,6 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         }
     }
 
-    console.log(classnames)
     if (!postUserData) {
         return (<LoadingPost />)
     } else if (postUserData) {
