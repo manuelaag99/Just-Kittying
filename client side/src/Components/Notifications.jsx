@@ -4,6 +4,7 @@ import LoadingSpinner from "./Portals/LoadingSpinner";
 
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Notifications ({ userId }) {
 
@@ -24,8 +25,16 @@ export default function Notifications ({ userId }) {
         fetchUserRequests();
     }, [])
 
-    function acceptRequestHandle () {
-        console.log("yeah")
+    let friendship_id;
+    async function acceptRequestHandle (notification) {
+        console.log(notification)
+        friendship_id = uuidv4();
+        try {
+            const { error } = await supabase.from("jk-friends").insert({ friendship_id: friendship_id, user_1_id: userId, user_2_id: notification.request_sender_id });
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     function denyRequestHandle () {
@@ -52,7 +61,7 @@ export default function Notifications ({ userId }) {
                                             {notification.created_at}
                                         </div>
                                     </div>
-                                    <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={acceptRequestHandle}>
+                                    <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => acceptRequestHandle(notification)}>
                                         <Check fontSize="large" />
                                     </button>
                                     <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={denyRequestHandle}>
