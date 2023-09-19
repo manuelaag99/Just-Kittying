@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -39,20 +40,19 @@ export default function NavTopContent ({ userId }) {
                 </Link>
             </div>
 
-            <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
-                <button className="hidden md:block " >
+            <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto  text-var-3 ">
+                <button className="hidden md:block hover:text-var-3-hovered " >
                     <LightModeIcon className="mx-4" fontSize="large" />
                 </button>
-                <button className="hidden md:block " >
-                    <Link to="/myprofile">
-                        <PersonIcon className="mx-4" fontSize="large" />
-                    </Link>
-                </button>
-                <button className="hidden md:block " >
-                    <Link to="/settings">
-                        <SettingsIcon className="mx-4" fontSize="large" />
-                    </Link>
-                </button>
+                <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to="/myprofile">
+                    <PersonIcon className="mx-4" fontSize="large" />
+                </Link>
+                <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to="/settings">
+                    <SettingsIcon className="mx-4" fontSize="large" />
+                </Link>
+                <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " state={{ user_id: userId }} to="/notifications">
+                    <NotificationsIcon className="mx-4" fontSize="large" />
+                </Link>
                 <button className="mx-4 px-1 block md:hidden rounded-circular hover:bg-var-2 hover:text-var-1 duration-200 " onClick={openMenuHandle} >
                     <MenuOutlinedIcon fontSize="large" />
                 </button>
