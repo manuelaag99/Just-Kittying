@@ -35,6 +35,13 @@ export default function Notifications ({ userId }) {
         } catch (err) {
             console.log(err);
         }
+        try {
+            const { error } = await supabase.from("jk-friend-requests").update({ request_status: "accepted" }).eq("request_id", notification.request_id);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        fetchUserRequests();
     }
 
     function denyRequestHandle () {
@@ -47,7 +54,7 @@ export default function Notifications ({ userId }) {
         )
     } else {
         return (
-            <div className="w-full bg-white mt-20">
+            <div className="w-full sm:w-6/10 bg-white ">
                 {notifications && notifications.map((notification, index) => {
                     if (notification.request_status === "pending") {
                         return (

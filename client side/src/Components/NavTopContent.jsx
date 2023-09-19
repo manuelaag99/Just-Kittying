@@ -26,17 +26,17 @@ export default function NavTopContent ({ userId }) {
             <Menu onClose={closeMenuHandle} open={showMenu} userId={userId} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
                 <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/" >
-                    <div className="flex h-full w-fit sm:w-2/10 items-center">
+                    <div className="flex h-full w-fit sm:w-3/10 md:w-fit items-center">
                         <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
                     </div>
-                    <p className="sm:w-fit hidden md:block sm:pl-2">Just Kittying!</p>
+                    <p className="sm:w-fit hidden md:block sm:pl-2 hover:text-var-3-hovered">Just Kittying!</p>
                 </Link>
             </div>
 
-            <div className="flex flex-row sm:w-1/2 w-3/5 sm:h-full h-3/4 my-auto bg-var-1 border-solid border-2 border-var-2 rounded-[20px] ">
+            <div className="flex flex-row sm:w-1/3 w-3/5 sm:h-full h-3/4 my-auto bg-var-1 border-solid border-2 border-var-2 rounded-[20px] ">
                 <input className=" w-full h-full outline-none pl-6 pr-4 rounded-input "/>
-                <Link to="/searchresults">
-                    <SearchIcon className="mx-1 rounded-circular mt-0.5 px-1 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
+                <Link className="flex justify-center items-center" to="/searchresults">
+                    <SearchIcon className="rounded-circular mx-2 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
                 </Link>
             </div>
 
