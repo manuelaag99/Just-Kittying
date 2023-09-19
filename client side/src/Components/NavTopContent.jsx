@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 import Menu from "./Portals/Menu";
 
-export default function NavTopContent () {
+export default function NavTopContent ({ userId }) {
     const [ showMenu, setShowMenu ] = useState(false);
     function closeMenuHandle () {
         setShowMenu(false)
@@ -22,7 +22,7 @@ export default function NavTopContent () {
 
     return (
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
-            <Menu onClose={closeMenuHandle} open={showMenu} />
+            <Menu onClose={closeMenuHandle} open={showMenu} userId={userId} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
                 <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/" >
                     <div className="flex h-full w-fit sm:w-2/10 items-center">

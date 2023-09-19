@@ -40,7 +40,7 @@ export default function HomePage ({ }) {
 
     return (
         <div className="bg-var-1 w-full h-full">
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />}/>
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>}
             <TimeLine userId={user_id} />
         </div>

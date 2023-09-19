@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 
 import HomeIcon from '@mui/icons-material/Home';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import OutputIcon from '@mui/icons-material/Output';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-export default function Menu({ open, onClose }) {
+export default function Menu({ open, onClose, userId }) {
     const menu = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
@@ -31,6 +32,11 @@ export default function Menu({ open, onClose }) {
                     <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/myprofile">
                         <p className="w-fit pr-4">My profile</p>
                         <PersonIcon className="mx-4" fontSize="large" />
+                    </Link>
+
+                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" state={{ user_id: userId }} to="/notifications">
+                        <p className="w-fit pr-4">Notifications</p>
+                        <NotificationsIcon className="mx-4" fontSize="large" />
                     </Link>
 
                     <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/settings" >

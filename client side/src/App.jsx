@@ -7,6 +7,7 @@ import ProfileSettingsPage from "./Pages/ProfileSettingsPage";
 import PostOrPostsPage from "./Pages/PostOrPostsPage";
 import UserProfilePage from "./Pages/UserProfilePage";
 import SearchResultsPage from "./Pages/SearchResultsPage";
+import NotificationsPage from "./Pages/NotificationsPage";
 
 
 export default function App () {
@@ -53,6 +54,8 @@ export default function App () {
         <Route path="/settings" element={<ProfileSettingsPage />} />
         <Route path="/post/:postid" element={<PostOrPostsPage />} />
         <Route path="/searchresults" element={<SearchResultsPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+
         
       </Routes>
     </Router>
