@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
 import LoadingSpinner from "./Portals/LoadingSpinner";
 
-import { v4 as uuidv4 } from 'uuid';
 import Notification from "./Notification";
 
 export default function Notifications ({ userId }) {
 
+    console.log(userId)
     const [notifications, setNotifications] = useState();
 
     async function fetchUserRequests() {
@@ -30,7 +30,7 @@ export default function Notifications ({ userId }) {
         )
     } else {
         return (
-            <div className="flex justify-center mx-auto w-full sm:w-6/10 bg-white ">
+            <div className="flex justify-center mx-auto w-full sm:w-6/10 bg-white sm:m-top-margin-dsk m-top-margin-mob">
                 {notifications && notifications.map((notification, index) => {
                     if (notification.request_status === "pending") {
                         return (<Notification index={index} notification={notification} />)
