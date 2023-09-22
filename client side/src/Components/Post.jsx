@@ -91,6 +91,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         fetchPostLikes();
     }
 
+    const [postCommentButtonText, setPostCommentButtonText] = useState("Post");
     const [newComment, setNewComment] = useState("");
     function postCommentHandle (e) {
         setNewComment(e.target.value);
@@ -98,24 +99,43 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
 
     let comment_id;
     async function commentPost () {
-        comment_id = uuidv4();
-        try {
-            const { error } = await supabase.from("jk-comments").insert({ comment_id: comment_id, comment_post_id: post.post_id, comment_creator_id: userId , comment_text: newComment });
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err);
-        }
+        if (postCommentButtonText === "Post") {
+            comment_id = uuidv4();
+            try {
+                const { error } = await supabase.from("jk-comments").insert({ comment_id: comment_id, comment_post_id: post.post_id, comment_creator_id: userId , comment_text: newComment });
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
+        } else if (postCommentButtonText === "Update") {
+            try {
+                const { error } = await supabase.from("jk-comments").update({ comment_text: newComment }).eq("comment_id", editedCommentId);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
+        }        
         fetchPostComments();
     }
 
     const [showInput, setShowInput] = useState(false)
     const inputRef = useRef(null)
     function commentButtonHandle () {
+        setPostCommentButtonText("Post")
         setShowInput(true)
     }
     useEffect(() => {
         if (showInput) inputRef.current.focus();
     }, [showInput])
+
+    const [editedCommentId, setEditedCommentId] = useState();
+    function editCommentHandle (comment) {
+        setPostCommentButtonText("Update");
+        setEditedCommentId(comment.comment_id);
+        console.log(comment);
+        setNewComment(comment.comment_text);
+        setShowInput(true);
+    }
 
     function submitCommentHandle (e) {
         e.preventDefault();
@@ -197,12 +217,12 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
                             <p className="font-light">{post.post_caption}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
-                            return <Comment commentData={comment} fetchAgain={() => fetchPostComments()} index={index} userId={userId} />
+                            return <Comment commentData={comment} editSpecificComment={() => editCommentHandle(comment)} fetchAgain={() => fetchPostComments()} index={index} userId={userId} />
                         })}
                         
                         {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
                             <input className="outline-none sm:w-9/10 w-8/10 h-fit" onChange={postCommentHandle} placeholder="Write your comment..." ref={inputRef} type="text" value={newComment} />
-                            <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">Post</button>
+                            <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">{postCommentButtonText}</button>
                         </form>}
                     </div>
                 </div>
