@@ -28,11 +28,6 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     }
 
     const [favorite, setFavorite] = useState(false)
-    function favoriteButtonHandle () {
-        setFavorite(prevValue => !prevValue)
-        fetchPostLikes();
-    }
-
     const [postLikes, setPostLikes] = useState();
     async function fetchPostLikes () {
         try {
@@ -62,15 +57,15 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         fetchPostComments();
     }, [])
 
-    // useEffect(() => {
-    //     if (postLikes) {
-    //         postLikes.map((like) => {
-    //             if (like.like_creator_id === userId) {
-    //                 setFavorite(true);
-    //             }
-    //         })
-    //     }
-    // }, [postLikes])
+    useEffect(() => {
+        if (postLikes) {
+            postLikes.map((like) => {
+                if (like.like_creator_id === userId) {
+                    setFavorite(true);
+                }
+            })
+        }
+    }, [postLikes])
 
     let newLikeId;
     async function likePost() {
@@ -78,6 +73,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         try {
             const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: post.post_id });
             if (error) console.log(error);
+            setFavorite(true);
         } catch (err) {
             console.log(err);
         }
@@ -88,22 +84,14 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         try {
             const { error } = await supabase.from("jk-likes").delete().eq("like_creator_id", userId);
             if (error) console.log(error);
+            setFavorite(false);
         } catch (err) {
             console.log(err);
         }
         fetchPostLikes();
     }
 
-    useEffect(() => {
-        if (favorite) {
-            likePost();
-        } else if (!favorite) {
-            unlikePost();
-        }
-        fetchPostLikes();
-    }, [favorite])
-
-    const [newComment, setNewComment] = useState();
+    const [newComment, setNewComment] = useState("");
     function postCommentHandle (e) {
         setNewComment(e.target.value);
     }
@@ -117,6 +105,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         } catch (err) {
             console.log(err);
         }
+        fetchPostComments();
     }
 
     const [showInput, setShowInput] = useState(false)
@@ -136,9 +125,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     }
 
     const [postOptions, setPostOptions] = useState(false);
-    const [updatePostWindowVisibility, setUpdatePostWindowVisibility] = useState(false);
-
-    
+    const [updatePostWindowVisibility, setUpdatePostWindowVisibility] = useState(false);    
 
     async function deletePost () {
         try {
@@ -187,9 +174,12 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     
                 <div className="flex flex-row justify-start h-[50px] w-full py-2 px-1 border-var-2 border-solid border-y-2 ">
                     <div className="flex flex-row mr-2">
-                        <button onClick={favoriteButtonHandle}>
-                            {favorite ? <FavoriteIcon className="mx-1" fontSize="large" /> : <FavoriteBorderIcon className="mx-1" fontSize="large" />}
-                        </button>
+                        {favorite && <button onClick={unlikePost}>
+                            <FavoriteIcon className="mx-1" fontSize="large" />
+                        </button>}
+                        {(favorite === false) && <button onClick={likePost}>
+                            <FavoriteBorderIcon className="mx-1" fontSize="large" />
+                        </button>}
                         <button onClick={commentButtonHandle}>
                             <ChatBubbleOutlineOutlinedIcon className="mx-1" fontSize="large" />
                         </button>
