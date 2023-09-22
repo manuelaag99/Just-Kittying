@@ -31,11 +31,16 @@ export default function Notifications ({ userId }) {
     } else {
         return (
             <div className="flex justify-center mx-auto w-full sm:w-6/10 bg-white sm:m-top-margin-dsk m-top-margin-mob">
-                {notifications && notifications.map((notification, index) => {
+                {notifications && (notifications.length > 0) && notifications.map((notification, index) => {
                     if (notification.request_status === "pending") {
                         return (<Notification index={index} notification={notification} />)
                     }
                 })}
+                {notifications && (notifications.length === 0) && <div className="flex justify-center mt-4 px-5">
+                    <p className="text-center text-black">
+                        No notifications.
+                    </p>
+                </div>}
             </div>
         )
     }

@@ -67,10 +67,10 @@ export default function Notification ({ index, notification }) {
                 <div className="flex flex-row w-full">
                     <div className="flex flex-col w-7/10">
                         <div className="flex w-full">
-                            <p>{userInfo.display_name} wants to add you as a friend. {notification.request_message &&  '"' + notification.request_message + '"'}</p>
+                            {notification && <p>{userInfo.display_name} wants to add you as a friend. {notification.request_message &&  '"' + notification.request_message + '"'}</p>}
                         </div>
                         <div className="text-gray-500 w-full font-light">
-                            {notification.created_at}
+                            {notification && notification.created_at}
                         </div>
                     </div>
                     <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => acceptRequestHandle(notification)}>
