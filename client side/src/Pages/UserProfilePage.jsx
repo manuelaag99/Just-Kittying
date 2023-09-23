@@ -24,56 +24,73 @@ export default function UserProfilePage () {
     let user_id = "74rh4889wh36d7g389shd"
 
     const [selectedUser, setSelectedUser] = useState();
+    const [usersInfo, setUsersInfo] = useState();
+    const [userPosts, setUserPosts] = useState();
+
+    async function fetchSelectedUserData () {
+		try {
+			const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
+			if (error) console.log(error);
+			setSelectedUser(data[0]);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    async function fetchAllUsers () {
+		try {
+			const { data, error } = await supabase.from('jk-users').select("*");
+			if (error) console.log(error);
+			setUsersInfo(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    async function fetchUserPosts () {
+		try {
+			const { data, error } = await supabase.from('jk-posts').select("*").eq("post_creator_id", user_id);
+			if (error) console.log(error);
+			setUserPosts(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    const [userFriends, setUserFriends] = useState();
+    async function fetchFriends () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", user_id);
+			if (error) console.log(error);
+			setUserFriends({ ...userFriends, data });
+		} catch (err) {
+			console.log(err);
+		}
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", user_id);
+			if (error) console.log(error);
+			setUserFriends({ ...userFriends, data });
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
     useEffect(() => {
-      async function fetchSelectedUserData () {
-        try {
-          const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
-          if (error) console.log(error);
-          setSelectedUser(data[0]);
-        } catch (err) {
-          console.log(err)
-        }
-      }
-      fetchSelectedUserData();
+		fetchAllUsers();
+		fetchUserPosts();
+		fetchSelectedUserData();
+		fetchFriends();
     }, []);
 
-    const [usersInfo, setUsersInfo] = useState();
-    const [userFriends, setUserFriends] = useState();
-    useEffect(() => {
-        async function fetchAllUsers () {
-          try {
-            const { data, error } = await supabase.from('jk-users').select("*");
-            if (error) console.log(error);
-            setUsersInfo(data);
-          } catch (err) {
-            console.log(err)
-          }
-        }
-        fetchAllUsers();
-      }, []);
 
-      const [userPosts, setUserPosts] = useState();
-      useEffect(() => {
-        async function fetchUserPosts () {
-          try {
-            const { data, error } = await supabase.from('jk-posts').select("*").eq("post_creator_id", user_id);
-            if (error) console.log(error);
-            setUserPosts(data);
-          } catch (err) {
-            console.log(err)
-          }
-        }
-        fetchUserPosts();
-      }, []);
-
-    useEffect(() => {
-        if (usersInfo) {
-            if (usersInfo.user_friends) {
-                setUserFriends(usersInfo.filter((friend) => selectedUser.user_friends.includes(friend.user_id)));
-            }
-            setUserFriends(userPrototype.friends)
-        }
-    }, [usersInfo])
+    // useEffect(() => {
+    //     if (usersInfo) {
+    //         if (usersInfo.user_friends) {
+    //             setUserFriends(usersInfo.filter((friend) => selectedUser.user_friends.includes(friend.user_id)));
+    //         }
+    //         setUserFriends(userPrototype.friends)
+    //     }
+    // }, [usersInfo])
 
     const friendsTab = "friends"
     const photosTab = "photos"
@@ -134,7 +151,7 @@ export default function UserProfilePage () {
                         </div>
                         
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={user_id} />}
-                        {(tabsSection === friendsTab) && <UsersList usersArray={userFriends} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends.data} />}
 
                     </div>
                 </div>
