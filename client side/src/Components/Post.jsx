@@ -39,7 +39,21 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         }
     }
 
-    const [comments, setComments] = useState([])
+    // function convertToDateObject(isoDateString) {
+    //     return new Date(isoDateString);
+    // }
+
+    const [comments, setComments] = useState();
+    const [commentsToDisplay, setCommentsToDisplay] = useState();
+
+    // function sortDataByDate() {
+    //     setComments(prevData => [...prevData].sort((a, b) => {
+    //         const dateA = convertToDateObject(a.comment_date);
+    //         const dateB = convertToDateObject(b.comment_date);
+    //         return dateA - dateB;
+    //     }));
+    // }
+    
     async function fetchPostComments () {
         try {
             const { data, error } = await supabase.from("jk-comments").select("*").eq("comment_post_id", post.post_id);
@@ -50,11 +64,18 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         }
     }
 
+    console.log(comments)
+    console.log(commentsToDisplay)
     useEffect(() => {
-        // setComments(filterArrayByUniqueByKey(postComments, "comment_id"))
         fetchPostUserData();
         fetchPostLikes();
         fetchPostComments();
+        if (comments) {
+            // setComments(prevData => [...prevData].sort((a, b) => a.comment_date.split("T")[1] - b.comment_date.split("T")[1]));
+            setCommentsToDisplay(comments.map((comment) => {
+                return comment.dateObject = comment.comment_date.split("T")[1]
+            }))
+        }
     }, [])
 
     useEffect(() => {
@@ -96,8 +117,6 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     function postCommentHandle (e) {
         setNewComment(e.target.value);
     }
-
-    const commentdate = new Date(Date.now()).toISOString();
     
     let comment_id;
     let comment_date;
@@ -120,6 +139,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
             }
         }        
         fetchPostComments();
+        setPostCommentButtonText("Post");
     }
 
     const [showInput, setShowInput] = useState(false)
