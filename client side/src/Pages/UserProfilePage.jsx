@@ -125,9 +125,9 @@ export default function UserProfilePage () {
                                 <div className="flex flex-col w-7/10 pr-8">
                                     <div className="flex flex-row justify-start font-bold text-profileDisplayName">
                                         <p>{selectedUser.display_name}</p>
-                                        <button className="ml-3" onClick={addPersonHandle}>
+                                        {(selectedUser.user_id !== user_id) && <button className="ml-3" onClick={addPersonHandle}>
                                             <PersonAddAlt1Icon className="text-black hover:text-var-2 duration-100" fontSize="medium" />
-                                        </button>
+                                        </button>}
                                     </div>
                                     
                                     <div className="font-semibold opacity-30 text-profileOtherText">{selectedUser.username}</div>
@@ -136,7 +136,7 @@ export default function UserProfilePage () {
                             </div>
                             <div className="flex flex-row mt-16 sm:mt-24">
                                 <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Posts ({userPosts ? userPosts.length : "0"})</button>
-                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.length : "0"})</button>
+                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.data.length : "0"})</button>
                             </div>
                             <div className="flex w-full">
                                 {(tabsSection === photosTab) && <div className="flex flex-row w-full">

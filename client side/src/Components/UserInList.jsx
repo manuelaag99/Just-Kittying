@@ -4,7 +4,6 @@ import RoundPhoto from "./RoundPhoto";
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import LoadingSpinner from "./Portals/LoadingSpinner";
 
 export default function UserInList ({ index, userId }) {
     console.log(userId)
