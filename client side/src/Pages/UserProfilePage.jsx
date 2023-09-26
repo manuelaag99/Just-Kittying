@@ -151,7 +151,7 @@ export default function UserProfilePage () {
                         </div>
                         
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={user_id} />}
-                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends.data} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends.data} userId={user_id} />}
 
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import UserInList from "./UserInList";
 
-export default function ({ selectedUsersArray }) {
+export default function ({ selectedUsersArray, userId }) {
     if (!selectedUsersArray) {
         return (
             <div className="flex justify-center mt-8">
@@ -15,7 +15,7 @@ export default function ({ selectedUsersArray }) {
         return (
             <div className="flex flex-col justify-center w-full ">
                 {selectedUsersArray && selectedUsersArray.map((user, index) => {
-                    return <UserInList index={index} userId={user} />
+                    return <UserInList index={index} userId={userId} userInListId={user} />
                 })}
             </div>
         )

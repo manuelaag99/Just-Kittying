@@ -5,13 +5,13 @@ import RoundPhoto from "./RoundPhoto";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
-export default function UserInList ({ index, userId }) {
+export default function UserInList ({ index, userId, userInListId }) {
     console.log(userId)
     const [userInfo, setUserInfo] = useState();
 
     async function fetchUserInfo () {
         try {
-            const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", userId.user_1_id);
+            const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", userInListId.user_1_id);
             if (error) console.log(error);
             setUserInfo(data[0]);
         } catch (err) {
@@ -45,12 +45,12 @@ export default function UserInList ({ index, userId }) {
                         <div className="opacity-30" >{userInfo.username}</div>
                     </div>
                 </div>
-                <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
+                {(userInfo.user_id !== userId) && <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
                     <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
-                </div>
-                <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
+                </div>}
+                {(userInfo.user_id !== userId) && <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
                     <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
-                </div>
+                </div>}
             </div>
         )
     }
