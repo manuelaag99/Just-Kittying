@@ -9,12 +9,11 @@ import UserProfilePage from "./Pages/UserProfilePage";
 import SearchResultsPage from "./Pages/SearchResultsPage";
 import NotificationsPage from "./Pages/NotificationsPage";
 
-
 export default function App () {
-  const [ token, setToken ] = useState(null);
-  const [ tokenExpiration, setTokenExpiration ] = useState(null);
-  const [ userId, setUserId ] = useState(null);
-  
+	const [ token, setToken ] = useState(null);
+	const [ tokenExpiration, setTokenExpiration ] = useState(null);
+	const [ userId, setUserId ] = useState(null);
+	
   // const logIn = useCallback((uId, token, expirationDate) => {
   //   setUserId(uId);
   //   setToken((token));
@@ -46,18 +45,18 @@ export default function App () {
   //   }
   // }, [logIn]);
 
-  return <>
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/myprofile" element={<UserProfilePage />} />
-        <Route path="/settings" element={<ProfileSettingsPage />} />
-        <Route path="/post/:postid" element={<PostOrPostsPage />} />
-        <Route path="/searchresults" element={<SearchResultsPage />} />
-        <Route path="/notifications" element={<NotificationsPage />} />
+  	return <>
+		<Router>
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+				<Route path="/myprofile" element={<UserProfilePage />} />
+				<Route path="/settings" element={<ProfileSettingsPage />} />
+				<Route path="/post/:postid" element={<PostOrPostsPage />} />
+				<Route path="/searchresults" element={<SearchResultsPage />} />
+				<Route path="/notifications" element={<NotificationsPage />} />
 
-        
-      </Routes>
-    </Router>
-  </>
+				
+			</Routes>
+		</Router>
+  	</>
 };

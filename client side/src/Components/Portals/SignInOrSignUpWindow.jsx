@@ -8,6 +8,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 
 import InputForForm from "../InputForForm";
 import { useForm } from "../custom-hooks";
+import { supabase } from "../../supabase/client";
 
 export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, switchToSignUp, textForSignInOrSignUpButton }) {
     const navigate = useNavigate();
@@ -36,12 +37,60 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             }
         }
     }, [stateOfForm])
+
+    async function signUpUser () {
+        try {                     
+            const { data, error } = await supabase.auth.signUp(
+                {
+                    email: stateOfForm.inputs.email.value,
+                    password: stateOfForm.inputs.password.value,
+                    options: {
+                        emailRedirectTo: 'https://localhost:5173/'
+                    }
+                }
+            )
+            if (error) {
+                console.log(error)
+            } else {
+                try {
+                    const { userdata, error } = await supabase.from("jk-users").insert({ user_id: data.user.id, username: stateOfForm.inputs.username.value, email: stateOfForm.inputs.username.value, feed_preference: "public", account_privacy: "all", password: stateOfForm.inputs.password.value, creation_date: new Date().toISOString(), display_name: "" })
+                    if (error) console.log(error);
+                    navigate("/settings");
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+            console.log(data)
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function signInUser () {
+        try {                     
+            const { data, error } = await supabase.auth.signInWithPassword(
+                {
+                    email: stateOfForm.inputs.email.value,
+                    password: stateOfForm.inputs.password.value
+                }
+            )
+            if (error) console.log(error);
+            console.log(data)
+            navigate("/settings")
+        } catch (err) {
+            console.log(err);
+        }
+    }
     
     function signInOrSignUpHandle () {
         if (textForSignInOrSignUpButton === "Sign up") {
-            console.log(uuidv4())
-            navigate("/settings")
+            if (stateOfForm.inputs.password.value === stateOfForm.inputs.confirmPassword.value) {
+                console.log(uuidv4())
+                signUpUser();
+                // navigate("/settings")
+            }
         } else if (textForSignInOrSignUpButton === "Sign in") {
+            signInUser();
             navigate("/")
         }
     }
