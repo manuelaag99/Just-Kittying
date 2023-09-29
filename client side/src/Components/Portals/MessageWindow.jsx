@@ -1,4 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
+import { createPortal } from 'react-dom';
 
 export default function MessageWindow({ onClose, open, textForMessage }) {
 
@@ -12,10 +13,8 @@ export default function MessageWindow({ onClose, open, textForMessage }) {
                         <CloseIcon />
                     </button>
                 </div>
-                <div className="py-5 px-5">
-                    <div>
-                        <p>ijfreiufneofjeuinfeufneinYeah</p>
-                    </div>
+                <div className="pt-3 pb-6 px-6">
+                    <p className='text-center'>{textForMessage}</p>
                 </div>
             </div>
         </div>

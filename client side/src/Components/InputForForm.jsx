@@ -43,8 +43,8 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
                 </div>}
 
                 {isPasswordField && <button onClick={changeVisibilityHandle} className="w-15 sm:w-1/10 ">
-                    {!passwordVisibility && <VisibilityIcon className="hover:bg-var-2 duration-200 rounded-circular" />}
-                    {passwordVisibility && <VisibilityOffIcon className="hover:bg-var-2 duration-200 rounded-circular" />}
+                    {!passwordVisibility && <VisibilityIcon className="hover:bg-var-2 duration-200 rounded-circular" fontSize="small" />}
+                    {passwordVisibility && <VisibilityOffIcon className="hover:bg-var-2 duration-200 rounded-circular" fontSize="small" />}
                 </button>}
 
                 {isSelect && <select className={inputClassnames} name={inputName} id={inputName} onChange={inputChangeHandle} value={value} >
