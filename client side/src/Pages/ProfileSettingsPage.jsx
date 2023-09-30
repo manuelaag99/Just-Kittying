@@ -13,6 +13,7 @@ import RoundPhoto from "../Components/RoundPhoto";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import InputForForm from "../Components/InputForForm";
 import { formReducer } from "../reducers";
+import MessageWindow from "../Components/Portals/MessageWindow";
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
@@ -52,10 +53,18 @@ export default function ProfileSettingsPage () {
 
     const [stateOfForm, formHandler] = useForm(initialFormState);
 
+    const [textForMessageWindow, setTextForMessageWindow] = useState("");
+    const [isTextMessageAnError, setIsTextMessageAnError] = useState();
+    const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
+
     function DoneButtonHandle () {
         if (stateOfForm.isFormValid) {
             updateUserInfo();
             navigate("/")
+        } else {
+            setTextForMessageWindow("Check the inputs.");
+            setIsTextMessageAnError(true);
+            setIsMessageWindowOpen(true);
         }
     }
 
@@ -64,6 +73,7 @@ export default function ProfileSettingsPage () {
     } else {
         return (
             <div className="flex flex-col justify-center items-center w-full h-fit">
+                <MessageWindow isErrorMessage={isTextMessageAnError} onClose={() => setIsMessageWindowOpen(false)} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <div className="flex flex-row justify-between w-full h-fit bg-var-1 drop-shadow-navbar z-10">
                     <Link className="flex flex-row items-center w-fit pl-1 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100" onClick={DoneButtonHandle} to="/">
                         <KeyboardArrowLeftIcon />

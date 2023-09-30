@@ -19,13 +19,11 @@ export default function NotificationsPage({}) {
         try {
             const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
             if (error) console.log(error);
-            console.log(data)
             if (!error) {
                 if (data[0].display_name === "") {
                     setDoesUserHaveDisplayName(false);
                     setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
                     setIsMessageWindowOpen(true);
-                    console.log("no display name");
                 } else {
                     setDoesUserHaveDisplayName(true);
                 }

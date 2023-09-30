@@ -65,7 +65,6 @@ export default function Post ({ classnames, fetchAgain, post, userId }) {
         }
     }
 
-    console.log(comments)
     useEffect(() => {
         fetchPostUserData();
         fetchPostLikes();
