@@ -8,7 +8,7 @@ import UserProfile from "./UserProfilePage";
 import { supabase } from "../supabase/client";
 
 export default function HomePage ({ }) {
-    let user_id = "74rh4889wh36d7g389shd"
+    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
     const userIsLoggedIn = false; //remove 
 
     // const [users, setUsers] = useState();

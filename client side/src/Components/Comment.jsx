@@ -33,13 +33,14 @@ export default function Comment ({ commentData, editSpecificComment, fetchAgain,
         }
         fetchAgain();
     }
+    console.log(commentData)
 
     if (!commentUserData) {
         return (
             <div key={index} className="flex flex-row justify-center pb-1 w-full ">
                 <div className="flex flex-row justify-start w-full pr-2">
-                    <div className="bg-gray-300 rounded-post w-3/10 mr-2"></div>
-                    <div className="bg-gray-300 rounded-post w-6/10 mr-2"></div>
+                    <div className="bg-gray-500 h-3 rounded-post w-2/10 mr-2 my-1"></div>
+                    <div className="bg-gray-300 h-3 rounded-post w-6/10 mr-2 my-1"></div>
                 </div>
             </div>
         ) 

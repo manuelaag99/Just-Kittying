@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 
-export default function Post ({ classnames, fetchAgain, post, postCreationDate, postCreatorId, postDescription, postId, postImageUrl, userId }) {
+export default function Post ({ classnames, fetchAgain, post, userId }) {
 
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -65,16 +65,15 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     }
 
     console.log(comments)
-    console.log(commentsToDisplay)
     useEffect(() => {
         fetchPostUserData();
         fetchPostLikes();
         fetchPostComments();
         if (comments) {
             // setComments(prevData => [...prevData].sort((a, b) => a.comment_date.split("T")[1] - b.comment_date.split("T")[1]));
-            setCommentsToDisplay(comments.map((comment) => {
-                return comment.dateObject = comment.comment_date.split("T")[1]
-            }))
+            // setCommentsToDisplay(comments.map((comment) => {
+            //     return comment.dateObject = comment.comment_date.split("T")[1]
+            // }))
         }
     }, [])
 
@@ -153,16 +152,18 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
     }, [showInput])
 
     function removeCommentBeingEdited(array, idToRemove) {
-        return array.filter(item => item.id !== idToRemove);
+        return array.filter(item => item.comment_id !== idToRemove);
     }
 
     const [editedCommentId, setEditedCommentId] = useState();
+    let commentsWithoutEditedComment;
     function editCommentHandle (comment) {
         setPostCommentButtonText("Update");
         setEditedCommentId(comment.comment_id);
-        console.log(comment);
-        const commentsWithoutEditedComment = removeCommentBeingEdited(comments, comment.comment_id);
-        setComments(commentsWithoutEditedComment)
+        commentsWithoutEditedComment = removeCommentBeingEdited(comments, comment.comment_id);
+        setComments(commentsWithoutEditedComment);
+        console.log(commentsWithoutEditedComment);
+        console.log(comments);
         setNewComment(comment.comment_text);
         setShowInput(true);;
     }
@@ -191,7 +192,7 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         return (<LoadingPost />)
     } else if (postUserData) {
         return (
-            <div className={"w-full h-fit flex flex-col border-var-2 border-2 border-solid rounded-post " + classnames}>
+            <div className={"w-full h-fit flex flex-col border-var-2 border-2 border-solid rounded-post my-10 " + classnames}>
     
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
