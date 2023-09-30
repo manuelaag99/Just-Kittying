@@ -6,7 +6,6 @@ export default function SearchBar ({ sendSearchQuery, searchQuery }) {
     const [searchQueryState, setSearchQueryState] = useState();
 
     function inputChangeHandle (event) {
-        console.log(event.target.value);
         setSearchQueryState(event.target.value);
     }
 

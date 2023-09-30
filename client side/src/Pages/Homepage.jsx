@@ -4,7 +4,6 @@ import NavigationBar from "../Components/NavigationBar";
 import NavBottomContent from "../Components/NavBottomContent";
 import NavTopContent from "../Components/NavTopContent";
 import TimeLine from "../Components/TimeLine";
-import UserProfile from "./UserProfilePage";
 import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +36,11 @@ export default function HomePage ({ }) {
         }
     }
 
+    useEffect(() => {
+        checkIfUserHasDisplayName();
+    })
+
+
     function closeMessageWindow () {
         if (!doesUserHaveDisplayName) {
             navigate("/settings");
@@ -44,43 +48,65 @@ export default function HomePage ({ }) {
         setIsMessageWindowOpen(false);
     }
 
+    const [users, setUsers] = useState();
+    async function fetchUsers() {
+        try {
+            const { data, error } = await supabase.from("jk-users").select("*");
+            if (error) console.log(error);
+            setUsers(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const [posts, setPosts] = useState();
+    async function fetchPosts() {
+        try {
+            const { data, error } = await supabase.from("jk-posts").select("*");
+            if (error) console.log(error);
+            setPosts(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
-        checkIfUserHasDisplayName();
-    })
+        fetchUsers();
+        fetchPosts();
+    }, [])
 
-    // const [users, setUsers] = useState();
-    // async function fetchUsers() {
-    //     try {
-    //         const { data, error } = await supabase.from("jk-users").select("*");
-    //         if (error) console.log(error);
-    //         setUsers(data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
-
-    // const [timelinePosts, setTimelinePosts] = useState();
-    // async function fetchPosts() {
-    //     try {
-    //         const { data, error } = await supabase.from("jk-posts").select("*");
-    //         if (error) console.log(error);
-    //         setTimelinePosts(data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     fetchUsers();
-    //     fetchPosts();
-    // }, [])
-
+    
     const [homePageContent, setHomePageContent] = useState("timeline");
     const [searchQuery, setSearchQuery] = useState();
 
+    const [searchResultsInUsers, setSearchResultsInUsers] = useState();
+    const [searchResultsInPosts, setSearchResultsInPosts] = useState();
+
+    console.log(posts)
     function sendSearchQueryToSearchResultsPage (searchQueryState) {
         setSearchQuery(searchQueryState);
-        setHomePageContent("search")
+        setHomePageContent("search");
+        const filteredUsers = users.filter((user) => {
+            console.log(user.username)
+            if (user.username.includes(searchQuery)) {
+                return user;
+            } else if (user.display_name.includes(searchQuery)) {
+                return user;
+            } else if (searchQuery.includes(user.username)) {
+                return user;
+            } else if (searchQuery.includes(user.display_name)) {
+                return user;
+            }
+        })
+        setSearchResultsInUsers(filteredUsers);
+        const filteredPosts = posts.filter((post) => {
+            if (post.post_caption.includes(searchQuery)) {
+                return post;
+            } else if (searchQuery.includes(post.post_caption)) {
+                return post;
+            }
+        })
+        setSearchResultsInPosts(filteredPosts);
     }
 
     return (
@@ -88,8 +114,8 @@ export default function HomePage ({ }) {
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />}/>
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>}
-            {homePageContent === "timeline" && <TimeLine userId={user_id} />}
-            {homePageContent === "search" && <SearchResultsPage searchQuery={searchQuery} userId={user_id} />}
+            {homePageContent === "timeline" && <TimeLine posts={posts} users={users} userId={user_id} />}
+            {homePageContent === "search" && <SearchResultsPage searchQuery={searchQuery} searchResultsInPosts={searchResultsInPosts} searchResultsInUsers={searchResultsInUsers} userId={user_id} />}
         </div>
     )
 };

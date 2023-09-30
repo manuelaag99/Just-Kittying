@@ -6,8 +6,11 @@ import LoadingSpinner from "./Portals/LoadingSpinner";
 export default function PostsGrid ({ postsArray, userId }) {
     const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
 
+    console.log(postsArray)
     if (!postsArray) {
         return (<LoadingSpinner open={true} />)
+    } else if (postsArray.length == 0) {
+        <p>There are no posts to show.</p>
     } else {
         return (
             <div>
