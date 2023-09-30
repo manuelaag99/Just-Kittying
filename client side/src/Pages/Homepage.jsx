@@ -8,6 +8,7 @@ import UserProfile from "./UserProfilePage";
 import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
 import { useNavigate } from "react-router-dom";
+import SearchResultsPage from "./SearchResultsPage";
 
 export default function HomePage ({ }) {
     const navigate = useNavigate();
@@ -74,12 +75,21 @@ export default function HomePage ({ }) {
     //     fetchPosts();
     // }, [])
 
+    const [homePageContent, setHomePageContent] = useState("timeline");
+    const [searchQuery, setSearchQuery] = useState();
+
+    function sendSearchQueryToSearchResultsPage (searchQueryState) {
+        setSearchQuery(searchQueryState);
+        setHomePageContent("search")
+    }
+
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />}/>
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />}/>
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />}/>}
-            <TimeLine userId={user_id} />
+            {homePageContent === "timeline" && <TimeLine userId={user_id} />}
+            {homePageContent === "search" && <SearchResultsPage searchQuery={searchQuery} userId={user_id} />}
         </div>
     )
 };

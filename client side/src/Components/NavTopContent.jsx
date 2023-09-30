@@ -9,8 +9,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { Link } from "react-router-dom";
 
 import Menu from "./Portals/Menu";
+import SearchBar from "./SearchBar";
 
-export default function NavTopContent ({ userId }) {
+export default function NavTopContent ({ searchQuery, sendSearchQuery, userId }) {
     const [ showMenu, setShowMenu ] = useState(false);
     function closeMenuHandle () {
         setShowMenu(false)
@@ -33,12 +34,7 @@ export default function NavTopContent ({ userId }) {
                 </Link>
             </div>
 
-            <div className="flex flex-row sm:w-1/3 w-3/5 sm:h-full h-3/4 my-auto bg-var-1 border-solid border-2 border-var-2 rounded-[20px] ">
-                <input className=" w-full h-full outline-none pl-6 pr-4 rounded-input "/>
-                <Link className="flex justify-center items-center" to="/searchresults">
-                    <SearchIcon className="rounded-circular mx-2 py-1 hover:bg-var-2 hover:text-var-1 duration-200" fontSize="large"/>
-                </Link>
-            </div>
+            <SearchBar sendSearchQuery={(searchQueryState) => sendSearchQuery(searchQueryState)} searchQuery={searchQuery} />
 
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto  text-var-3 ">
                 <button className="hidden md:block hover:text-var-3-hovered " >
