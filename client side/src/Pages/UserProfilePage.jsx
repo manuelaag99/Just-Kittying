@@ -16,12 +16,13 @@ import { userPrototype } from "../userprototype";
 import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
 import AddButton from "../Components/Portals/AddButton";
+import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
 
 
 export default function UserProfilePage () {
     const [loading, setLoading] = useState(true);
 
-    let user_id = "26319957-7f74-4f1f-bfab-daf50f006283"
+    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
 
     const [selectedUser, setSelectedUser] = useState();
     const [usersInfo, setUsersInfo] = useState();
@@ -106,6 +107,8 @@ export default function UserProfilePage () {
         console.log("removed friend!")
     }
 
+    const [createPostWindow, setCreatePostWindow] = useState();
+
     if (!selectedUser) {
         return (
             <LoadingSpinner open={loading} />
@@ -113,7 +116,8 @@ export default function UserProfilePage () {
     } else {
         return (
             <div>
-                <AddButton open={true} userId={user_id} />
+                <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />
+                <CreateOrUpdatePost fetchAgain={fetchUserPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
