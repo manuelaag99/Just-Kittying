@@ -57,8 +57,11 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             } else {
                 try {
                     const { userdata, error } = await supabase.from("jk-users").insert({ user_id: data.user.id, username: stateOfForm.inputs.username.value, email: stateOfForm.inputs.username.value, feed_preference: "public", account_privacy: "all", password: stateOfForm.inputs.password.value, creation_date: new Date().toISOString(), display_name: "" })
-                    if (error) console.log(error);
-                    // navigate("/settings");
+                    if (error) {
+                        console.log(error)
+                        setTextForMessageWindow("There was an error");
+                        setIsMessageWindowOpen(true);
+                    }
                     if (!error) {
                         setSignInOrSignUpWindowShouldCloseAfterMessageWindowCloses(true);
                         setTextForMessageWindow("Successfully created your account! Check your e-mail and confirm your signup, then come back and sign in!");
@@ -99,7 +102,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             }
         } else if (textForSignInOrSignUpButton === "Sign in") {
             signInUser();
-            navigate("/")
+            navigate("/");
         }
     }
 
@@ -111,7 +114,6 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         } else {
             setIsMessageWindowOpen(false);
         }
-        
     }
 
     const signInOrSignUpWindow = (
@@ -123,6 +125,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 <div className=" flex justify-center items-center w-7/10 h-10 mt-5">
                     <img className="h-full object-cover " src="images/logo.png" alt="just-kittying-logo" />
                 </div>
+
                 <div className="w-8/10 h-fit mt-4">
                     
                     {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 px-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
@@ -140,6 +143,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     </button>
 
                 </div>
+
                 <div className="h-1/10 mb-5 flex flex-col text-center">
                     {(textForSignInOrSignUpButton === "Sign up") && <button className="my-1 hover:text-var-3 duration-200" onClick={switchToSignIn}>
                         Already have an account?
