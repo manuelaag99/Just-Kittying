@@ -16,6 +16,7 @@ import Comment from "./Comment";
 
 export default function Post ({ classnames, fetchAgain, post, userId }) {
 
+    
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
         try {

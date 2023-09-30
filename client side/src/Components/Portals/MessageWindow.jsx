@@ -22,9 +22,9 @@ export default function MessageWindow({ isErrorMessage, onClose, open, textForMe
                         <CloseIcon />
                     </button>
                 </div>
-                <div>
+                {isErrorMessage && <div>
                     <p className="font-bold text-center text-profileOtherText">There was an error!</p>
-                </div>
+                </div>}
                 <div className="pt-3 pb-6 px-6">
                     <p className='text-center'>{textToDisplay}</p>
                 </div>

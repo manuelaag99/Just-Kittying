@@ -5,7 +5,6 @@ import LoadingSpinner from "./Portals/LoadingSpinner";
 
 export default function PostsGrid ({ postsArray, userId }) {
     const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
-    console.log(postsArray)
 
     if (!postsArray) {
         return (<LoadingSpinner open={true} />)
