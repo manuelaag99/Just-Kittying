@@ -1,7 +1,19 @@
 import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function MessageWindow({ onClose, open, textForMessage }) {
+export default function MessageWindow({ isErrorMessage, onClose, open, textForMessage }) {
+    const [textToDisplay, setTextToDisplay] = useState();
+    useEffect(() => {
+        if (isErrorMessage) {
+            setTextToDisplay(String(textForMessage).split(":")[1]);
+        } else {
+            setTextToDisplay(textForMessage);
+        }
+    }, [textForMessage])
+
+    console.log(textForMessage)
+    console.log(textToDisplay)
 
     const messageWindow = (
         <div>
@@ -13,8 +25,11 @@ export default function MessageWindow({ onClose, open, textForMessage }) {
                         <CloseIcon />
                     </button>
                 </div>
+                <div>
+                    <p className="font-bold text-center text-profileOtherText my-2">There was en error!</p>
+                </div>
                 <div className="pt-3 pb-6 px-6">
-                    <p className='text-center'>{textForMessage}</p>
+                    <p className='text-center'>{textToDisplay}</p>
                 </div>
             </div>
         </div>

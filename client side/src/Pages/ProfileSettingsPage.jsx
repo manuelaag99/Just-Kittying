@@ -16,7 +16,7 @@ import { formReducer } from "../reducers";
 
 export default function ProfileSettingsPage () {
     const navigate = useNavigate();
-    let user_id = "74rh4889wh36d7g389shd"
+    let user_id = "26319957-7f74-4f1f-bfab-daf50f006283"
     const [userInfo, setUserInfo] = useState()
     useEffect(() => {
         async function fetchData () {

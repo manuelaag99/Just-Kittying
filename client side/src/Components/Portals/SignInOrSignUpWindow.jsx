@@ -26,6 +26,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
     const [signUpConfirm, setSignUpConfirm] = useState(false);
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
+    const [isMessageWindowForAnError, setIsMessageWindowForAnError] = useState();
 
     useEffect(() => {
         if (textForSignInOrSignUpButton === "Sign up") {
@@ -61,8 +62,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                         console.log(error)
                         setTextForMessageWindow("There was an error");
                         setIsMessageWindowOpen(true);
-                    }
-                    if (!error) {
+                    } else if (!error) {
                         setSignInOrSignUpWindowShouldCloseAfterMessageWindowCloses(true);
                         setTextForMessageWindow("Successfully created your account! Check your e-mail and confirm your signup, then come back and sign in!");
                         setIsMessageWindowOpen(true);
@@ -85,13 +85,32 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     password: stateOfForm.inputs.password.value
                 }
             )
-            if (error) console.log(error);
-            console.log(data)
-            navigate("/settings")
+            if (error) {
+                setIsMessageWindowForAnError(true);
+                setTextForMessageWindow(error);
+                setIsMessageWindowOpen(true);
+                console.log(error);
+            } else if (!error) {
+                try {
+                    const { data, error } = await supabase.from("jk-users").select("display_name").eq("email", stateOfForm.inputs.email.value);
+                    if (error) console.log(error);
+                    if (!error) {
+                        if (!data || data === "") {
+                            console.log("no display name");
+                        } else {
+                            console.log(data)
+                        }
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }
         } catch (err) {
             console.log(err);
         }
     }
+
+
     
     function signInOrSignUpHandle () {
         if (textForSignInOrSignUpButton === "Sign up") {
@@ -102,6 +121,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             }
         } else if (textForSignInOrSignUpButton === "Sign in") {
             signInUser();
+
             navigate("/");
         }
     }
@@ -119,7 +139,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
     const signInOrSignUpWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
-            <MessageWindow onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
+            <MessageWindow isErrorMessage={isMessageWindowForAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
             <div className={"flex flex-col fixed justify-center items-center z-30 sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button  text-signInOrsignUpMob sm:text-signInOrsignUpDsk duration-500 " + (textForSignInOrSignUpButton === "Sign up" ? "top-[7%] " : "top-[15%] ")}>
                 
                 <div className=" flex justify-center items-center w-7/10 h-10 mt-5">
@@ -128,10 +148,10 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
 
                 <div className="w-8/10 h-fit mt-4">
                     
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 px-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 px-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 px-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 px-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
+                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
+                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
                     <button disabled={!stateOfForm.isFormValid} className="disabled:bg-black-inactive disabled:border-black-inactive disabled:cursor-pointer w-full py-3 px-2 mb-4 rounded-input bg-black text-var-1 border-black border-solid border-2 hover:bg-var-3 hover:border-var-3 duration-500 " onClick={signInOrSignUpHandle}>{textForSignInOrSignUpButton}</button>
                     <button className="flex flex-row justify-center items-center w-full py-3 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2">
                         <FacebookSharpIcon className="mr-2"/>

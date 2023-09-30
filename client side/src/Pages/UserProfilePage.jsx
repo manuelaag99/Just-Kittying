@@ -21,7 +21,7 @@ import AddButton from "../Components/Portals/AddButton";
 export default function UserProfilePage () {
     const [loading, setLoading] = useState(true);
 
-    let user_id = "74rh4889wh36d7g389shd"
+    let user_id = "26319957-7f74-4f1f-bfab-daf50f006283"
 
     const [selectedUser, setSelectedUser] = useState();
     const [usersInfo, setUsersInfo] = useState();

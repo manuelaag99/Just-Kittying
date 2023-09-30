@@ -152,13 +152,19 @@ export default function Post ({ classnames, fetchAgain, post, postCreationDate, 
         if (showInput) inputRef.current.focus();
     }, [showInput])
 
+    function removeCommentBeingEdited(array, idToRemove) {
+        return array.filter(item => item.id !== idToRemove);
+    }
+
     const [editedCommentId, setEditedCommentId] = useState();
     function editCommentHandle (comment) {
         setPostCommentButtonText("Update");
         setEditedCommentId(comment.comment_id);
         console.log(comment);
+        const commentsWithoutEditedComment = removeCommentBeingEdited(comments, comment.comment_id);
+        setComments(commentsWithoutEditedComment)
         setNewComment(comment.comment_text);
-        setShowInput(true);
+        setShowInput(true);;
     }
 
     function submitCommentHandle (e) {
