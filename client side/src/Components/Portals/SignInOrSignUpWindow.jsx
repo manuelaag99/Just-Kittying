@@ -59,9 +59,10 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 try {
                     const { userdata, error } = await supabase.from("jk-users").insert({ user_id: data.user.id, username: stateOfForm.inputs.username.value, email: stateOfForm.inputs.username.value, feed_preference: "public", account_privacy: "all", password: stateOfForm.inputs.password.value, creation_date: new Date().toISOString(), display_name: "" })
                     if (error) {
-                        console.log(error)
-                        setTextForMessageWindow("There was an error");
+                        setIsMessageWindowForAnError(true);
+                        setTextForMessageWindow(error);
                         setIsMessageWindowOpen(true);
+                        console.log(error);
                     } else if (!error) {
                         setSignInOrSignUpWindowShouldCloseAfterMessageWindowCloses(true);
                         setTextForMessageWindow("Successfully created your account! Check your e-mail and confirm your signup, then come back and sign in!");
@@ -148,11 +149,13 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
 
                 <div className="w-8/10 h-fit mt-4">
                     
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 sm:pr-0 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
-                    <button disabled={!stateOfForm.isFormValid} className="disabled:bg-black-inactive disabled:border-black-inactive disabled:cursor-pointer w-full py-3 px-2 mb-4 rounded-input bg-black text-var-1 border-black border-solid border-2 hover:bg-var-3 hover:border-var-3 duration-500 " onClick={signInOrSignUpHandle}>{textForSignInOrSignUpButton}</button>
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
+                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none py-0.5 " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
+                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
+                    <button disabled={!stateOfForm.isFormValid} className="flex flex-col justify-center items-center disabled:bg-black-inactive disabled:border-black-inactive disabled:cursor-pointer w-full py-3 px-2 mb-4 rounded-input bg-black text-var-1 border-black border-solid border-2 hover:bg-var-3 hover:border-var-3 duration-500 " onClick={signInOrSignUpHandle}>
+                        <p className="my-0.5">{textForSignInOrSignUpButton}</p>
+                    </button>
                     <button className="flex flex-row justify-center items-center w-full py-3 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2">
                         <FacebookSharpIcon className="mr-2"/>
                         <p className="">{textForSignInOrSignUpButton} with Facebook</p>

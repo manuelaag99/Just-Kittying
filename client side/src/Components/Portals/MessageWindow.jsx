@@ -12,9 +12,6 @@ export default function MessageWindow({ isErrorMessage, onClose, open, textForMe
         }
     }, [textForMessage])
 
-    console.log(textForMessage)
-    console.log(textToDisplay)
-
     const messageWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-40"></div>
@@ -26,7 +23,7 @@ export default function MessageWindow({ isErrorMessage, onClose, open, textForMe
                     </button>
                 </div>
                 <div>
-                    <p className="font-bold text-center text-profileOtherText my-2">There was en error!</p>
+                    <p className="font-bold text-center text-profileOtherText">There was an error!</p>
                 </div>
                 <div className="pt-3 pb-6 px-6">
                     <p className='text-center'>{textToDisplay}</p>

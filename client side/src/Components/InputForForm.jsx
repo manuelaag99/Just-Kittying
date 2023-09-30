@@ -37,7 +37,7 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
             <div className={smallDivClassnames}>
 
                 {!isSelect && <input autoComplete="off" className={inputClassnames} name={inputName} onBlur={inputBlurHandle} onChange={inputChangeHandle} onFocus={inputFocusHandle} placeholder={inputPlaceholder} type={isPasswordField ? (passwordVisibility ? "text" : "password") : inputType} value={value} />}
-                {isInSettingsPage && (inputName === "displayname" || inputName === "username") && <div className="flex flex-row items-center">
+                {isInSettingsPage && (inputName === "displayname" || inputName === "username") && <div className="flex flex-row items-center ">
                     {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <CancelIcon className="text-red-700" fontSize="small"/>}
                     {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
                 </div>}
