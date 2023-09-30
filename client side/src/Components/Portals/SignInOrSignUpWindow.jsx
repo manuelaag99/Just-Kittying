@@ -78,6 +78,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         }
     }
 
+    let user_id;
     async function signInUser () {
         try {                     
             const { data, error } = await supabase.auth.signInWithPassword(
@@ -86,6 +87,8 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     password: stateOfForm.inputs.password.value
                 }
             )
+            console.log(data.user.id)
+            user_id = data.user.id;
             if (error) {
                 setIsMessageWindowForAnError(true);
                 setTextForMessageWindow(error);
@@ -95,11 +98,15 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 try {
                     const { data, error } = await supabase.from("jk-users").select("display_name").eq("email", stateOfForm.inputs.email.value);
                     if (error) console.log(error);
+                    console.log(data)
                     if (!error) {
-                        if (!data || data === "") {
+                        if (!data || data === "" || data.length === 0) {
                             console.log("no display name");
+                            console.log(user_id);
+                            navigate("/settings");
                         } else {
-                            console.log(data)
+                            console.log(user_id);
+                            navigate("/");
                         }
                     }
                 } catch (err) {
@@ -156,7 +163,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     <button disabled={!stateOfForm.isFormValid} className="flex flex-col justify-center items-center disabled:bg-black-inactive disabled:border-black-inactive disabled:cursor-pointer w-full py-3 px-2 mb-4 rounded-input bg-black text-var-1 border-black border-solid border-2 hover:bg-var-3 hover:border-var-3 duration-500 " onClick={signInOrSignUpHandle}>
                         <p className="my-0.5">{textForSignInOrSignUpButton}</p>
                     </button>
-                    <button className="flex flex-row justify-center items-center w-full py-3 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2">
+                    <button className="flex flex-row justify-center items-center w-full py-3 px-2 mb-4 rounded-input bg-facebook text-var-1 hover:bg-facebook-hover duration-200 border-facebook border-solid border-2 hover:border-facebook-hover ">
                         <FacebookSharpIcon className="mr-2"/>
                         <p className="">{textForSignInOrSignUpButton} with Facebook</p>
                     </button>
