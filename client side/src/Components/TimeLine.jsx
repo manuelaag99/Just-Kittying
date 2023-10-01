@@ -54,14 +54,20 @@ export default function TimeLine ({ fetchPosts, posts, userId, users }) {
     }
 
     if (!posts) {
-        return (<LoadingSpinner open={true} />)
+        return (
+            <div className="flex justify-center mt-3">
+                <p className="text-gray-400 text-center">
+                    No posts to show.
+                </p>
+            </div>
+        )
     } else if (posts) {
         return (
             <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
                 <div className="sm:w-2/3 w-95 mx-auto bg-var-1 h-fit pb-[120px] ">
                     <div>
                         {posts && posts.map((post, index) => {
-                            return <Post fetchAgain={updatePosts} key={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
+                            return <Post fetchAgain={updatePosts} key={index} index={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={userId} />
                         })}
                     </div>
                 </div>

@@ -6,7 +6,7 @@ export default function ({ selectedUsersArray, userId }) {
     console.log(selectedUsersArray)
     if (!selectedUsersArray) {
         return (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-3">
                 <p className="text-gray-400 text-center">
                     No users to show.
                 </p>

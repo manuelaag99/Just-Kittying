@@ -9,12 +9,14 @@ export default function UserInList ({ index, userId, userInListId }) {
     const [userInfo, setUserInfo] = useState();
 
     async function fetchUserInfo () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", userInListId);
-            if (error) console.log(error);
-            setUserInfo(data[0]);
-        } catch (err) {
-            console.log(err);
+        if (userInListId) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", userInListId);
+                if (error) console.log(error);
+                setUserInfo(data[0]);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
@@ -22,7 +24,7 @@ export default function UserInList ({ index, userId, userInListId }) {
         fetchUserInfo();
     }, [])
 
-    if (!userInfo) {
+    if (!userId && !userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
                 <div className="flex flex-row justify-start w-8/10">
@@ -34,7 +36,7 @@ export default function UserInList ({ index, userId, userInListId }) {
                 </div>
             </div>
         )
-    } else {
+    } else if (userId && userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
                 <div className="flex flex-row justify-start w-8/10">

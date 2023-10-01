@@ -82,31 +82,37 @@ export default function HomePage ({ }) {
 
     function sendSearchQueryToSearchResultsPage (searchQueryState) {
         setSearchQuery(searchQueryState);
+        console.log(searchQueryState.trim())
+        if (searchQueryState.trim() !== "") {
+            const filteredUsers = users.map((user) => {
+                if (user.username.includes(searchQuery)) {
+                    console.log(user.user_id)
+                    return user.user_id;
+                } else if (user.display_name.includes(searchQuery)) {
+                    console.log(user.user_id)
+                    return user.user_id;
+                } else if (searchQuery.includes(user.username)) {
+                    console.log(user.user_id)
+                    return user.user_id;
+                } else if (searchQuery.includes(user.display_name)) {
+                    console.log(user.user_id)
+                    return user.user_id;
+                }
+            })
+            setSearchResultsInUsers(filteredUsers);
+            const filteredPosts = posts.filter((post) => {
+                if (post.post_caption.includes(searchQuery)) {
+                    return post;
+                } else if (searchQuery.includes(post.post_caption)) {
+                    return post;
+                }
+            })
+            setSearchResultsInPosts(filteredPosts);
+        } else {
+            setSearchResultsInUsers();
+            setSearchResultsInPosts();
+        }
         setHomePageContent("search");
-        const filteredUsers = users.map((user) => {
-            if (user.username.includes(searchQuery)) {
-                console.log(user.user_id)
-                return user.user_id;
-            } else if (user.display_name.includes(searchQuery)) {
-                console.log(user.user_id)
-                return user.user_id;
-            } else if (searchQuery.includes(user.username)) {
-                console.log(user.user_id)
-                return user.user_id;
-            } else if (searchQuery.includes(user.display_name)) {
-                console.log(user.user_id)
-                return user.user_id;
-            }
-        })
-        setSearchResultsInUsers(filteredUsers);
-        const filteredPosts = posts.filter((post) => {
-            if (post.post_caption.includes(searchQuery)) {
-                return post;
-            } else if (searchQuery.includes(post.post_caption)) {
-                return post;
-            }
-        })
-        setSearchResultsInPosts(filteredPosts);
     }
     
     console.log(searchResultsInUsers)
