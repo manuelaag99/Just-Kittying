@@ -38,7 +38,7 @@ export default function UserInList ({ index, userId, userInListId }) {
         )
     } else if (userId && userInfo) {
         return (
-            <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
+            <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
                 <div className="flex flex-row justify-start w-8/10">
                     <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userId.profile_pic_url || null} />
                     <div className="flex flex-col w-fit pl-4 pr-2">
@@ -46,12 +46,19 @@ export default function UserInList ({ index, userId, userInListId }) {
                         <div className="opacity-30" >{userInfo.username}</div>
                     </div>
                 </div>
-                {(userInListId !== userId) && <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
-                    <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
-                </div>}
-                {(userInListId !== userId) && <div className="flex justify-center sm:justify-end sm:pr-4 w-1/10 items-center">
-                    <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
-                </div>}
+                <div className="flex flex-row w-fit justify-center items-center">
+                    {(userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                        <p className="text-center">
+                            <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
+                        </p>
+                    </button>}
+                    {(userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                        <p className="text-center">
+                            <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
+                        </p>
+                    </button>}
+                </div>
+                
             </div>
         )
     }

@@ -6,8 +6,6 @@ import LoadingSpinner from "./Portals/LoadingSpinner";
 export default function PostsGrid ({ postsArray, userId }) {
     const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
 
-    console.log(postsArray)
-
     if (!postsArray || postsArray.length === 0) {
         return (
             <div className="flex justify-center mt-3">

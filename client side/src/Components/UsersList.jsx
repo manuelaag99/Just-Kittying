@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import UserInList from "./UserInList";
 
 export default function ({ selectedUsersArray, userId }) {
-    console.log(selectedUsersArray)
     if (!selectedUsersArray) {
         return (
             <div className="flex justify-center mt-3">

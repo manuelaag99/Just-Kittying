@@ -4,13 +4,13 @@ import PhotoCloseUp from "./Portals/PhotoCloseUp";
 
 export default function RoundPhoto ({classesForRoundPhoto, imageAlt, imageSource}) {
     const [openPhotoCloseUp, setOpenPhotoCloseUp] = useState(false);
-    
+
     function openImageHandle () {
-        setOpenPhotoCloseUp(true)
+        setOpenPhotoCloseUp(true);
     }
 
     function closeImageHandle () {
-        setOpenPhotoCloseUp(false)
+        setOpenPhotoCloseUp(false);
     }
 
     return (

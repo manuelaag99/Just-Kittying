@@ -6,6 +6,7 @@ import Post from "../Components/Post";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import { supabase } from "../supabase/client";
+import MessageWindow from "../Components/Portals/MessageWindow";
 
 export default function PostOrPostsPage () {
     const navigate = useNavigate();

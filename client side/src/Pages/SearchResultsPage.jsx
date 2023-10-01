@@ -2,11 +2,10 @@ import { useState } from "react";
 import UsersList from "../Components/UsersList";
 import PostsGrid from "../Components/PostsGrid";
 
-export default function SearchResultsPage ({ searchQuery, searchResultsInPosts, searchResultsInUsers, userId}) {
+export default function SearchResultsPage ({ searchResultsInPosts, searchResultsInUsers, userId}) {
     const usersTab = "friends"
     const postsTab = "posts"
     const [tabsSection, setTabsSection] = useState(postsTab);
-    console.log(searchResultsInUsers)
 
     return (
         <div className="flex flex-col w-full mt-2">

@@ -248,7 +248,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                             <p className="font-light">{post.post_caption}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
-                            return <Comment commentData={comment} editSpecificComment={() => editCommentHandle(comment)} fetchAgain={() => fetchPostComments()} index={index} userId={userId} />
+                            return <Comment commentData={comment} editSpecificComment={() => editCommentHandle(comment)} fetchAgain={() => fetchPostComments()} key={index} index={index} userId={userId} />
                         })}
                         
                         {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
