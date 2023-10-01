@@ -8,7 +8,8 @@ import { POSTS } from "../HARDCODED INFO";
 import { USERS } from "../HARDCODED INFO";
 import { supabase } from "../supabase/client";
 
-export default function TimeLine ({ posts, userId, users }) {
+export default function TimeLine ({ fetchPosts, posts, userId, users }) {
+    console.log(posts)
     // fetch posts (based on if its logged in or not, and if it is logged in then based on their preferences)
     // fetch users 
     // fetch comments
@@ -48,11 +49,11 @@ export default function TimeLine ({ posts, userId, users }) {
     //     setTimelineContent(TIMELINECONTENT)
     // }, [])
     
-    async function updatePosts () {
+    function updatePosts () {
         fetchPosts();
     }
 
-    if (posts) {
+    if (!posts) {
         return (<LoadingSpinner open={true} />)
     } else if (posts) {
         return (
