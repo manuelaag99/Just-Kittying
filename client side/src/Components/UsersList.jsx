@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import UserInList from "./UserInList";
 
 export default function ({ selectedUsersArray, userId }) {
-    if (!selectedUsersArray) {
+    if (!selectedUsersArray || selectedUsersArray.length === 0) {
         return (
-            <div className="flex justify-center mt-3">
+            <div className="flex justify-center mt-5">
                 <p className="text-gray-400 text-center">
                     No users to show.
                 </p>

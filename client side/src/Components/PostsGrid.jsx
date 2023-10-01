@@ -8,7 +8,7 @@ export default function PostsGrid ({ postsArray, userId }) {
 
     if (!postsArray || postsArray.length === 0) {
         return (
-            <div className="flex justify-center mt-3">
+            <div className="flex justify-center mt-5">
                 <p className="text-gray-400 text-center">
                     No posts to show.
                 </p>

@@ -76,7 +76,6 @@ export default function HomePage ({ }) {
 
     const [homePageContent, setHomePageContent] = useState("timeline");
     const [searchQuery, setSearchQuery] = useState();
-
     const [searchResultsInUsers, setSearchResultsInUsers] = useState();
     const [searchResultsInPosts, setSearchResultsInPosts] = useState();
 
@@ -84,20 +83,9 @@ export default function HomePage ({ }) {
         setSearchQuery(searchQueryState);
         if (searchQueryState) {
             if (searchQueryState.trim() !== "") {
-                // const filteredUsers = users.map((user) => {
-                //     if (user.username.includes(searchQuery)) {
-                //         return user.user_id;
-                //     } else if (user.display_name.includes(searchQuery)) {
-                //         return user.user_id;
-                //     } else if (searchQuery.includes(user.username)) {
-                //         return user.user_id;
-                //     } else if (searchQuery.includes(user.display_name)) {
-                //         return user.user_id;
-                //     }
-                // })
-                const filteredUsers = users.filter(user => (user.username.includes(searchQuery)) || (user.display_name.includes(searchQuery))).map(user => user.user_id);
+                const filteredUsers = users.filter(user => (user.username.includes(searchQueryState)) || (user.display_name.includes(searchQueryState)) || (searchQuery.includes(user.username)) || (searchQuery.includes(user.display_name))).map(user => user.user_id);
                 setSearchResultsInUsers(filteredUsers);
-                const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQuery)) || (searchQuery.includes(post.post_caption)));
+                const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQueryState)) || (searchQueryState.includes(post.post_caption)));
                 setSearchResultsInPosts(filteredPosts);
                 setHomePageContent("search");
             } else {
@@ -108,12 +96,14 @@ export default function HomePage ({ }) {
         }
     }
 
-    console.log(searchResultsInUsers)
+    function returnToTimline () {
+        setHomePageContent("timeline");
+    }
 
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />} />
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent onReturnToTimeLine={returnToTimline} sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />} />
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
             {homePageContent === "timeline" && <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />}
             {homePageContent === "search" && <SearchResultsPage searchQuery={searchQuery} searchResultsInPosts={searchResultsInPosts} searchResultsInUsers={searchResultsInUsers} userId={user_id} />}

@@ -4,15 +4,14 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
-import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Link } from "react-router-dom";
 
 import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
-export default function NavTopContent ({ searchQuery, sendSearchQuery, userId }) {
-    const [ showMenu, setShowMenu ] = useState(false);
+export default function NavTopContent ({ onReturnToTimeLine, searchQuery, sendSearchQuery, userId }) {
+    const [showMenu, setShowMenu] = useState(false);
     function closeMenuHandle () {
         setShowMenu(false)
     }
@@ -21,17 +20,20 @@ export default function NavTopContent ({ searchQuery, sendSearchQuery, userId })
         setShowMenu(true)
     }
 
+    function clickOnLogoHandle () {
+        onReturnToTimeLine()
+    }
 
     return (
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
             <Menu onClose={closeMenuHandle} open={showMenu} userId={userId} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
-                <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/" >
+                <button className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" onClick={clickOnLogoHandle}>
                     <div className="flex h-full w-fit sm:w-3/10 md:w-fit items-center">
                         <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
                     </div>
                     <p className="sm:w-fit hidden md:block sm:pl-2 hover:text-var-3-hovered">Just Kittying!</p>
-                </Link>
+                </button>
             </div>
 
             <SearchBar sendSearchQuery={(searchQueryState) => sendSearchQuery(searchQueryState)} searchQuery={searchQuery} />

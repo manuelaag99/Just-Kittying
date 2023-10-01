@@ -54,9 +54,6 @@ export default function UserProfilePage () {
     }
 
     const [selectedUser, setSelectedUser] = useState();
-    const [usersInfo, setUsersInfo] = useState();
-    const [userPosts, setUserPosts] = useState();
-
     async function fetchSelectedUserData () {
 		try {
 			const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
@@ -67,24 +64,28 @@ export default function UserProfilePage () {
 		}
     }
 
-    async function fetchAllUsers () {
-		try {
-			const { data, error } = await supabase.from('jk-users').select("*");
-			if (error) console.log(error);
-			setUsersInfo(data);
-		} catch (err) {
-			console.log(err);
-		}
+    const [users, setUsers] = useState();
+    async function fetchUsers() {
+        try {
+            const { data, error } = await supabase.from("jk-users").select("*");
+            if (error) console.log(error);
+            setUsers(data);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    async function fetchUserPosts () {
-		try {
-			const { data, error } = await supabase.from('jk-posts').select("*").eq("post_creator_id", user_id);
-			if (error) console.log(error);
-			setUserPosts(data);
-		} catch (err) {
-			console.log(err);
-		}
+    const [posts, setPosts] = useState();
+    const [userPosts, setUserPosts] = useState();
+    async function fetchPosts() {
+        try {
+            const { data, error } = await supabase.from("jk-posts").select("*");
+            if (error) console.log(error);
+            setPosts(data);
+            setUserPosts(data.filter(post => post.post_creator_id === user_id))
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const [userFriends, setUserFriends] = useState();
@@ -120,8 +121,8 @@ export default function UserProfilePage () {
 
     useEffect(() => {
         checkIfUserHasDisplayName();
-		fetchAllUsers();
-		fetchUserPosts();
+		fetchUsers();
+		fetchPosts();
 		fetchSelectedUserData();
         fetchFriendsOne();
         fetchFriendsTwo();
@@ -154,7 +155,7 @@ export default function UserProfilePage () {
 
     const [createPostWindow, setCreatePostWindow] = useState();
 
-    if (!selectedUser || !usersInfo || !userPosts) {
+    if (!selectedUser || !users || !userPosts) {
         return (
             <LoadingSpinner open={loading} />
         )
@@ -162,7 +163,7 @@ export default function UserProfilePage () {
         return (
             <div>
                 <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />
-                <CreateOrUpdatePost fetchAgain={fetchUserPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />
+                <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
@@ -202,7 +203,7 @@ export default function UserProfilePage () {
                         </div>
                         
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={user_id} />}
-                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends} userId={user_id} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={users} selectedUsersArray={userFriends} userId={user_id} />}
 
                     </div>
                 </div>
