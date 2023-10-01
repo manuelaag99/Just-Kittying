@@ -5,12 +5,13 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
-export default function NavTopContent ({ onReturnToTimeLine, searchQuery, sendSearchQuery, userId }) {
+export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQuery, sendSearchQuery, userId }) {
+    const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     function closeMenuHandle () {
         setShowMenu(false)
@@ -21,7 +22,17 @@ export default function NavTopContent ({ onReturnToTimeLine, searchQuery, sendSe
     }
 
     function clickOnLogoHandle () {
-        onReturnToTimeLine()
+        if (isHomePage) {
+            onReturnToTimeLine()
+        } else {
+            navigate("/");
+        }
+    }
+
+    function sendSearchQueryHandle (searchQueryState) {
+        if (isHomePage) {
+            sendSearchQuery(searchQueryState)
+        }
     }
 
     return (
@@ -36,7 +47,7 @@ export default function NavTopContent ({ onReturnToTimeLine, searchQuery, sendSe
                 </button>
             </div>
 
-            <SearchBar sendSearchQuery={(searchQueryState) => sendSearchQuery(searchQueryState)} searchQuery={searchQuery} />
+            <SearchBar sendSearchQuery={(searchQueryState) => sendSearchQueryHandle(searchQueryState)} searchQuery={searchQuery} />
 
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto  text-var-3 ">
                 <button className="hidden md:block hover:text-var-3-hovered " >

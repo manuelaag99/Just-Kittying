@@ -14,7 +14,7 @@ import { supabase } from "../supabase/client";
 
 import AddButton from "../Components/Portals/AddButton";
 import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MessageWindow from "../Components/Portals/MessageWindow";
 
 
@@ -165,7 +165,7 @@ export default function UserProfilePage () {
                 <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />
                 <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
+                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent isHomePage={false} />} />
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
                         

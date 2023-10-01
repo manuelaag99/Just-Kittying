@@ -47,7 +47,7 @@ export default function NotificationsPage({}) {
     return (
         <div className="w-full bg-white">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />}/>
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent isHomePage={false} userId={user_id} />}/>
             <Notifications userId={user_id} />
         </div>
     )
