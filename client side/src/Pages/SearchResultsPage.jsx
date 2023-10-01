@@ -8,6 +8,7 @@ export default function SearchResultsPage ({ searchQuery, searchResultsInPosts, 
     const [tabsSection, setTabsSection] = useState(postsTab);
     console.log(searchResultsInUsers)
 
+
     return (
         <div className="flex flex-col w-full mt-2">
             <div className="flex flex-row mt-16 sm:mt-20">

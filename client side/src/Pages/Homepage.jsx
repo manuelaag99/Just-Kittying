@@ -40,7 +40,6 @@ export default function HomePage ({ }) {
         checkIfUserHasDisplayName();
     })
 
-
     function closeMessageWindow () {
         if (!doesUserHaveDisplayName) {
             navigate("/settings");
@@ -75,7 +74,6 @@ export default function HomePage ({ }) {
         fetchPosts();
     }, [])
 
-    
     const [homePageContent, setHomePageContent] = useState("timeline");
     const [searchQuery, setSearchQuery] = useState();
 
@@ -85,16 +83,19 @@ export default function HomePage ({ }) {
     function sendSearchQueryToSearchResultsPage (searchQueryState) {
         setSearchQuery(searchQueryState);
         setHomePageContent("search");
-        const filteredUsers = users.filter((user) => {
-            console.log(user.username)
+        const filteredUsers = users.map((user) => {
             if (user.username.includes(searchQuery)) {
-                return user;
+                console.log(user.user_id)
+                return user.user_id;
             } else if (user.display_name.includes(searchQuery)) {
-                return user;
+                console.log(user.user_id)
+                return user.user_id;
             } else if (searchQuery.includes(user.username)) {
-                return user;
+                console.log(user.user_id)
+                return user.user_id;
             } else if (searchQuery.includes(user.display_name)) {
-                return user;
+                console.log(user.user_id)
+                return user.user_id;
             }
         })
         setSearchResultsInUsers(filteredUsers);
@@ -107,7 +108,7 @@ export default function HomePage ({ }) {
         })
         setSearchResultsInPosts(filteredPosts);
     }
-    console.log(users)
+    
     console.log(searchResultsInUsers)
 
     return (

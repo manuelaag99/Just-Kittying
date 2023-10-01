@@ -113,23 +113,11 @@ export default function UserProfilePage () {
     let idsOfFriendsOne;
     let idsOfFriendsTwo;
     function organizeFriends () {
-        console.log("yeah")
-        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => {
-            console.log(user.user_1_id)
-            return user_id = user.user_1_id
-        })
-        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => {
-            console.log(user.user_2_id)
-            return user_id = user.user_2_id
-        })
-        console.log(idsOfFriendsOne, idsOfFriendsTwo)
-        setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo])
-        // setUserFriends({ usersThatAreFriendsWithCurrentUser, usersThatCurrentUserIsFriendsWith })  
+        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => user_id = user.user_1_id)
+        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => user_id = user.user_2_id)
+        setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
 
-    console.log(usersThatAreFriendsWithCurrentUser)
-    console.log(usersThatCurrentUserIsFriendsWith)
-    console.log(userFriends)
     useEffect(() => {
         checkIfUserHasDisplayName();
 		fetchAllUsers();
