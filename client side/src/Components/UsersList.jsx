@@ -16,7 +16,7 @@ export default function ({ selectedUsersArray, userId }) {
         return (
             <div className="flex flex-col justify-center w-full ">
                 {selectedUsersArray && selectedUsersArray.map((user, index) => {
-                    return <UserInList index={index} user={user} userId={userId} userInListId={user} />
+                    return <UserInList key={index} index={index} user={user} userId={userId} userInListId={user} />
                 })}
             </div>
         )

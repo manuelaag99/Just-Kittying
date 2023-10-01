@@ -12,9 +12,6 @@ import PostsGrid from "../Components/PostsGrid";
 
 import { supabase } from "../supabase/client";
 
-import { userPrototype } from "../userprototype";
-import { POSTS } from "../HARDCODED INFO";
-import { USERS } from "../HARDCODED INFO";
 import AddButton from "../Components/Portals/AddButton";
 import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
 import { useNavigate } from "react-router-dom";
@@ -91,58 +88,85 @@ export default function UserProfilePage () {
     }
 
     const [userFriends, setUserFriends] = useState();
-    async function fetchFriends () {
+    const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
+    const [usersThatAreFriendsWithCurrentUser, setUsersThatAreFriendsWithCurrentUser] = useState();
+    async function fetchFriendsOne () {
 		try {
 			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", user_id);
 			if (error) console.log(error);
-			setUserFriends({ ...userFriends, data });
-		} catch (err) {
-			console.log(err);
-		}
-		try {
-			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", user_id);
-			if (error) console.log(error);
-			setUserFriends({ ...userFriends, data });
+			setUsersThatCurrentUserIsFriendsWith(data);
 		} catch (err) {
 			console.log(err);
 		}
     }
 
+    async function fetchFriendsTwo () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", user_id);
+			if (error) console.log(error);
+            setUsersThatAreFriendsWithCurrentUser(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    let idsOfFriendsOne;
+    let idsOfFriendsTwo;
+    function organizeFriends () {
+        console.log("yeah")
+        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => {
+            console.log(user.user_1_id)
+            return user_id = user.user_1_id
+        })
+        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => {
+            console.log(user.user_2_id)
+            return user_id = user.user_2_id
+        })
+        console.log(idsOfFriendsOne, idsOfFriendsTwo)
+        setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo])
+        // setUserFriends({ usersThatAreFriendsWithCurrentUser, usersThatCurrentUserIsFriendsWith })  
+    }
+
+    console.log(usersThatAreFriendsWithCurrentUser)
+    console.log(usersThatCurrentUserIsFriendsWith)
+    console.log(userFriends)
     useEffect(() => {
         checkIfUserHasDisplayName();
 		fetchAllUsers();
 		fetchUserPosts();
 		fetchSelectedUserData();
-		fetchFriends();
+        fetchFriendsOne();
+        fetchFriendsTwo();
     }, []);
 
+    useEffect(() => {
+        if (usersThatAreFriendsWithCurrentUser && usersThatCurrentUserIsFriendsWith) {
+            organizeFriends();
+        }
+    }, [usersThatCurrentUserIsFriendsWith, usersThatAreFriendsWithCurrentUser])
 
-    // useEffect(() => {
-    //     if (usersInfo) {
-    //         if (usersInfo.user_friends) {
-    //             setUserFriends(usersInfo.filter((friend) => selectedUser.user_friends.includes(friend.user_id)));
-    //         }
-    //         setUserFriends(userPrototype.friends)
-    //     }
-    // }, [usersInfo])
-
-    const friendsTab = "friends"
-    const photosTab = "photos"
+    const friendsTab = "friends";
+    const photosTab = "photos";
     const [tabsSection, setTabsSection] = useState(photosTab);
-    function photosTabHandle () {setTabsSection(photosTab)};
-    function friendsTabHandle () {setTabsSection(friendsTab)};
+    function photosTabHandle () {
+        setTabsSection(photosTab)
+    };
+    function friendsTabHandle () {
+        setTabsSection(friendsTab)
+        organizeFriends();
+    };
 
     function addPersonHandle () {
-        console.log("added friend!")
+        console.log("added friend!");
     }
 
     function removePersonHandle () {
-        console.log("removed friend!")
+        console.log("removed friend!");
     }
 
     const [createPostWindow, setCreatePostWindow] = useState();
 
-    if (!selectedUser) {
+    if (!selectedUser || !usersInfo || !userPosts) {
         return (
             <LoadingSpinner open={loading} />
         )
@@ -155,6 +179,7 @@ export default function UserProfilePage () {
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
+                        
                         <div className="flex-col">
                             <div className="flex flex-row h-[100px]">
                                 <div className="flex justify-center w-3/10 h-full items-start ">
@@ -174,7 +199,7 @@ export default function UserProfilePage () {
                             </div>
                             <div className="flex flex-row mt-16 sm:mt-24">
                                 <button className="w-1/2 bg-var-1 h-[40px] " onClick={photosTabHandle} >Posts ({userPosts ? userPosts.length : "0"})</button>
-                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.data.length : "0"})</button>
+                                <button className="w-1/2 bg-var-1 h-[40px] " onClick={friendsTabHandle} >Friends ({userFriends ? userFriends.length : "0"})</button>
                             </div>
                             <div className="flex w-full">
                                 {(tabsSection === photosTab) && <div className="flex flex-row w-full">
@@ -189,7 +214,7 @@ export default function UserProfilePage () {
                         </div>
                         
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={user_id} />}
-                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends.data} userId={user_id} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={usersInfo} selectedUsersArray={userFriends} userId={user_id} />}
 
                     </div>
                 </div>

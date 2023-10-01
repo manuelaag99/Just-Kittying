@@ -6,6 +6,7 @@ export default function SearchResultsPage ({ searchQuery, searchResultsInPosts, 
     const usersTab = "friends"
     const postsTab = "posts"
     const [tabsSection, setTabsSection] = useState(postsTab);
+    console.log(searchResultsInUsers)
 
     return (
         <div className="flex flex-col w-full mt-2">

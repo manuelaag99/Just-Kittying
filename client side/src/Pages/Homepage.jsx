@@ -82,7 +82,6 @@ export default function HomePage ({ }) {
     const [searchResultsInUsers, setSearchResultsInUsers] = useState();
     const [searchResultsInPosts, setSearchResultsInPosts] = useState();
 
-    console.log(posts)
     function sendSearchQueryToSearchResultsPage (searchQueryState) {
         setSearchQuery(searchQueryState);
         setHomePageContent("search");
@@ -108,6 +107,8 @@ export default function HomePage ({ }) {
         })
         setSearchResultsInPosts(filteredPosts);
     }
+    console.log(users)
+    console.log(searchResultsInUsers)
 
     return (
         <div className="bg-var-1 w-full h-full">
