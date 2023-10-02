@@ -53,7 +53,7 @@ export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQ
                 <button className="hidden md:block hover:text-var-3-hovered " >
                     <LightModeIcon className="mx-4" fontSize="large" />
                 </button>
-                <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to="/myprofile">
+                <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to={"/profile/" + userId}>
                     <PersonIcon className="mx-4" fontSize="large" />
                 </Link>
                 <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to="/settings">

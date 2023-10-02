@@ -29,7 +29,7 @@ export default function Menu({ open, onClose, userId }) {
                         <HomeIcon className="mx-4" fontSize="large" />
                     </Link>
 
-                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to="/myprofile">
+                    <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to={"/profile/" + userId}>
                         <p className="w-fit pr-4">My profile</p>
                         <PersonIcon className="mx-4" fontSize="large" />
                     </Link>

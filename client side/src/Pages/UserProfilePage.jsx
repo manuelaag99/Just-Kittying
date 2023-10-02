@@ -22,7 +22,9 @@ export default function UserProfilePage () {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
+    let { userid } = useParams();
+    let user_id = userid
+    // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -155,7 +157,7 @@ export default function UserProfilePage () {
 
     const [createPostWindow, setCreatePostWindow] = useState();
 
-    if (!selectedUser || !users || !userPosts) {
+    if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
             <LoadingSpinner open={loading} />
         )
