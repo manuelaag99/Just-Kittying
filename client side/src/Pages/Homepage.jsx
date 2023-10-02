@@ -83,7 +83,7 @@ export default function HomePage ({ }) {
         setSearchQuery(searchQueryState);
         if (searchQueryState) {
             if (searchQueryState.trim() !== "") {
-                const filteredUsers = users.filter(user => (user.username.includes(searchQueryState)) || (user.display_name.includes(searchQueryState)) || (searchQuery.includes(user.username)) || (searchQuery.includes(user.display_name))).map(user => user.user_id);
+                const filteredUsers = users.filter(user => (user.username.includes(searchQueryState)) || (user.display_name.includes(searchQueryState)) || (searchQueryState.includes(user.username)) || (searchQueryState.includes(user.display_name))).map(user => user.user_id);
                 setSearchResultsInUsers(filteredUsers);
                 const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQueryState)) || (searchQueryState.includes(post.post_caption)));
                 setSearchResultsInPosts(filteredPosts);
