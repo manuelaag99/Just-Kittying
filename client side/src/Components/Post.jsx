@@ -124,7 +124,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
             comment_id = uuidv4();
             comment_date = new Date(Date.now()).toISOString();
             try {
-                const { error } = await supabase.from("jk-comments").insert({ comment_date: comment_date, comment_id: comment_id, comment_post_id: post.post_id, comment_creator_id: userId , comment_text: newComment, comment_notif_status: "pending" });
+                const { error } = await supabase.from("jk-comments").insert({ comment_date: comment_date, comment_id: comment_id, comment_post_id: post.post_id, comment_post_creator_id: post.post_creator_id, comment_creator_id: userId , comment_text: newComment, comment_notif_status: "pending" });
                 if (error) console.log(error);
             } catch (err) {
                 console.log(err);

@@ -4,17 +4,28 @@ import { supabase } from '../supabase/client';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function Notification ({ index, notification }) {
-
+export default function Notification ({ commentNotif, friendRequest, index }) {
+    if (commentNotif) console.log(commentNotif)
     const [userInfo, setUserInfo] = useState();
     async function fetchUserInfo () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", notification.request_receiver_id);
-            console.log(data)
-            if (error) console.log(error);
-            setUserInfo(data[0]);
-        } catch (err) {
-            console.log(err);
+        if (friendRequest) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", friendRequest.request_receiver_id);
+                console.log(data)
+                if (error) console.log(error);
+                setUserInfo(data[0]);
+            } catch (err) {
+                console.log(err);
+            }
+        } else if (commentNotif) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("*").eq("user_id", commentNotif.comment_creator_id);
+                console.log(data)
+                if (error) console.log(error);
+                setUserInfo(data[0]);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
@@ -52,7 +63,7 @@ export default function Notification ({ index, notification }) {
 
     console.log(userInfo)
 
-    if (!userInfo || !notification) {
+    if (!userInfo) {
         <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
             <div className="flex flex-row w-full">
                 <div className="flex flex-col w-7/10">
@@ -62,25 +73,42 @@ export default function Notification ({ index, notification }) {
             </div>
         </div>
     } else {
-        return (
-            <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
-                <div className="flex flex-row w-full">
-                    <div className="flex flex-col w-7/10">
-                        <div className="flex w-full">
-                            {notification && <p>{userInfo.display_name} wants to add you as a friend. {notification.request_message &&  '"' + notification.request_message + '"'}</p>}
+        if (friendRequest) {
+            return (
+                <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
+                    <div className="flex flex-row w-full">
+                        <div className="flex flex-col w-7/10">
+                            <div className="flex w-full">
+                                {friendRequest && <p>{userInfo.display_name} wants to add you as a friend. {friendRequest.request_message &&  '"' + friendRequest.request_message + '"'}</p>}
+                            </div>
+                            <div className="text-gray-500 w-full font-light">
+                                {friendRequest && friendRequest.created_at}
+                            </div>
                         </div>
-                        <div className="text-gray-500 w-full font-light">
-                            {notification && notification.created_at}
+                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => acceptRequestHandle(friendRequest)}>
+                            <Check fontSize="large" />
+                        </button>
+                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => denyRequestHandle(friendRequest)}>
+                            <Close fontSize="large" />
+                        </button>
+                    </div>
+                </div>
+            )
+        } else if (commentNotif) {
+            return (
+                <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
+                    <div className="flex flex-row w-full">
+                        <div className="flex flex-col w-9/10">
+                            <div className="flex w-full">
+                                {commentNotif && <p>{userInfo.display_name} has commented on your post. {'"' + commentNotif.comment_text + '"'}</p>}
+                            </div>
+                            <div className="text-gray-500 w-full font-light">
+                                {commentNotif && commentNotif.comment_date}
+                            </div>
                         </div>
                     </div>
-                    <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => acceptRequestHandle(notification)}>
-                        <Check fontSize="large" />
-                    </button>
-                    <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => denyRequestHandle(notification)}>
-                        <Close fontSize="large" />
-                    </button>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
