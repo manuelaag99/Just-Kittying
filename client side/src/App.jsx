@@ -49,7 +49,7 @@ export default function App () {
 		<Router>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
-				<Route path="/myprofile" element={<UserProfilePage />} />
+				<Route path="/profile/:userid" element={<UserProfilePage />} />
 				<Route path="/settings" element={<ProfileSettingsPage />} />
 				<Route path="/post/:postid" element={<PostOrPostsPage />} />
 				<Route path="/searchresults" element={<SearchResultsPage />} />

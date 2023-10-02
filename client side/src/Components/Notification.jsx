@@ -3,9 +3,15 @@ import Close from '@mui/icons-material/Close';
 import { supabase } from '../supabase/client';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from "react-router-dom";
 
 export default function Notification ({ commentNotif, friendRequest, index }) {
-    if (commentNotif) console.log(commentNotif)
+    const navigate = useNavigate();
+
+    function navigateToPost () {
+
+    }
+
     const [userInfo, setUserInfo] = useState();
     async function fetchUserInfo () {
         if (friendRequest) {
@@ -60,8 +66,7 @@ export default function Notification ({ commentNotif, friendRequest, index }) {
             console.log(err);
         }
     }
-
-    console.log(userInfo)
+    console.log(friendRequest)
 
     if (!userInfo) {
         <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
@@ -75,20 +80,20 @@ export default function Notification ({ commentNotif, friendRequest, index }) {
     } else {
         if (friendRequest) {
             return (
-                <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
+                <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto hover:bg-gray-200 duration-200 " key={index}>
                     <div className="flex flex-row w-full">
-                        <div className="flex flex-col w-7/10">
-                            <div className="flex w-full">
-                                {friendRequest && <p>{userInfo.display_name} wants to add you as a friend. {friendRequest.request_message &&  '"' + friendRequest.request_message + '"'}</p>}
-                            </div>
-                            <div className="text-gray-500 w-full font-light">
-                                {friendRequest && friendRequest.created_at}
-                            </div>
-                        </div>
-                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => acceptRequestHandle(friendRequest)}>
+                        <button className="flex flex-col w-7/10" onClick={() => navigate("/profile/" + friendRequest.request_sender_id)}>
+                            {friendRequest && <div className="flex w-full text-left">
+                                <p>{userInfo.display_name} wants to add you as a friend. {friendRequest.request_message &&  '"' + friendRequest.request_message + '"'}</p>
+                            </div>}
+                            {friendRequest && <div className="text-gray-500 w-full font-light text-left">
+                                <p>{friendRequest.created_at}</p>
+                            </div>}
+                        </button>
+                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-400 duration-200 " onClick={() => acceptRequestHandle(friendRequest)}>
                             <Check fontSize="large" />
                         </button>
-                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-300 duration-200 " onClick={() => denyRequestHandle(friendRequest)}>
+                        <button className="flex justify-center items-start w-15 text-black hover:text-gray-400 duration-200 " onClick={() => denyRequestHandle(friendRequest)}>
                             <Close fontSize="large" />
                         </button>
                     </div>
@@ -96,18 +101,19 @@ export default function Notification ({ commentNotif, friendRequest, index }) {
             )
         } else if (commentNotif) {
             return (
-                <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>
+                <button className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto hover:bg-gray-200 duration-200 " key={index} onClick={() => navigate("/post/" + commentNotif.comment_post_id)} >
                     <div className="flex flex-row w-full">
                         <div className="flex flex-col w-9/10">
-                            <div className="flex w-full">
-                                {commentNotif && <p>{userInfo.display_name} has commented on your post. {'"' + commentNotif.comment_text + '"'}</p>}
-                            </div>
-                            <div className="text-gray-500 w-full font-light">
-                                {commentNotif && commentNotif.comment_date}
-                            </div>
+                            {commentNotif && <div className="flex w-full text-left">
+                                <p>{userInfo.display_name} has commented on your post. </p>
+                                <p>{" " + '"' + commentNotif.comment_text + '"'}</p>
+                            </div>}
+                            {commentNotif && <div className="text-gray-500 w-full font-light text-left">
+                                <p>{commentNotif.comment_date}</p>
+                            </div>}
                         </div>
                     </div>
-                </div>
+                </button>
             )
         }
     }
