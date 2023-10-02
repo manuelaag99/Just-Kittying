@@ -20,8 +20,19 @@ export default function Notifications ({ userId }) {
         }
     }
 
+    async function fetchCommentNotifications () {
+        try {
+            const { data, error } = await supabase.from("jk-comments").select("*").eq("comment_post_creator_id", userId);
+            if (error) console.log(error);
+            setNotifications(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         fetchUserRequests();
+        fetchCommentNotifications();
     }, [])
 
     if (!notifications) {
