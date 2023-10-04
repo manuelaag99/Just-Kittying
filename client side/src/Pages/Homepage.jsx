@@ -100,6 +100,7 @@ export default function HomePage ({ }) {
         setHomePageContent("timeline");
     }
 
+    console.log(user_id)
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />

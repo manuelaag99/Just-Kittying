@@ -11,6 +11,7 @@ import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
 export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQuery, sendSearchQuery, userId }) {
+    console.log(userId)
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     function closeMenuHandle () {
