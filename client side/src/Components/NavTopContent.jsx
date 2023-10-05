@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
-export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQuery, sendSearchQuery, userId }) {
+export default function NavTopContent ({ isHomePage, onReturnToTimeLine, userId }) {
     console.log(userId)
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
@@ -30,11 +30,11 @@ export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQ
         }
     }
 
-    function sendSearchQueryHandle (searchQueryState) {
-        if (isHomePage) {
-            sendSearchQuery(searchQueryState)
-        }
-    }
+    // function sendSearchQueryHandle (searchQueryState) {
+    //     if (isHomePage) {
+    //         sendSearchQuery(searchQueryState)
+    //     }
+    // }
 
     return (
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
@@ -48,7 +48,7 @@ export default function NavTopContent ({ isHomePage, onReturnToTimeLine, searchQ
                 </button>
             </div>
 
-            <SearchBar sendSearchQuery={(searchQueryState) => sendSearchQueryHandle(searchQueryState)} searchQuery={searchQuery} />
+            <SearchBar />
 
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto  text-var-3 ">
                 <button className="hidden md:block hover:text-var-3-hovered " >

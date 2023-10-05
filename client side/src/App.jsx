@@ -8,6 +8,7 @@ import PostOrPostsPage from "./Pages/PostOrPostsPage";
 import UserProfilePage from "./Pages/UserProfilePage";
 import SearchResultsPage from "./Pages/SearchResultsPage";
 import NotificationsPage from "./Pages/NotificationsPage";
+import { SearchProvider } from "./context/SearchQueryContext";
 
 export default function App () {
 	const [ token, setToken ] = useState(null);
@@ -46,15 +47,17 @@ export default function App () {
 	// }, [logIn]);
 
   	return <>
-		<Router>
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/profile/:userid" element={<UserProfilePage />} />
-				<Route path="/settings" element={<ProfileSettingsPage />} />
-				<Route path="/post/:postid" element={<PostOrPostsPage />} />
-				<Route path="/searchresults" element={<SearchResultsPage />} />
-				<Route path="/notifications" element={<NotificationsPage />} />
-			</Routes>
-		</Router>
+		<SearchProvider>
+			<Router>
+				<Routes>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/profile/:userid" element={<UserProfilePage />} />
+					<Route path="/settings" element={<ProfileSettingsPage />} />
+					<Route path="/post/:postid" element={<PostOrPostsPage />} />
+					<Route path="/searchresults" element={<SearchResultsPage />} />
+					<Route path="/notifications" element={<NotificationsPage />} />
+				</Routes>
+			</Router>
+		</SearchProvider>
   	</>
 };

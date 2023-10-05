@@ -107,7 +107,7 @@ export default function HomePage ({ }) {
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent isHomePage={true} onReturnToTimeLine={returnToTimline} sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />} />
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
             {homePageContent === "timeline" && <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />}
-            {homePageContent === "search" && <SearchResultsPage searchQuery={searchQuery} searchResultsInPosts={searchResultsInPosts} searchResultsInUsers={searchResultsInUsers} userId={user_id} />}
+            {homePageContent === "search" && <SearchResultsPage searchResultsInPosts={searchResultsInPosts} searchResultsInUsers={searchResultsInUsers} userId={user_id} />}
         </div>
     )
 };
