@@ -74,40 +74,13 @@ export default function HomePage ({ }) {
         fetchPosts();
     }, [])
 
-    const [homePageContent, setHomePageContent] = useState("timeline");
-    const [searchQuery, setSearchQuery] = useState();
-    const [searchResultsInUsers, setSearchResultsInUsers] = useState();
-    const [searchResultsInPosts, setSearchResultsInPosts] = useState();
-
-    function sendSearchQueryToSearchResultsPage (searchQueryState) {
-        setSearchQuery(searchQueryState);
-        if (searchQueryState) {
-            if (searchQueryState.trim() !== "") {
-                const filteredUsers = users.filter(user => (user.username.includes(searchQueryState)) || (user.display_name.includes(searchQueryState)) || (searchQueryState.includes(user.username)) || (searchQueryState.includes(user.display_name))).map(user => user.user_id);
-                setSearchResultsInUsers(filteredUsers);
-                const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQueryState)) || (searchQueryState.includes(post.post_caption)));
-                setSearchResultsInPosts(filteredPosts);
-                setHomePageContent("search");
-            } else {
-                setSearchResultsInUsers();
-                setSearchResultsInPosts();
-                setHomePageContent("search");
-            }
-        }
-    }
-
-    function returnToTimline () {
-        setHomePageContent("timeline");
-    }
-
     console.log(user_id)
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent isHomePage={true} onReturnToTimeLine={returnToTimline} sendSearchQuery={(searchQueryState) => sendSearchQueryToSearchResultsPage(searchQueryState)} userId={user_id} />} />
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
             {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
-            {homePageContent === "timeline" && <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />}
-            {homePageContent === "search" && <SearchResultsPage searchResultsInPosts={searchResultsInPosts} searchResultsInUsers={searchResultsInUsers} userId={user_id} />}
+            <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />
         </div>
     )
 };

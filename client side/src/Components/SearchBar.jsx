@@ -1,8 +1,10 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { useEffect, useState } from "react";
 import { useSearch } from '../context/SearchQueryContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchBar () {
+    const navigate = useNavigate();
     const { searchQuery, setSearchQuery } = useSearch();
     // const [searchQueryState, setSearchQueryState] = useState("");
 
@@ -20,6 +22,7 @@ export default function SearchBar () {
 
     function submitSearchHandle (e) {
         e.preventDefault();
+        navigate("/searchresults");
         // sendSearchQuery(searchQuery);
     }
 

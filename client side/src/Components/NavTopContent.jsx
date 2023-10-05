@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
-export default function NavTopContent ({ isHomePage, onReturnToTimeLine, userId }) {
+export default function NavTopContent ({ userId }) {
     console.log(userId)
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
@@ -22,13 +22,13 @@ export default function NavTopContent ({ isHomePage, onReturnToTimeLine, userId 
         setShowMenu(true)
     }
 
-    function clickOnLogoHandle () {
-        if (isHomePage) {
-            onReturnToTimeLine()
-        } else {
-            navigate("/");
-        }
-    }
+    // function clickOnLogoHandle () {
+    //     if (isHomePage) {
+    //         onReturnToTimeLine()
+    //     } else {
+    //         navigate("/");
+    //     }
+    // }
 
     // function sendSearchQueryHandle (searchQueryState) {
     //     if (isHomePage) {
@@ -40,12 +40,12 @@ export default function NavTopContent ({ isHomePage, onReturnToTimeLine, userId 
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
             <Menu onClose={closeMenuHandle} open={showMenu} userId={userId} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
-                <button className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" onClick={clickOnLogoHandle}>
+                <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/">
                     <div className="flex h-full w-fit sm:w-3/10 md:w-fit items-center">
                         <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
                     </div>
                     <p className="sm:w-fit hidden md:block sm:pl-2 hover:text-var-3-hovered">Just Kittying!</p>
-                </button>
+                </Link>
             </div>
 
             <SearchBar />
