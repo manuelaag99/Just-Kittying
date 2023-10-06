@@ -22,7 +22,7 @@ export default function UserInList ({ index, userId, userInListId }) {
 
     useEffect(() => {
         fetchUserInfo();
-    }, [])
+    }, [userInListId])
 
     if (!userId && !userInfo) {
         return (

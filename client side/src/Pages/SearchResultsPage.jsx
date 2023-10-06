@@ -102,6 +102,7 @@ export default function SearchResultsPage () {
     }, [users, posts, searchQuery])
 
     console.log(searchResultsInUsers)
+    console.log(searchResultsInPosts)
 
     if (!posts || !users) {
         return (
@@ -113,12 +114,12 @@ export default function SearchResultsPage () {
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
                 {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
-                <div className="flex flex-col w-full mt-2">
-                    <div className="flex flex-row mt-16 sm:mt-20">
+                <div className="flex flex-col w-full mt-2 justify-center">
+                    <div className="flex flex-row w-full sm:w-3/5 mt-16 mx-auto sm:mt-20">
                         <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(postsTab)} >Posts</button>
                         <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(usersTab)} >Users</button>
                     </div>
-                    <div className="flex w-full">
+                    <div className="flex w-full sm:w-3/5 mx-auto">
                         {(tabsSection === postsTab) && <div className="flex flex-row w-full">
                             <div className="w-1/2 bg-var-1-dark h-[3px]"></div>
                             <div className="w-1/2 bg-var-1 h-[3px]"></div>
@@ -129,7 +130,7 @@ export default function SearchResultsPage () {
                         </div>}
                     </div>
     
-                    {searchResultsInUsers && searchResultsInPosts && <div className="flex flex-col w-full">
+                    {searchResultsInUsers && searchResultsInPosts && <div className="flex flex-col w-full sm:w-3/5 mx-auto">
                         {(tabsSection === postsTab) && <PostsGrid postsArray={searchResultsInPosts} />}
                         {(tabsSection === usersTab) && <UsersList selectedUsersArray={searchResultsInUsers} userId={user_id} />}
                     </div>}

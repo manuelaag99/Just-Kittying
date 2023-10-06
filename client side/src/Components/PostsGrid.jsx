@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import React from "react";
 import { Link } from "react-router-dom";
-import LoadingSpinner from "./Portals/LoadingSpinner";
 
 export default function PostsGrid ({ postsArray, userId }) {
-    const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
-
     if (!postsArray || postsArray.length === 0) {
         return (
             <div className="flex justify-center mt-5">

@@ -11,8 +11,6 @@ import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 
 export default function NavTopContent ({ userId }) {
-    console.log(userId)
-    const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     function closeMenuHandle () {
         setShowMenu(false)
@@ -21,20 +19,6 @@ export default function NavTopContent ({ userId }) {
     function openMenuHandle () {
         setShowMenu(true)
     }
-
-    // function clickOnLogoHandle () {
-    //     if (isHomePage) {
-    //         onReturnToTimeLine()
-    //     } else {
-    //         navigate("/");
-    //     }
-    // }
-
-    // function sendSearchQueryHandle (searchQueryState) {
-    //     if (isHomePage) {
-    //         sendSearchQuery(searchQueryState)
-    //     }
-    // }
 
     return (
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
