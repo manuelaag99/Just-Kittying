@@ -7,7 +7,6 @@ import TimeLine from "../Components/TimeLine";
 import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
 import { useNavigate } from "react-router-dom";
-import SearchResultsPage from "./SearchResultsPage";
 
 export default function HomePage ({ }) {
     const navigate = useNavigate();

@@ -103,36 +103,42 @@ export default function SearchResultsPage () {
 
     console.log(searchResultsInUsers)
 
-    return (
-        <div className="bg-var-1 w-full h-full">
-            <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
-            {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
-            <div className="flex flex-col w-full mt-2">
-                <div className="flex flex-row mt-16 sm:mt-20">
-                    <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(postsTab)} >Posts</button>
-                    <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(usersTab)} >Users</button>
-                </div>
-                <div className="flex w-full">
-                    {(tabsSection === postsTab) && <div className="flex flex-row w-full">
-                        <div className="w-1/2 bg-var-1-dark h-[3px]"></div>
-                        <div className="w-1/2 bg-var-1 h-[3px]"></div>
+    if (!posts || !users) {
+        return (
+            <LoadingSpinner open={true} />
+        )
+    } else {
+        return (
+            <div className="bg-var-1 w-full h-full">
+                <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
+                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
+                {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
+                <div className="flex flex-col w-full mt-2">
+                    <div className="flex flex-row mt-16 sm:mt-20">
+                        <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(postsTab)} >Posts</button>
+                        <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(usersTab)} >Users</button>
+                    </div>
+                    <div className="flex w-full">
+                        {(tabsSection === postsTab) && <div className="flex flex-row w-full">
+                            <div className="w-1/2 bg-var-1-dark h-[3px]"></div>
+                            <div className="w-1/2 bg-var-1 h-[3px]"></div>
+                        </div>}
+                        {(tabsSection === usersTab) && <div className="flex flex-row w-full">
+                            <div className="w-1/2 bg-var-1 h-[3px]"></div>
+                            <div className="w-1/2 bg-var-1-dark h-[3px]"></div>
+                        </div>}
+                    </div>
+    
+                    {searchResultsInUsers && searchResultsInPosts && <div className="flex flex-col w-full">
+                        {(tabsSection === postsTab) && <PostsGrid postsArray={searchResultsInPosts} />}
+                        {(tabsSection === usersTab) && <UsersList selectedUsersArray={searchResultsInUsers} userId={user_id} />}
                     </div>}
-                    {(tabsSection === usersTab) && <div className="flex flex-row w-full">
-                        <div className="w-1/2 bg-var-1 h-[3px]"></div>
-                        <div className="w-1/2 bg-var-1-dark h-[3px]"></div>
+                    
+                    {!searchResultsInUsers || !searchResultsInPosts && <div className="flex flex-col w-full">
+                        <LoadingSpinner open={true} />
                     </div>}
                 </div>
-
-                {searchResultsInUsers && searchResultsInPosts && <div className="flex flex-col w-full">
-                    {(tabsSection === postsTab) && <PostsGrid postsArray={searchResultsInPosts} />}
-                    {(tabsSection === usersTab) && <UsersList selectedUsersArray={searchResultsInUsers} userId={user_id} />}
-                </div>}
-                
-                {!searchResultsInUsers || !searchResultsInPosts && <div className="flex flex-col w-full">
-                    <LoadingSpinner open={true} />
-                </div>}
             </div>
-        </div>
-    )
+        )
+    }
 }

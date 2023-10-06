@@ -46,9 +46,6 @@ export default function PostOrPostsPage () {
         checkIfUserHasDisplayName();
     }, [])
 
-
-    console.log(posts)
-
     const [postsArray, setPostsArray] = useState([]);
 
     useEffect(() => {
