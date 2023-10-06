@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function PostsGrid ({ postsArray, userId }) {
+    const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
+
     if (!postsArray || postsArray.length === 0) {
         return (
             <div className="flex justify-center mt-5">

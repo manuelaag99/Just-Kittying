@@ -85,13 +85,24 @@ export default function SearchResultsPage () {
         if (searchQuery) {
             if (searchQuery.trim() !== "") {
                 const filteredUsers = users.filter(user => (user.username.includes(searchQuery)) || (user.display_name.includes(searchQuery)) || (searchQuery.includes(user.username)) || (searchQuery.includes(user.display_name))).map(user => user.user_id);
-                setSearchResultsInUsers(filteredUsers);
+                if (filteredUsers.length < 1) {
+                    setSearchResultsInUsers([]);
+                } else {
+                    setSearchResultsInUsers(filteredUsers);
+                }
                 const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQuery)) || (searchQuery.includes(post.post_caption)));
-                setSearchResultsInPosts(filteredPosts);
+                if (filteredPosts.length < 1) {
+                    setSearchResultsInPosts([]);
+                } else {
+                    setSearchResultsInPosts(filteredPosts);
+                }
             } else {
-                setSearchResultsInUsers();
-                setSearchResultsInPosts();
+                setSearchResultsInUsers([]);
+                setSearchResultsInPosts([]);
             }
+        } else {
+            setSearchResultsInUsers([]);
+            setSearchResultsInPosts([]);
         }
     }
 

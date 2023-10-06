@@ -7,6 +7,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 export default function UserInList ({ index, userId, userInListId }) {
     const [userInfo, setUserInfo] = useState();
+    console.log(userInListId)
 
     async function fetchUserInfo () {
         if (userInListId) {
