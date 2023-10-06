@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import LoadingSpinner from "./Portals/LoadingSpinner";
 import Post from "./Post";
 
 import { COMMENTS } from "../HARDCODED INFO";
@@ -9,7 +8,6 @@ import { USERS } from "../HARDCODED INFO";
 import { supabase } from "../supabase/client";
 
 export default function TimeLine ({ fetchPosts, posts, userId, users }) {
-    console.log(posts)
     // fetch posts (based on if its logged in or not, and if it is logged in then based on their preferences)
     // fetch users 
     // fetch comments
