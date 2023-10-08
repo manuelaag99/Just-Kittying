@@ -6,7 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { inputReducer } from "../reducers";
 
-export default function InputForForm ({ individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, isInSettingsPage, isPasswordField, isSelect, labelClassnames, labelText, largeDivClassnames, optionsForSelect, smallDivClassnames }) {
+export default function InputForForm ({ errorMessage, individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, instructionMessage, isInSettingsPage, isPasswordField, isSelect, labelClassnames, labelText, largeDivClassnames, optionsForSelect, smallDivClassnames }) {
     const initialState = { value: inputValue, isValid: inputValidity };
 
     const [individualInputState, dispatch] = useReducer(inputReducer, initialState);
@@ -31,6 +31,7 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
         setPasswordVisibility(prevValue => !prevValue);
     }
 
+    console.log(individualInputState)
     return (
         <div className={largeDivClassnames} >
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
@@ -54,6 +55,11 @@ export default function InputForForm ({ individualInputAction, inputClassnames, 
                 </select>}
 
             </div>
+            {!isInSettingsPage && instructionMessage && <div className="flex justify-center items-center bg-var-1 border border-black border-solid rounded-post absolute top-14 w-full z-10 shadow-2xl mx-auto px-3 ">
+                <p className="text-center text-gray-500 m-2">
+                    {instructionMessage}
+                </p>
+            </div>}
         </div>
     )
 }
