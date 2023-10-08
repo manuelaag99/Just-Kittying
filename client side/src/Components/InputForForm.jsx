@@ -7,7 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { inputReducer } from "../reducers";
 import InstructionOrErrorMessageForInput from "./InstructionOrErrorMessageForInputs";
 
-export default function InputForForm ({ errorMessage, individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, instructionMessage, isInSettingsPage, isPasswordField, isSelect, labelClassnames, labelText, largeDivClassnames, optionsForSelect, smallDivClassnames }) {
+export default function InputForForm ({ areBothPasswordsTheSame, errorMessage, individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, instructionMessage, isInSettingsPage, isPasswordField, isSelect, labelClassnames, labelText, largeDivClassnames, optionsForSelect, smallDivClassnames }) {
     const initialState = { value: inputValue, isValid: inputValidity };
 
     const [individualInputState, dispatch] = useReducer(inputReducer, initialState);
@@ -60,7 +60,7 @@ export default function InputForForm ({ errorMessage, individualInputAction, inp
 
             {!isInSettingsPage && instructionMessage && individualInputState.isActive && !individualInputState.isTouched && <InstructionOrErrorMessageForInput classnames=" bg-var-1 border-black text-gray-500  " message={instructionMessage} />}
 
-            {!isInSettingsPage && errorMessage && !individualInputState.isActive && individualInputState.isTouched && !individualInputState.isValid && <InstructionOrErrorMessageForInput classnames=" bg-red-200 border-red-400 text-red-600 " message={errorMessage} />}
+            {!isInSettingsPage && errorMessage && !individualInputState.isActive && individualInputState.isTouched && (!individualInputState.isValid || !areBothPasswordsTheSame) && <InstructionOrErrorMessageForInput classnames=" bg-red-200 border-red-400 text-red-600 " message={errorMessage} />}
 
         </div>
     )
