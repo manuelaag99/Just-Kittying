@@ -72,6 +72,11 @@ export default function ProfileSettingsPage () {
         }
     }
 
+    function logOutHandle () {
+        auth.logout();
+        navigate("/")    
+    }
+
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
     } else {
@@ -112,10 +117,10 @@ export default function ProfileSettingsPage () {
                             <p>Change password</p>
                             <KeyboardArrowRightIcon />
                         </div>
-                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
+                        <button className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer" onClick={logOutHandle}>
                             <p>Log Out</p>
                             <KeyboardArrowRightIcon />
-                        </div>
+                        </button>
                         <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-red-300 duration-200 cursor-pointer">
                             <p className="text-red-700">Delete my account</p>
                             <KeyboardArrowRightIcon />
