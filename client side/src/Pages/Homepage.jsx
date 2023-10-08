@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import NavigationBar from "../Components/NavigationBar";
 import NavBottomContent from "../Components/NavBottomContent";
@@ -7,11 +7,13 @@ import TimeLine from "../Components/TimeLine";
 import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function HomePage ({ }) {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
-    const userIsLoggedIn = false; //remove 
+    console.log(auth)
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -73,12 +75,12 @@ export default function HomePage ({ }) {
         fetchPosts();
     }, [])
 
-    console.log(user_id)
+    console.log(auth.isLoggedIn)
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
             <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
-            {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
+            {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
             <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />
         </div>
     )

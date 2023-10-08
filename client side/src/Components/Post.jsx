@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -14,9 +14,10 @@ import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Post ({ classnames, fetchAgain, index, post, userId }) {
-
+    const auth = useContext(AuthContext);
     
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -149,7 +150,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         setShowInput(true)
     }
     useEffect(() => {
-        if (showInput) inputRef.current.focus();
+        if (auth.isLoggedIn && showInput) inputRef.current.focus();
     }, [showInput])
 
     function removeCommentBeingEdited(array, idToRemove) {
@@ -252,7 +253,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                             return <Comment commentData={comment} editSpecificComment={() => editCommentHandle(comment)} fetchAgain={() => fetchPostComments()} key={index} index={index} userId={userId} />
                         })}
                         
-                        {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
+                        {auth.isLoggedIn && showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
                             <input className="outline-none sm:w-9/10 w-8/10 h-fit" onChange={postCommentHandle} placeholder="Write your comment..." ref={inputRef} type="text" value={newComment} />
                             <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">{postCommentButtonText}</button>
                         </form>}

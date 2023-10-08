@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { supabase } from "../supabase/client";
 import RoundPhoto from "./RoundPhoto";
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import { AuthContext } from "../context/AuthContext";
 
 export default function UserInList ({ index, userId, userInListId }) {
+    const auth = useContext(AuthContext);
     const [userInfo, setUserInfo] = useState();
 
     async function fetchUserInfo () {
@@ -46,12 +48,12 @@ export default function UserInList ({ index, userId, userInListId }) {
                     </div>
                 </div>
                 <div className="flex flex-row w-fit justify-center items-center">
-                    {(userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
                         <p className="text-center">
                             <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
-                    {(userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
                         <p className="text-center">
                             <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>

@@ -57,6 +57,7 @@ export default function App () {
 							<Route path="/*" element={<HomePage />} />
 							<Route path="/" element={<HomePage />} />
 							<Route path="/profile/:userid" element={<UserProfilePage />} />
+							<Route path="/searchresults" element={<SearchResultsPage />} />
 						</Routes>
 					</Router>
 				</SearchProvider>
