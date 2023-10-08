@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
@@ -10,8 +10,10 @@ import InputForForm from "../InputForForm";
 import { useForm } from "../custom-hooks";
 import { supabase } from "../../supabase/client";
 import MessageWindow from "./MessageWindow";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, switchToSignUp, textForSignInOrSignUpButton }) {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     
     const initialFormState = {
@@ -87,6 +89,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     password: stateOfForm.inputs.password.value
                 }
             )
+            console.log(data)
             console.log(data.user.id)
             user_id = data.user.id;
             if (error) {
@@ -95,6 +98,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 setIsMessageWindowOpen(true);
                 console.log(error);
             } else if (!error) {
+                auth.login(data.user.id, data.session.access_token);
                 try {
                     const { data, error } = await supabase.from("jk-users").select("display_name").eq("email", stateOfForm.inputs.email.value);
                     if (error) console.log(error);

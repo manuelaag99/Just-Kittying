@@ -16,6 +16,7 @@ import AddButton from "../Components/Portals/AddButton";
 import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageWindow from "../Components/Portals/MessageWindow";
+import NavBottomContent from "../Components/NavBottomContent";
 
 
 export default function UserProfilePage () {
@@ -24,6 +25,7 @@ export default function UserProfilePage () {
 
     let { userid } = useParams();
     let user_id = userid
+    const userIsLoggedIn = false; //remove 
     // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
@@ -164,12 +166,13 @@ export default function UserProfilePage () {
     } else {
         return (
             <div>
-                <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />
-                <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />
+                {userIsLoggedIn && <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />}
+                {userIsLoggedIn && <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />}
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent isHomePage={false} />} />
+                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
+                {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
-                    <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-[1000px]">
+                    <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-fit">
                         
                         <div className="flex-col">
                             <div className="flex flex-row h-[100px]">
