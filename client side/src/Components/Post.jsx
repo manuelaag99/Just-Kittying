@@ -15,9 +15,31 @@ import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import SignInOrSignUpWindow from "./Portals/SignInOrSignUpWindow";
 
 export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const auth = useContext(AuthContext);
+
+    const [signInWindow, setSignInWindow] = useState(false);
+    function closeSignInHandle () {
+        setSignInWindow(false);
+    }
+    function openSignInHandle () {
+        setSignInWindow(true);
+    }
+
+    const [signUpWindow, setSignUpWindow] = useState(false);
+    function closeSignUpHandle () {
+        setSignUpWindow(false);
+    }
+    function openSignUpHandle () {
+        setSignUpWindow(true);
+    }
+
+    function switchHandle () {
+        setSignUpWindow(prevValue => !prevValue);
+        setSignInWindow(prevValue => !prevValue);
+    }
     
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -91,26 +113,35 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
 
     let newLikeId;
     async function likePost() {
-        newLikeId = uuidv4();
-        try {
-            const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: post.post_id });
-            if (error) console.log(error);
-            setFavorite(true);
-        } catch (err) {
-            console.log(err);
+        if (auth.isLoggedIn) {
+            newLikeId = uuidv4();
+            try {
+                const { error } = await supabase.from("jk-likes").insert({ like_id: newLikeId, like_creator_id: userId, like_post_id: post.post_id });
+                if (error) console.log(error);
+                setFavorite(true);
+            } catch (err) {
+                console.log(err);
+            }
+            fetchPostLikes();
+        } else {
+            openSignInHandle();
         }
-        fetchPostLikes();
+        
     }
 
     async function unlikePost() {
-        try {
-            const { error } = await supabase.from("jk-likes").delete().eq("like_creator_id", userId);
-            if (error) console.log(error);
-            setFavorite(false);
-        } catch (err) {
-            console.log(err);
+        if (auth.isLoggedIn) {
+            try {
+                const { error } = await supabase.from("jk-likes").delete().eq("like_creator_id", userId);
+                if (error) console.log(error);
+                setFavorite(false);
+            } catch (err) {
+                console.log(err);
+            }
+            fetchPostLikes();
+        } else {
+            openSignInHandle();
         }
-        fetchPostLikes();
     }
 
     const [postCommentButtonText, setPostCommentButtonText] = useState("Post");
@@ -195,7 +226,8 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     } else if (postUserData) {
         return (
             <div className={"w-full h-fit flex flex-col border-var-2 border-2 border-solid rounded-post my-10 " + classnames} key={index}>
-    
+                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign in"} onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
+                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
                     <Link className="flex flex-col w-8/10 h-full px-2" onClick={() => setPostOptions(false)} to={"/profile/" + postUserData.user_id}>
