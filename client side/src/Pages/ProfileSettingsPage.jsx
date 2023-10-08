@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import CancelIcon from '@mui/icons-material/Cancel';
 import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import InputForForm from "../Components/InputForForm";
 import RoundPhoto from "../Components/RoundPhoto";
@@ -14,7 +12,6 @@ import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import MessageWindow from "../Components/Portals/MessageWindow";
 
 import { AuthContext } from "../context/AuthContext";
-import { formReducer } from "../reducers";
 import { useForm } from "../Components/custom-hooks";
 import { supabase } from "../supabase/client";
 
@@ -84,6 +81,17 @@ export default function ProfileSettingsPage () {
         setTextForConfirmWindow("Are you sure you want to delete your account? This is permanent.");
         setConfirmWindowVisibility(true);
     }
+    function changePasswordHandle () {
+        setTextForConfirmWindow("Are you sure you want to change your password? If you confirm, you will get an email with a link to change it.");
+        setConfirmWindowVisibility(true);
+    }
+    function closeConfirmWindowAndThenOpenMessageWindow () {
+        if (textForConfirmWindow === "Are you sure you want to change your password? If you confirm, you will get an email with a link to change it.") {
+            setTextForMessageWindow("Check your email to change your password.")
+            setIsMessageWindowOpen(true);
+        }
+        setConfirmWindowVisibility(false);
+    }
 
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
@@ -91,7 +99,7 @@ export default function ProfileSettingsPage () {
         return (
             <div className="flex flex-col justify-center items-center w-full h-fit">
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={() => setIsMessageWindowOpen(false)} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-                <ConfirmWindow onClose={() => setConfirmWindowVisibility(false)} open={confirmWindowVisibility} textForMessage={textForConfirmWindow} />
+                <ConfirmWindow onCloseConfirmWindowAndThenOpenMessageWindow={closeConfirmWindowAndThenOpenMessageWindow} onClose={() => setConfirmWindowVisibility(false)} open={confirmWindowVisibility} textForMessage={textForConfirmWindow} user={userInfo} />
                 <div className="flex flex-row justify-between w-full h-fit bg-var-1 drop-shadow-navbar z-10">
                     <Link className="flex flex-row items-center w-fit pl-1 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100" to="/">
                         <KeyboardArrowLeftIcon />
@@ -122,10 +130,9 @@ export default function ProfileSettingsPage () {
                         
                         <InputForForm optionsForSelect={[{ value: "friends", text: "Friends only"}, { value: "all", text: "All"}]} individualInputAction={formHandler} inputClassnames="w-full pt-1 outline-none" inputName="feedpreference" inputValidity={(userInfo.feed_preference && true) || false} inputValue={userInfo.feed_preference} isInSettingsPage={true} isSelect={true} labelClassnames="w-4/10 pr-2" labelText="Feed preference: " largeDivClassnames="flex flex-row w-full h-fit items-center mb-3 pr-2 pl-3 " smallDivClassnames="flex flex-col w-6/10 px-2 "  />
 
-                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer">
+                        <button className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer" onClick={changePasswordHandle}>
                             <p>Change password</p>
-                            <KeyboardArrowRightIcon />
-                        </div>
+                        </button>
                         <button className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer" onClick={logOutHandle}>
                             <p>Log Out</p>
                         </button>

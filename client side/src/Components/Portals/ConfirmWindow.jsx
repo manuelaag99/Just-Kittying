@@ -5,30 +5,28 @@ import Button from '../Button';
 import { supabase } from '../../supabase/client';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import InputForForm from '../InputForForm';
-import { useForm } from '../custom-hooks';
 
-export default function ConfirmWindow({ onClose, open, textForMessage }) {
+export default function ConfirmWindow({ onClose, onCloseConfirmWindowAndThenOpenMessageWindow, open, textForMessage, user }) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
+    console.log(user)
     function actionButtonHandle () {
         if (textForMessage === "Are you sure you want to delete your account? This is permanent.") {
             deleteAccount();
-        } else if ((textForMessage === "Write in your new password and then rewrite it to confirm it.")) {
+        } else if ((textForMessage === "Are you sure you want to change your password? If you confirm, you will get an email with a link to change it.")) {
             changePassword();
         }
     }
 
     async function changePassword () {
-        if (stateOfForm.isFormValid && stateOfForm.inputs.createNewPassword && stateOfForm.inputs.confirmNewPassword) {
-            try {
-                const { error } = await supabase.from("jk-users").update({ password: stateOfForm.inputs.createNewPassword }).eq("user_id", auth.userId);
-                if (error) console.log(error)
-            } catch (err) {
-                console.log(err);
-            }
+        try {
+            const { data, error } = await supabase.auth.resetPasswordForEmail(user.email);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
         }
+        onCloseConfirmWindowAndThenOpenMessageWindow();
     }
 
     async function deleteAccount () {
@@ -83,17 +81,6 @@ export default function ConfirmWindow({ onClose, open, textForMessage }) {
         }
     }
 
-    const initialFormState = {
-        inputs: {
-            createNewPassword: { value: "", isValid: false },
-            confirmNewPassword: { value: "", isValid: false }
-        },
-        isFormValid: false
-    }
-    const [stateOfForm, formHandler] = useForm(initialFormState);
-
-    console.log(stateOfForm)
-
     const confirmWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-40"></div>
@@ -107,10 +94,6 @@ export default function ConfirmWindow({ onClose, open, textForMessage }) {
                 <div className="py-3 px-6">
                     <p className='text-center'>{textForMessage}</p>
                 </div>
-                {(textForMessage === "Write in your new password and then rewrite it to confirm it.") && <div className="flex flex-col w-full justify-center py-3 px-6">
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="oldPassword" inputPlaceholder="Write your old password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                    <InputForForm smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="newPassword" inputPlaceholder="Create a new password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                </div>}
                 <div className='flex flex-row w-full px-4 pt-2 pb-5 justify-around'>
                     <Button clickButtonFunction={actionButtonHandle} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
                     <Button clickButtonFunction={onClose} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />

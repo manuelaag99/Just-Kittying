@@ -33,7 +33,6 @@ export default function InputForForm ({ areBothPasswordsTheSame, errorMessage, i
         setPasswordVisibility(prevValue => !prevValue);
     }
 
-    console.log(individualInputState)
     return (
         <div className={largeDivClassnames} >
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
