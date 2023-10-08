@@ -13,7 +13,6 @@ export default function HomePage ({ }) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
-    console.log(auth)
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -74,8 +73,7 @@ export default function HomePage ({ }) {
         fetchUsers();
         fetchPosts();
     }, [])
-
-    console.log(auth.isLoggedIn)
+    
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />

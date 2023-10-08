@@ -237,7 +237,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                             <p className="text-postDisplayOrUserName font-extralight text-gray-500">, {post.post_creation_date.split("T")[0]}</p>    
                         </div>
                     </Link>
-                    <div className="flex w-1/10 h-full items-center justify-center relative">
+                    {auth.isLoggedIn && (auth.uId === post.post_creator_id) && <div className="flex w-1/10 h-full items-center justify-center relative">
                         <button className="flex justify-center items-center aspect-square rounded-circular bg-white hover:bg-gray-300 duration-300" onClick={() => setPostOptions((prevValue) => !prevValue)}>
                             <MoreVertIcon className="mx-1 hover:text-gray-700" fontSize="medium" />
                         </button>
@@ -250,7 +250,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                                 Delete post
                             </button>
                         </div>}
-                    </div>
+                    </div>}
                 </div>
     
                 <div className="flex justify-center w-full sm:h-[500px] h-[250px] " onClick={() => setPostOptions(false)}>
