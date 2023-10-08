@@ -18,13 +18,14 @@ import { supabase } from "../supabase/client";
 
 export default function ProfileSettingsPage () {
     const auth = useContext(AuthContext);
+    console.log(auth)
     const navigate = useNavigate();
     // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
     const [userInfo, setUserInfo] = useState()
     useEffect(() => {
         async function fetchData () {
           try {
-            const { data, error } = await supabase.from("jk-users").select().eq("user_id", auth.uId);
+            const { data, error } = await supabase.from("jk-users").select().eq("user_id", auth.userId);
             if (error) console.log(error);
             setUserInfo(data[0])
           } catch (err) {
@@ -36,7 +37,7 @@ export default function ProfileSettingsPage () {
 
     async function updateUserInfo () {
         try {
-            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.uId);
+            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.userId);
             if (error) console.log(error);
         } catch (err) {
             console.log(err)

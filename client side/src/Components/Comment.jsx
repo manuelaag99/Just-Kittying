@@ -54,7 +54,7 @@ export default function Comment ({ commentData, editSpecificComment, fetchAgain,
                     <p className="mr-2 font-bold cursor-pointer" onClick={() => navigate("/profile/" + commentData.comment_creator_id)}>{commentUserData.display_name}</p>
                     <p className="font-light">{commentData.comment_text}</p>
                 </div>
-                {(auth.uId === commentData.comment_creator_id) && <div className="flex flex-row w-2/10 justify-end">
+                {(auth.userId === commentData.comment_creator_id) && <div className="flex flex-row w-2/10 justify-end">
                     {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={editComment}>
                         <EditSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
                     </button>}

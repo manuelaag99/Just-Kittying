@@ -24,7 +24,7 @@ export default function PostOrPostsPage () {
     async function checkIfUserHasDisplayName () {
         if (auth.isLoggedIn) {
             try {
-                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.userId);
                 if (error) console.log(error);
                 if (!error) {
                     if (data[0].display_name === "") {

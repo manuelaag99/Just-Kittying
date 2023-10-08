@@ -32,12 +32,12 @@ export default function Menu({ open, onClose, userId }) {
                         <HomeIcon className="mx-4" fontSize="large" />
                     </Link>
 
-                    {auth.isLoggedIn && <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to={"/profile/" + auth.uId}>
+                    {auth.isLoggedIn && <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" to={"/profile/" + auth.userId}>
                         <p className="w-fit pr-4">My profile</p>
                         <PersonIcon className="mx-4" fontSize="large" />
                     </Link>}
 
-                    {auth.isLoggedIn && <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" state={{ user_id: auth.uId }} to="/notifications">
+                    {auth.isLoggedIn && <Link className="flex justify-between h-fit w-full py-5 pl-5 pr-2 cursor-pointer items-center hover:bg-var-2 duration-200" state={{ user_id: auth.userId }} to="/notifications">
                         <p className="w-fit pr-4">Notifications</p>
                         <NotificationsIcon className="mx-4" fontSize="large" />
                     </Link>}

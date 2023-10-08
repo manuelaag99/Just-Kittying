@@ -104,7 +104,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     if (error) console.log(error);
                     console.log(data)
                     if (!error) {
-                        if (!data || data === "" || data.length === 0) {
+                        if (!data || data === "") {
                             console.log("no display name");
                             console.log(user_id);
                             navigate("/settings");
