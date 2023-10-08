@@ -40,13 +40,13 @@ export default function NavTopContent ({ userId }) {
                 <button className="hidden md:block hover:text-var-3-hovered " >
                     <LightModeIcon className="mx-4" fontSize="large" />
                 </button>
-                {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to={"/profile/" + userId}>
+                {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to={"/profile/" + auth.uId}>
                     <PersonIcon className="mx-4" fontSize="large" />
                 </Link>}
                 {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " to="/settings">
                     <SettingsIcon className="mx-4" fontSize="large" />
                 </Link>}
-                {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " state={{ user_id: userId }} to="/notifications">
+                {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " state={{ user_id: auth.uId }} to="/notifications">
                     <NotificationsIcon className="mx-4" fontSize="large" />
                 </Link>}
                 <button className="mx-4 px-1 block md:hidden aspect-square rounded-circular hover:bg-var-2 hover:text-var-1 duration-200 " onClick={openMenuHandle} >

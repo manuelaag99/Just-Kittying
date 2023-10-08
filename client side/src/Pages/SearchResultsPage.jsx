@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UsersList from "../Components/UsersList";
 import PostsGrid from "../Components/PostsGrid";
 import { useSearch } from "../context/SearchQueryContext";
@@ -8,8 +8,10 @@ import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
 import NavBottomContent from "../Components/NavBottomContent";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
+import { AuthContext } from "../context/AuthContext";
 
 export default function SearchResultsPage () {
+    const auth = useContext(AuthContext);
     let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
     const userIsLoggedIn = false; //remove 
     const usersTab = "friends"
@@ -21,20 +23,22 @@ export default function SearchResultsPage () {
     const [doesUserHaveDisplayName, setDoesUserHaveDisplayName] = useState();
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     async function checkIfUserHasDisplayName () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
-            if (error) console.log(error);
-            if (!error) {
-                if (data[0].display_name === "") {
-                    setDoesUserHaveDisplayName(false);
-                    setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
-                    setIsMessageWindowOpen(true);
-                } else {
-                    setDoesUserHaveDisplayName(true);
+        if (auth.isLoggedIn) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                if (error) console.log(error);
+                if (!error) {
+                    if (data[0].display_name === "") {
+                        setDoesUserHaveDisplayName(false);
+                        setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
+                        setIsMessageWindowOpen(true);
+                    } else {
+                        setDoesUserHaveDisplayName(true);
+                    }
                 }
+            } catch (err) {
+                console.log(err)
             }
-        } catch (err) {
-            console.log(err)
         }
     }
 
@@ -112,9 +116,6 @@ export default function SearchResultsPage () {
         }
     }, [users, posts, searchQuery])
 
-    console.log(searchResultsInUsers)
-    console.log(searchResultsInPosts)
-
     if (!posts || !users) {
         return (
             <LoadingSpinner open={true} />
@@ -124,7 +125,7 @@ export default function SearchResultsPage () {
             <div className="bg-var-1 w-full h-full">
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
-                {!userIsLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
+                {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
                 <div className="flex flex-col w-full mt-2 justify-center">
                     <div className="flex flex-row w-full sm:w-3/5 mt-16 mx-auto sm:mt-20">
                         <button className="w-1/2 bg-var-1 h-[40px] " onClick={() => setTabsSection(postsTab)} >Posts</button>

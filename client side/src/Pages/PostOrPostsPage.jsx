@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
@@ -7,8 +7,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
+import { AuthContext } from "../context/AuthContext";
 
 export default function PostOrPostsPage () {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const { posts, user_id } = location.state
@@ -18,20 +20,22 @@ export default function PostOrPostsPage () {
     const [doesUserHaveDisplayName, setDoesUserHaveDisplayName] = useState();
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     async function checkIfUserHasDisplayName () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
-            if (error) console.log(error);
-            if (!error) {
-                if (data[0].display_name === "") {
-                    setDoesUserHaveDisplayName(false);
-                    setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
-                    setIsMessageWindowOpen(true);
-                } else {
-                    setDoesUserHaveDisplayName(true);
+        if (auth.isLoggedIn) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                if (error) console.log(error);
+                if (!error) {
+                    if (data[0].display_name === "") {
+                        setDoesUserHaveDisplayName(false);
+                        setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
+                        setIsMessageWindowOpen(true);
+                    } else {
+                        setDoesUserHaveDisplayName(true);
+                    }
                 }
+            } catch (err) {
+                console.log(err)
             }
-        } catch (err) {
-            console.log(err)
         }
     }
 
@@ -53,8 +57,6 @@ export default function PostOrPostsPage () {
             setPostsArray([...postsArray, posts]);
         }
     }, [])
-
-    console.log(postsArray)
 
     if (!postsArray) {
         return (<LoadingSpinner open={true} />)

@@ -3,10 +3,12 @@ import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
 import Notifications from "../Components/Notifications";
 import MessageWindow from "../Components/Portals/MessageWindow";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
+import { AuthContext } from "../context/AuthContext";
 
 export default function NotificationsPage({}) {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const { user_id } = location.state;
@@ -16,20 +18,22 @@ export default function NotificationsPage({}) {
     const [doesUserHaveDisplayName, setDoesUserHaveDisplayName] = useState();
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     async function checkIfUserHasDisplayName () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
-            if (error) console.log(error);
-            if (!error) {
-                if (data[0].display_name === "") {
-                    setDoesUserHaveDisplayName(false);
-                    setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
-                    setIsMessageWindowOpen(true);
-                } else {
-                    setDoesUserHaveDisplayName(true);
+        if (auth.isLoggedIn) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                if (error) console.log(error);
+                if (!error) {
+                    if (data[0].display_name === "") {
+                        setDoesUserHaveDisplayName(false);
+                        setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
+                        setIsMessageWindowOpen(true);
+                    } else {
+                        setDoesUserHaveDisplayName(true);
+                    }
                 }
+            } catch (err) {
+                console.log(err)
             }
-        } catch (err) {
-            console.log(err)
         }
     }
 

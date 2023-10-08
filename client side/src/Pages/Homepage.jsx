@@ -19,20 +19,22 @@ export default function HomePage ({ }) {
     const [doesUserHaveDisplayName, setDoesUserHaveDisplayName] = useState();
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     async function checkIfUserHasDisplayName () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
-            if (error) console.log(error);
-            if (!error) {
-                if (data[0].display_name === "") {
-                    setDoesUserHaveDisplayName(false);
-                    setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
-                    setIsMessageWindowOpen(true);
-                } else {
-                    setDoesUserHaveDisplayName(true);
+        if (auth.isLoggedIn) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                if (error) console.log(error);
+                if (!error) {
+                    if (data[0].display_name === "") {
+                        setDoesUserHaveDisplayName(false);
+                        setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
+                        setIsMessageWindowOpen(true);
+                    } else {
+                        setDoesUserHaveDisplayName(true);
+                    }
                 }
+            } catch (err) {
+                console.log(err)
             }
-        } catch (err) {
-            console.log(err)
         }
     }
 
@@ -73,7 +75,7 @@ export default function HomePage ({ }) {
         fetchUsers();
         fetchPosts();
     }, [])
-    
+
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />

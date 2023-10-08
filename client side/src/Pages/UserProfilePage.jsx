@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -17,9 +17,11 @@ import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
 import { useNavigate, useParams } from "react-router-dom";
 import MessageWindow from "../Components/Portals/MessageWindow";
 import NavBottomContent from "../Components/NavBottomContent";
+import { AuthContext } from "../context/AuthContext";
 
 
 export default function UserProfilePage () {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
@@ -33,20 +35,22 @@ export default function UserProfilePage () {
     const [doesUserHaveDisplayName, setDoesUserHaveDisplayName] = useState();
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     async function checkIfUserHasDisplayName () {
-        try {
-            const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", user_id);
-            if (error) console.log(error);
-            if (!error) {
-                if (data[0].display_name === "") {
-                    setDoesUserHaveDisplayName(false);
-                    setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
-                    setIsMessageWindowOpen(true);
-                } else {
-                    setDoesUserHaveDisplayName(true);
+        if (auth.isLoggedIn) {
+            try {
+                const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.uId);
+                if (error) console.log(error);
+                if (!error) {
+                    if (data[0].display_name === "") {
+                        setDoesUserHaveDisplayName(false);
+                        setTextForMessageWindow("Your account doesn't have a display name; you will be redirected to the Settings page.");
+                        setIsMessageWindowOpen(true);
+                    } else {
+                        setDoesUserHaveDisplayName(true);
+                    }
                 }
+            } catch (err) {
+                console.log(err)
             }
-        } catch (err) {
-            console.log(err)
         }
     }
 

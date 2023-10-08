@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useState } from "react";
+import React, { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -14,15 +14,18 @@ import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import InputForForm from "../Components/InputForForm";
 import { formReducer } from "../reducers";
 import MessageWindow from "../Components/Portals/MessageWindow";
+import { AuthContext } from "../context/AuthContext";
 
 export default function ProfileSettingsPage () {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
-    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
+    // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
     const [userInfo, setUserInfo] = useState()
     useEffect(() => {
         async function fetchData () {
           try {
-            const { data, error } = await supabase.from("jk-users").select().eq("user_id", user_id)
+            const { data, error } = await supabase.from("jk-users").select().eq("user_id", auth.uId);
+            if (error) console.log(error);
             setUserInfo(data[0])
           } catch (err) {
             console.log(err)
@@ -33,7 +36,7 @@ export default function ProfileSettingsPage () {
 
     async function updateUserInfo () {
         try {
-            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", user_id);
+            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.uId);
             if (error) console.log(error);
         } catch (err) {
             console.log(err)
