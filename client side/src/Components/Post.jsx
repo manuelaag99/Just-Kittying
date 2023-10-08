@@ -177,8 +177,12 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const [showInput, setShowInput] = useState(false)
     const inputRef = useRef(null)
     function commentButtonHandle () {
-        setPostCommentButtonText("Post")
-        setShowInput(true)
+        if (auth.isLoggedIn) {
+            setPostCommentButtonText("Post")
+            setShowInput(true)
+        } else {
+            openSignInHandle();
+        }
     }
     useEffect(() => {
         if (auth.isLoggedIn && showInput) inputRef.current.focus();
@@ -285,7 +289,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                             return <Comment commentData={comment} editSpecificComment={() => editCommentHandle(comment)} fetchAgain={() => fetchPostComments()} key={index} index={index} userId={userId} />
                         })}
                         
-                        {auth.isLoggedIn && showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
+                        {showInput && <form action="" className="w-full" onSubmit={submitCommentHandle}>
                             <input className="outline-none sm:w-9/10 w-8/10 h-fit" onChange={postCommentHandle} placeholder="Write your comment..." ref={inputRef} type="text" value={newComment} />
                             <button className="font-bold px-1 rounded-[2px] sm:w-1/10 w-2/10 hover:bg-var-2 duration-200" type="submit">{postCommentButtonText}</button>
                         </form>}
