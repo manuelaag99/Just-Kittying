@@ -1,14 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import UsersList from "../Components/UsersList";
-import PostsGrid from "../Components/PostsGrid";
-import { useSearch } from "../context/SearchQueryContext";
-import { supabase } from "../supabase/client";
-import MessageWindow from "../Components/Portals/MessageWindow";
+
+import NavBottomContent from "../Components/NavBottomContent";
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
-import NavBottomContent from "../Components/NavBottomContent";
+import PostsGrid from "../Components/PostsGrid";
+import UsersList from "../Components/UsersList";
+
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
+import MessageWindow from "../Components/Portals/MessageWindow";
+
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
+import { useSearch } from "../context/SearchQueryContext";
 
 export default function SearchResultsPage () {
     const auth = useContext(AuthContext);

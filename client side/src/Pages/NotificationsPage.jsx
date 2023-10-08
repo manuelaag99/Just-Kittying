@@ -1,11 +1,14 @@
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
 import Notifications from "../Components/Notifications";
+
 import MessageWindow from "../Components/Portals/MessageWindow";
-import { useContext, useEffect, useState } from "react";
-import { supabase } from "../supabase/client";
+
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
 
 export default function NotificationsPage({}) {
     const auth = useContext(AuthContext);

@@ -6,15 +6,15 @@ import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { useForm } from "../Components/custom-hooks";
-
-import { supabase } from "../supabase/client";
-import RoundPhoto from "../Components/RoundPhoto";
-import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import InputForForm from "../Components/InputForForm";
-import { formReducer } from "../reducers";
+import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import MessageWindow from "../Components/Portals/MessageWindow";
+import RoundPhoto from "../Components/RoundPhoto";
+
 import { AuthContext } from "../context/AuthContext";
+import { formReducer } from "../reducers";
+import { useForm } from "../Components/custom-hooks";
+import { supabase } from "../supabase/client";
 
 export default function ProfileSettingsPage () {
     const auth = useContext(AuthContext);

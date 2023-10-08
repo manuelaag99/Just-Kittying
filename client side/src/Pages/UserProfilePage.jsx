@@ -1,24 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
+import NavBottomContent from "../Components/NavBottomContent";
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
+import PostsGrid from "../Components/PostsGrid";
 import RoundPhoto from "../Components/RoundPhoto";
 import UsersList from "../Components/UsersList";
-import PostsGrid from "../Components/PostsGrid";
-
-import { supabase } from "../supabase/client";
 
 import AddButton from "../Components/Portals/AddButton";
 import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
-import { useNavigate, useParams } from "react-router-dom";
 import MessageWindow from "../Components/Portals/MessageWindow";
-import NavBottomContent from "../Components/NavBottomContent";
-import { AuthContext } from "../context/AuthContext";
 
+import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
 
 export default function UserProfilePage () {
     const auth = useContext(AuthContext);

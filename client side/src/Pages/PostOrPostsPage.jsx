@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
 import Post from "../Components/Post";
-import { useLocation, useNavigate } from "react-router-dom";
+
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
-import { supabase } from "../supabase/client";
 import MessageWindow from "../Components/Portals/MessageWindow";
+
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
 
 export default function PostOrPostsPage () {
     const auth = useContext(AuthContext);

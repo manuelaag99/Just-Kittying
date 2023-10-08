@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import NavigationBar from "../Components/NavigationBar";
 import NavBottomContent from "../Components/NavBottomContent";
+import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
 import TimeLine from "../Components/TimeLine";
-import { supabase } from "../supabase/client";
+
 import MessageWindow from "../Components/Portals/MessageWindow";
-import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
 
 export default function HomePage ({ }) {
     const auth = useContext(AuthContext);
