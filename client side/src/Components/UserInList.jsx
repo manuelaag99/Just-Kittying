@@ -5,6 +5,7 @@ import RoundPhoto from "./RoundPhoto";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function UserInList ({ index, userId, userInListId }) {
     const auth = useContext(AuthContext);
@@ -40,13 +41,13 @@ export default function UserInList ({ index, userId, userInListId }) {
     } else if (userId && userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
-                <div className="flex flex-row justify-start w-8/10">
+                <Link className="flex flex-row justify-start w-8/10" to={"/profile/" + userInListId}>
                     <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userId.profile_pic_url || null} />
                     <div className="flex flex-col w-fit pl-4 pr-2">
                         <div className="font-bold" >{userInfo.display_name}</div>
                         <div className="opacity-30" >{userInfo.username}</div>
                     </div>
-                </div>
+                </Link>
                 <div className="flex flex-row w-fit justify-center items-center">
                     {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
                         <p className="text-center">
