@@ -1,11 +1,71 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Button from '../Button';
+import { supabase } from '../../supabase/client';
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-export default function ConfirmWindow({ isErrorMessage, onClose, open, textForMessage }) {
+export default function ConfirmWindow({ onClose, open, textForMessage }) {
+    const auth = useContext(AuthContext);
+    const navigate = useNavigate();
+
     function actionButtonHandle () {
+        if (textForMessage === "Are you sure you want to delete your account? This is permanent.") {
+            deleteAccount();
+        }
+    }
 
+    async function deleteAccount () {
+        try {
+            const { error } = await supabase.from("jk-posts").delete().eq("post_creator_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-likes").delete().eq("like_creator_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-comments").delete().eq("comment_creator_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-friends").delete().eq("user_1_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-friends").delete().eq("user_2_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-friend-requests").delete().eq("request_receiver_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-friend-requests").delete().eq("request_sender_id", auth.userId);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-users").delete().eq("user_id", auth.userId);
+            if (error) console.log(error);
+            navigate("/");
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const confirmWindow = (
@@ -18,12 +78,12 @@ export default function ConfirmWindow({ isErrorMessage, onClose, open, textForMe
                         <CloseIcon />
                     </button>
                 </div>
-                <div className="pt-3 pb-6 px-6">
+                <div className="py-3 px-6">
                     <p className='text-center'>{textForMessage}</p>
                 </div>
-                <div className='flex flex-row w-full px-4 py-2 justify-around'>
-                    <Button clickButtonFunction={actionButtonHandle}>Confirm</Button>
-                    <Button clickButtonFunction={onClose}>Cancel</Button>
+                <div className='flex flex-row w-full px-4 pt-2 pb-5 justify-around'>
+                    <Button clickButtonFunction={actionButtonHandle} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
+                    <Button clickButtonFunction={onClose} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />
                 </div>
             </div>
         </div>

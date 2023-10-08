@@ -7,9 +7,11 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import InputForForm from "../Components/InputForForm";
+import RoundPhoto from "../Components/RoundPhoto";
+
+import ConfirmWindow from "../Components/Portals/ConfirmWindow";
 import LoadingSpinner from "../Components/Portals/LoadingSpinner";
 import MessageWindow from "../Components/Portals/MessageWindow";
-import RoundPhoto from "../Components/RoundPhoto";
 
 import { AuthContext } from "../context/AuthContext";
 import { formReducer } from "../reducers";
@@ -18,10 +20,9 @@ import { supabase } from "../supabase/client";
 
 export default function ProfileSettingsPage () {
     const auth = useContext(AuthContext);
-    console.log(auth)
     const navigate = useNavigate();
-    // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
-    const [userInfo, setUserInfo] = useState()
+
+    const [userInfo, setUserInfo] = useState();
     useEffect(() => {
         async function fetchData () {
           try {
@@ -61,7 +62,7 @@ export default function ProfileSettingsPage () {
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
 
-    function DoneButtonHandle () {
+    function doneButtonHandle () {
         if (stateOfForm.isFormValid) {
             updateUserInfo();
             navigate("/")
@@ -77,26 +78,34 @@ export default function ProfileSettingsPage () {
         navigate("/")    
     }
 
+    const [textForConfirmWindow, setTextForConfirmWindow] = useState();
+    const [confirmWindowVisibility, setConfirmWindowVisibility] = useState();
+    function deleteAccountHandle () {
+        setTextForConfirmWindow("Are you sure you want to delete your account? This is permanent.");
+        setConfirmWindowVisibility(true);
+    }
+
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
     } else {
         return (
             <div className="flex flex-col justify-center items-center w-full h-fit">
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={() => setIsMessageWindowOpen(false)} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
+                <ConfirmWindow onClose={() => setConfirmWindowVisibility(false)} open={confirmWindowVisibility} textForMessage={textForConfirmWindow} />
                 <div className="flex flex-row justify-between w-full h-fit bg-var-1 drop-shadow-navbar z-10">
-                    <Link className="flex flex-row items-center w-fit pl-1 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100" onClick={DoneButtonHandle} to="/">
+                    <Link className="flex flex-row items-center w-fit pl-1 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100" to="/">
                         <KeyboardArrowLeftIcon />
                         <p className=" pt-0.5">Back</p>
                     </Link>
                     <div className="flex flex-row items-center justify-center w-2/10 pt-0.5">
                         Settings
                     </div>
-                    <button disabled={!stateOfForm.isFormValid} className="flex flex-row items-centerw-fit pl-3 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100 active:text-black disabled:text-var-2 " onClick={DoneButtonHandle}>
+                    <button disabled={!stateOfForm.isFormValid} className="flex flex-row items-centerw-fit pl-3 pr-4 py-2 bg-var-1 hover:bg-var-2 duration-100 active:text-black disabled:text-var-2 " onClick={doneButtonHandle}>
                         <CheckIcon />
                         <p className="pl-1 pt-0.5">Done</p>
                     </button>
                 </div>
-                <form action="" className="w-full sm:w-2/3 flex flex-col justify-center items-center bg-var-1 drop-shadow-navbar z-5">
+                <div className="w-full sm:w-2/3 flex flex-col justify-center items-center bg-var-1 drop-shadow-navbar z-5">
                     <div className="flex flex-col justify-center w-full h-fit py-2 bg-var-4 bg-opacity-50">
                         <RoundPhoto classesForRoundPhoto="flex justify-center items-center mx-auto my-3 sm:w-2/10 w-4/10 aspect-square drop-shadow-button" imageAlt={null} imageSource="https://img.freepik.com/free-photo/portrait-handsome-young-man-with-crossed-arms_176420-15569.jpg?w=2000" />
                         <button className="text-black hover:text-var-3 duration-200">Change my profile picture</button>
@@ -119,14 +128,12 @@ export default function ProfileSettingsPage () {
                         </div>
                         <button className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-var-2 duration-200 cursor-pointer" onClick={logOutHandle}>
                             <p>Log Out</p>
-                            <KeyboardArrowRightIcon />
                         </button>
-                        <div className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-red-300 duration-200 cursor-pointer">
+                        <button className="flex flex-row justify-between w-full h-fit py-3 px-3 bg-var-1 hover:bg-red-300 duration-200 cursor-pointer" onClick={deleteAccountHandle}>
                             <p className="text-red-700">Delete my account</p>
-                            <KeyboardArrowRightIcon />
-                        </div>
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         )
     }
