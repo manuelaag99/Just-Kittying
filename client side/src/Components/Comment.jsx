@@ -4,9 +4,11 @@ import { supabase } from "../supabase/client";
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import EditSharpIcon from '@mui/icons-material/EditSharp';
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Comment ({ commentData, editSpecificComment, fetchAgain, index, userId }) {
     const auth = useContext(AuthContext);
+    const navigate = useNavigate();
     const [commentUserData, setCommentUserData] = useState();
     async function fetchCommentUserData () {
         try {
@@ -49,7 +51,7 @@ export default function Comment ({ commentData, editSpecificComment, fetchAgain,
         return (
             <div key={index} className="flex flex-row justify-between pb-1 w-full ">
                 <div className="flex flex-row justify-start w-8/10 pr-2">
-                    <p className="mr-2 font-bold">{commentUserData.display_name}</p>
+                    <p className="mr-2 font-bold cursor-pointer" onClick={() => navigate("/profile/" + commentData.comment_creator_id)}>{commentUserData.display_name}</p>
                     <p className="font-light">{commentData.comment_text}</p>
                 </div>
                 {(auth.uId === commentData.comment_creator_id) && <div className="flex flex-row w-2/10 justify-end">

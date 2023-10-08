@@ -13,12 +13,13 @@ import { supabase } from "../supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import LoadingPost from "./LoadingPost";
 import Comment from "./Comment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import SignInOrSignUpWindow from "./Portals/SignInOrSignUpWindow";
 
 export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const auth = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [signInWindow, setSignInWindow] = useState(false);
     function closeSignInHandle () {
@@ -282,7 +283,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                             {postLikes.length > 1 && <p className="mr-1 font-black">{postLikes.length} likes</p>}
                         </div>}
                         {(post.post_caption) && <div className="flex flex-row justify-start pb-1">
-                            <p className="mr-2 font-bold">{postUserData.display_name}</p>
+                            <p className="mr-2 font-bold cursor-pointer" onClick={() => navigate("/profile/" + post.post_creator_id)}>{postUserData.display_name}</p>
                             <p className="font-light">{post.post_caption}</p>
                         </div> }
                         {comments && comments.map((comment, index) => {
