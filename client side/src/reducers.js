@@ -29,7 +29,8 @@ export function inputReducer (state, action) {
         case "blur":
             return {
                 ...state,
-                isTouched: true
+                isTouched: true,
+                isActive: false
             };
         default:
             return state;

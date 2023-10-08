@@ -5,6 +5,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { inputReducer } from "../reducers";
+import InstructionOrErrorMessageForInput from "./InstructionOrErrorMessageForInputs";
 
 export default function InputForForm ({ errorMessage, individualInputAction, inputClassnames, inputName, inputPlaceholder, inputType, inputValidity, inputValue, instructionMessage, isInSettingsPage, isPasswordField, isSelect, labelClassnames, labelText, largeDivClassnames, optionsForSelect, smallDivClassnames }) {
     const initialState = { value: inputValue, isValid: inputValidity };
@@ -14,13 +15,14 @@ export default function InputForForm ({ errorMessage, individualInputAction, inp
 
     function inputBlurHandle () {
         dispatch({ type: "blur" })
+        // dispatch({ type: "focus out"})
     }
 
     function inputChangeHandle (e) {
         dispatch({ type: "change", value: e.target.value, placeholder: e.target.placeholder });
     }
 
-    function inputFocusHandle () {
+    function inputFocusInHandle () {
         dispatch({ type: "focus" });
     }
 
@@ -37,7 +39,7 @@ export default function InputForForm ({ errorMessage, individualInputAction, inp
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
             <div className={smallDivClassnames}>
 
-                {!isSelect && <input autoComplete="off" className={inputClassnames} name={inputName} onBlur={inputBlurHandle} onChange={inputChangeHandle} onFocus={inputFocusHandle} placeholder={inputPlaceholder} type={isPasswordField ? (passwordVisibility ? "text" : "password") : inputType} value={value} />}
+                {!isSelect && <input autoComplete="off" className={inputClassnames} name={inputName} onBlur={inputBlurHandle} onChange={inputChangeHandle} onFocus={inputFocusInHandle} placeholder={inputPlaceholder} type={isPasswordField ? (passwordVisibility ? "text" : "password") : inputType} value={value} />}
                 {isInSettingsPage && (inputName === "displayname" || inputName === "username") && <div className="flex flex-row items-center ">
                     {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <CancelIcon className="text-red-700" fontSize="small"/>}
                     {(individualInputState.value === "" && individualInputState.isActive && individualInputState.isTouched) && <p className="text-red-700 text-errorFont pl-2">This field can't be empty</p>}
@@ -55,11 +57,11 @@ export default function InputForForm ({ errorMessage, individualInputAction, inp
                 </select>}
 
             </div>
-            {!isInSettingsPage && instructionMessage && <div className="flex justify-center items-center bg-var-1 border border-black border-solid rounded-post absolute top-14 w-full z-10 shadow-2xl mx-auto px-3 ">
-                <p className="text-center text-gray-500 m-2">
-                    {instructionMessage}
-                </p>
-            </div>}
+
+            {!isInSettingsPage && instructionMessage && individualInputState.isActive && !individualInputState.isTouched && <InstructionOrErrorMessageForInput classnames=" bg-var-1 border-black text-gray-500  " message={instructionMessage} />}
+
+            {!isInSettingsPage && errorMessage && !individualInputState.isActive && individualInputState.isTouched && !individualInputState.isValid && <InstructionOrErrorMessageForInput classnames=" bg-red-200 border-red-400 text-red-600 " message={errorMessage} />}
+
         </div>
     )
 }
