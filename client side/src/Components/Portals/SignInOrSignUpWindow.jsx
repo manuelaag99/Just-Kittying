@@ -146,22 +146,51 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         }
     }
 
-    const [allUserNamesAndEmails, setAllUserNamesAndEmails] = useState();
+    const [allUserNames, setAllUserNames] = useState();
+    const [allEmails, setAllEmails] = useState();
     async function retrieveAllUserNamesAndEmails () {
         try {
-            const { data, error } = await supabase.from("jk-users").select("email", "username");
+            const { data, error } = await supabase.from("jk-users").select("username");
             if (error) console.log(error);
-            setAllUserNamesAndEmails(data);
+            setAllUserNames(data);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { data, error } = await supabase.from("jk-users").select("email");
+            if (error) console.log(error);
+            setAllEmails(data);
         } catch (err) {
             console.log(err);
         }
     }
-
     useEffect(() => {
         retrieveAllUserNamesAndEmails();
     }, [])
 
-    console.log(allUserNamesAndEmails)
+    const [doesTheUsernameExist, setDoesTheUsernameExist] = useState();
+    const [doesTheEmailExist, setDoesTheEmailExist] = useState();
+    useEffect(() => {
+        if (stateOfForm.inputs.username) {
+            if (stateOfForm.inputs.username.value) {
+                allUserNames.map((user) => {
+                    console.log(user)
+                    if (user.username === stateOfForm.inputs.username.value) {
+                        setDoesTheUsernameExist(true);
+                    }
+                })
+            }
+        }
+        if (stateOfForm.inputs.email.value) {
+            allEmails.map((user) => {
+                console.log(user)
+                if (user.email === stateOfForm.inputs.email.value) {
+                    setDoesTheEmailExist(true);
+                }
+            })
+        }
+    }, [stateOfForm])
+
     const signInOrSignUpWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
@@ -174,10 +203,10 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
 
                 <div className="w-8/10 h-fit mt-4">
                     
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm areBothPasswordsTheSame={null} errorMessage="" instructionMessage="Write at least 6 characters" largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
-                    <InputForForm areBothPasswordsTheSame={null} errorMessage="" instructionMessage={null} largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none py-0.5 " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
-                    <InputForForm areBothPasswordsTheSame={null} errorMessage="Write a valid password" instructionMessage="Write at least 10 characters, include uppercase and lowercase letters, numbers, and symbols." largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
-                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm areBothPasswordsTheSame={doPasswordsMatch} errorMessage="The passwords do not match." instructionMessage={null} largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm inputValueAlreadyExists={doesTheUsernameExist} areBothPasswordsTheSame={null} errorMessage="" instructionMessage="Write at least 6 characters" largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="username" inputPlaceholder="Create a username..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />}
+                    <InputForForm inputValueAlreadyExists={doesTheEmailExist} areBothPasswordsTheSame={null} errorMessage="" instructionMessage={null} largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-9/10 outline-none py-0.5 " inputName="email" inputPlaceholder="Write in your e-mail..." inputType="text" inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={false} isSelect={false} />
+                    <InputForForm inputValueAlreadyExists={null} areBothPasswordsTheSame={null} errorMessage="Write a valid password" instructionMessage="Write at least 10 characters, include uppercase and lowercase letters, numbers, and symbols." largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="password" inputPlaceholder="Write in your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />
+                    {(textForSignInOrSignUpButton === "Sign up") && <InputForForm inputValueAlreadyExists={null} areBothPasswordsTheSame={doPasswordsMatch} errorMessage="The passwords do not match." instructionMessage={null} largeDivClassnames="relative" smallDivClassnames="w-full h-full py-3 mb-4 pl-4 pr-1 rounded-input border-var-2 border-2 border-solid" individualInputAction={formHandler} inputClassnames="w-85 sm:w-9/10 outline-none py-0.5 " inputName="confirmPassword" inputPlaceholder="Confirm your password..." inputValidity={false} inputValue={""} isInSettingsPage={false} isPasswordField={true} isSelect={false} />}
                     <button disabled={!stateOfForm.isFormValid} className="flex flex-col justify-center items-center disabled:bg-black-inactive disabled:border-black-inactive disabled:cursor-pointer w-full py-3 px-2 mb-4 rounded-input bg-black text-var-1 border-black border-solid border-2 hover:bg-var-3 hover:border-var-3 duration-500 " onClick={signInOrSignUpHandle}>
                         <p className="my-0.5">{textForSignInOrSignUpButton}</p>
                     </button>
