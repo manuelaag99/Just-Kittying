@@ -75,7 +75,16 @@ export default function ConfirmWindow({ onClose, onCloseConfirmWindowAndThenOpen
         try {
             const { error } = await supabase.from("jk-users").delete().eq("user_id", auth.userId);
             if (error) console.log(error);
-            navigate("/");
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) console.log(error);
+            if (!error) {
+                auth.logout();
+                navigate("/");
+            }
         } catch (err) {
             console.log(err);
         }

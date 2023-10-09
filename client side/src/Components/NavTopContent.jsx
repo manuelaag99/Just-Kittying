@@ -49,7 +49,7 @@ export default function NavTopContent ({ userId }) {
                 {auth.isLoggedIn && <Link className="justify-center items-center hidden md:flex hover:text-var-3-hovered " state={{ user_id: auth.userId }} to="/notifications">
                     <NotificationsIcon className="mx-4" fontSize="large" />
                 </Link>}
-                <button className="mx-4 px-1 block md:hidden aspect-square rounded-circular hover:bg-var-2 hover:text-var-1 duration-200 " onClick={openMenuHandle} >
+                <button className="flex justify-center items-center mx-4 px-1 md:hidden aspect-square rounded-circular hover:bg-var-2 hover:text-var-1 duration-200 " onClick={openMenuHandle} >
                     <MenuOutlinedIcon fontSize="large" />
                 </button>
             </div>

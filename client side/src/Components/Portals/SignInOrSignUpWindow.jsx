@@ -25,7 +25,6 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
     }
     const [stateOfForm, formHandler] = useForm(initialFormState);
     
-    const [signUpConfirm, setSignUpConfirm] = useState(false);
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
     const [isMessageWindowForAnError, setIsMessageWindowForAnError] = useState();
@@ -60,7 +59,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 console.log(error)
             } else {
                 try {
-                    const { userdata, error } = await supabase.from("jk-users").insert({ user_id: data.user.id, username: stateOfForm.inputs.username.value, email: stateOfForm.inputs.username.value, feed_preference: "public", account_privacy: "all", password: stateOfForm.inputs.password.value, creation_date: new Date().toISOString(), display_name: "" })
+                    const { userdata, error } = await supabase.from("jk-users").insert({ user_id: data.user.id, username: stateOfForm.inputs.username.value, email: stateOfForm.inputs.email.value, feed_preference: "public", account_privacy: "all", password: stateOfForm.inputs.password.value, creation_date: new Date().toISOString(), display_name: "" })
                     if (error) {
                         setIsMessageWindowForAnError(true);
                         setTextForMessageWindow(error);
@@ -122,8 +121,6 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             console.log(err);
         }
     }
-
-
     
     function signInOrSignUpHandle () {
         if (textForSignInOrSignUpButton === "Sign up") {
@@ -149,6 +146,22 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         }
     }
 
+    const [allUserNamesAndEmails, setAllUserNamesAndEmails] = useState();
+    async function retrieveAllUserNamesAndEmails () {
+        try {
+            const { data, error } = await supabase.from("jk-users").select("email", "username");
+            if (error) console.log(error);
+            setAllUserNamesAndEmails(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        retrieveAllUserNamesAndEmails();
+    }, [])
+
+    console.log(allUserNamesAndEmails)
     const signInOrSignUpWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>

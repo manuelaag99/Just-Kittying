@@ -57,9 +57,9 @@ export default function InputForForm ({ areBothPasswordsTheSame, errorMessage, i
 
             </div>
 
-            {!isInSettingsPage && instructionMessage && individualInputState.isActive && !individualInputState.isTouched && <InstructionOrErrorMessageForInput classnames=" bg-var-1 border-black text-gray-500  " message={instructionMessage} />}
+            {!isInSettingsPage && instructionMessage && individualInputState.isActive && !individualInputState.isTouched && !individualInputState.isValid && <InstructionOrErrorMessageForInput classnames=" bg-var-1 border-black text-gray-500 " message={instructionMessage} />}
 
-            {!isInSettingsPage && errorMessage && !individualInputState.isActive && individualInputState.isTouched && (!individualInputState.isValid || !areBothPasswordsTheSame) && <InstructionOrErrorMessageForInput classnames=" bg-red-200 border-red-400 text-red-600 " message={errorMessage} />}
+            {!isInSettingsPage && errorMessage && !individualInputState.isActive && individualInputState.isTouched && (!individualInputState.isValid || (areBothPasswordsTheSame === false)) && <InstructionOrErrorMessageForInput classnames=" bg-red-200 border-red-400 text-red-600 " message={errorMessage} />}
 
         </div>
     )

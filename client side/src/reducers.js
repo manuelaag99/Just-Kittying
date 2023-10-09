@@ -6,7 +6,7 @@ export function inputReducer (state, action) {
             let checkValidity;
             if (action.placeholder === "Enter your e-mail") {
                 checkValidity = isTextAnEmail(action.value);
-            } else if (action.placeholder === "Create a username" || action.placeholder === "Enter a user name...") {
+            } else if (action.placeholder === "Create a username..." || action.placeholder === "Enter a username...") {
                 checkValidity = minLengthText(action.value, 6);
             } else if (action.placeholder === "Write in your password..." || action.placeholder === "Write your old password..." || action.placeholder === "Create a new password..." ) {
                 checkValidity = isTextAPassword(action.value);
