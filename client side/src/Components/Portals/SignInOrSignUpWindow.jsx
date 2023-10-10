@@ -171,27 +171,29 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
     const [doesTheUsernameExist, setDoesTheUsernameExist] = useState(false);
     const [doesTheEmailExist, setDoesTheEmailExist] = useState(false);
     useEffect(() => {
-        if (stateOfForm.inputs.username) {
-            if (stateOfForm.inputs.username.value) {
-                allUserNames.map((user) => {
+        if (textForSignInOrSignUpButton === "Sign up") {
+            if (stateOfForm.inputs.username) {
+                if (stateOfForm.inputs.username.value) {
+                    allUserNames.map((user) => {
+                        console.log(user)
+                        if (user.username === stateOfForm.inputs.username.value) {
+                            setDoesTheUsernameExist(true);
+                        } else {
+                            setDoesTheUsernameExist(false);
+                        }
+                    })
+                }
+            }
+            if (stateOfForm.inputs.email.value) {
+                allEmails.map((user) => {
                     console.log(user)
-                    if (user.username === stateOfForm.inputs.username.value) {
-                        setDoesTheUsernameExist(true);
+                    if (user.email === stateOfForm.inputs.email.value) {
+                        setDoesTheEmailExist(true);
                     } else {
-                        setDoesTheUsernameExist(false);
+                        setDoesTheEmailExist(false);
                     }
                 })
             }
-        }
-        if (stateOfForm.inputs.email.value) {
-            allEmails.map((user) => {
-                console.log(user)
-                if (user.email === stateOfForm.inputs.email.value) {
-                    setDoesTheEmailExist(true);
-                } else {
-                    setDoesTheEmailExist(false);
-                }
-            })
         }
     }, [stateOfForm])
 
