@@ -51,7 +51,7 @@ export default function Notifications ({ userId }) {
                 {commentNotifs && (commentNotifs.length > 0) && commentNotifs.map((commentNotif, index) => {
                     return (<Notification key={index} index={index} commentNotif={commentNotif} />)
                 })}
-                {!friendRequests && !commentNotifs && <div className="flex justify-center mt-4 px-5">
+                {(friendRequests.length < 1) && (commentNotifs.length < 1) && <div className="flex justify-center mt-4 px-5">
                     <p className="text-center text-black">
                         No notifications.
                     </p>

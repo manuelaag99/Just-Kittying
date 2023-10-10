@@ -14,7 +14,6 @@ import { supabase } from "../supabase/client";
 export default function HomePage ({ }) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
-    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -39,10 +38,6 @@ export default function HomePage ({ }) {
             }
         }
     }
-
-    useEffect(() => {
-        checkIfUserHasDisplayName();
-    }, [])
 
     function closeMessageWindow () {
         if (!doesUserHaveDisplayName) {
@@ -76,14 +71,15 @@ export default function HomePage ({ }) {
     useEffect(() => {
         fetchUsers();
         fetchPosts();
+        checkIfUserHasDisplayName();
     }, [])
 
     return (
         <div className="bg-var-1 w-full h-full">
             <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
+            <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={auth.userId} />} />
             {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
-            <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={user_id} />
+            <TimeLine fetchPosts={() => fetchPosts()} posts={posts} users={users} userId={auth.userId} />
         </div>
     )
 };

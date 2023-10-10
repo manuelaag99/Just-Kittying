@@ -168,8 +168,8 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         retrieveAllUserNamesAndEmails();
     }, [])
 
-    const [doesTheUsernameExist, setDoesTheUsernameExist] = useState();
-    const [doesTheEmailExist, setDoesTheEmailExist] = useState();
+    const [doesTheUsernameExist, setDoesTheUsernameExist] = useState(false);
+    const [doesTheEmailExist, setDoesTheEmailExist] = useState(false);
     useEffect(() => {
         if (stateOfForm.inputs.username) {
             if (stateOfForm.inputs.username.value) {
@@ -177,6 +177,8 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                     console.log(user)
                     if (user.username === stateOfForm.inputs.username.value) {
                         setDoesTheUsernameExist(true);
+                    } else {
+                        setDoesTheUsernameExist(false);
                     }
                 })
             }
@@ -186,6 +188,8 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
                 console.log(user)
                 if (user.email === stateOfForm.inputs.email.value) {
                     setDoesTheEmailExist(true);
+                } else {
+                    setDoesTheEmailExist(false);
                 }
             })
         }
