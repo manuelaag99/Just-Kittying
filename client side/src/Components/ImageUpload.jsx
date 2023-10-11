@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 import CloseIcon from '@mui/icons-material/Close';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import { v4 as uuidv4 } from "uuid";
 
-export default function ImageUpload () {
+export default function ImageUpload ({ sendFile }) {
     const imageSelectorRef = useRef();
     const [file, setFile] = useState();
     const [previewPhotoUrl, setPreviewPhotoUrl] = useState();
@@ -14,6 +13,7 @@ export default function ImageUpload () {
         const fileReader = new FileReader();
         fileReader.onload = () => setPreviewPhotoUrl(fileReader.result);
         fileReader.readAsDataURL(file);
+        sendFile(file);
     }, [file]);
 
     function selectFileHandler (e) {
