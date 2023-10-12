@@ -28,6 +28,7 @@ export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, u
     }, [])
 
     let new_post_id;
+    let post_photo_path;
     async function createOrUpdatePost () {
         if (post) {
             try {
@@ -38,8 +39,15 @@ export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, u
             }
         } else if (!post) {
             new_post_id = uuidv4();
+            post_photo_path = uuidv4();
             try {
-                const { data, error } = await supabase.storage.from("jk-images").upload("postPics/" + uuidv4(), postContentState.postContentPhoto);
+                const { error } = await supabase.from("jk-posts").insert({ post_id: new_post_id, post_creator_id: userId, post_photo_path: post_photo_path, post_caption: postContentState.postContentCaption });
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
+            try {
+                const { data, error } = await supabase.storage.from("jk-images").upload("postPics/" + post_photo_path, postContentState.postContentPhoto);
                 console.log(data)
                 if (error) console.log(error);
             } catch (err) {
