@@ -41,6 +41,17 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         setSignUpWindow(prevValue => !prevValue);
         setSignInWindow(prevValue => !prevValue);
     }
+
+    const [postPhoto, setPostPhoto] = useState();
+    async function fetchPostPhoto () {
+        try {
+            const { data, error } = await supabase.storage.from("public-bucket").getPublicUrl("jk-images/" + post.post_photo_path);
+            if (error) console.log(error);
+            setPostPhoto(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
@@ -94,6 +105,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         fetchPostUserData();
         fetchPostLikes();
         fetchPostComments();
+        fetchPostPhoto();
         if (comments) {
             // setComments(prevData => [...prevData].sort((a, b) => a.comment_date.split("T")[1] - b.comment_date.split("T")[1]));
             // setCommentsToDisplay(comments.map((comment) => {
@@ -259,7 +271,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                 </div>
     
                 <div className="flex justify-center w-full sm:h-[500px] h-[250px] " onClick={() => setPostOptions(false)}>
-                    <PostPhoto imageSource={post.post_photo_url} />
+                    {postPhoto && <PostPhoto imageSource={postPhoto} />}
                 </div>
     
                 <div className="flex flex-row justify-start h-[50px] w-full py-2 px-1 border-var-2 border-solid border-y-2 ">
