@@ -7,8 +7,13 @@ import { v4 as uuidv4 } from "uuid";
 import ImageUpload from "../ImageUpload";
 import { supabase } from "../../supabase/client";
 import LoadingSpinner from "./LoadingSpinner";
+import MessageWindow from "./MessageWindow";
 
 export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, userId }) {
+    const [textForMessageWindow, setTextForMessageWindow] = useState("");
+    const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
+    const [isMessageWindowForAnError, setIsMessageWindowForAnError] = useState();
+    
     const [postContentState, setPostContentState] = useState({ postContentPhoto: null, postContentCaption: "" });
     
     // useEffect(() => {
@@ -50,16 +55,25 @@ export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, u
                 const { data, error } = await supabase.storage.from("jk-images").upload("postPics/" + post_photo_path, postContentState.postContentPhoto);
                 console.log(data)
                 if (error) console.log(error);
+                setTextForMessageWindow("Successfully shared your post.");
+                setIsMessageWindowOpen(true);
             } catch (err) {
                 console.log(err);
             }
         }
-        onClose();
-        fetchAgain();
+    }
+
+    function closeMessageWindow () {
+        if (textForMessageWindow === "Successfully shared your post.") {
+            setIsMessageWindowOpen(false)
+            onClose();
+            fetchAgain();
+        }
     }
 
     const createPost = (
         <div>
+            <MessageWindow isErrorMessage={isMessageWindowForAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
             <div className="bg-black opacity-10 fixed top-0 bottom-0 w-screen h-screen z-20 duration-500" onClick={onClose}></div>
             <div className="flex flex-col fixed justify-center items-center z-50 top-[7%] md:left-[30%] left-[10%] md:w-4/10 w-8/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
                 <div className="flex justify-center items-center w-9/10 h-6/10 md:my-6 mt-6 mb-4">
