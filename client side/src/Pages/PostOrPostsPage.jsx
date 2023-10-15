@@ -48,20 +48,34 @@ export default function PostOrPostsPage () {
         setIsMessageWindowOpen(false);
     }
 
+    const [postsArray, setPostsArray] = useState([]);
     useEffect(() => {
         checkIfUserHasDisplayName();
-    }, [])
-
-    const [postsArray, setPostsArray] = useState([]);
-
-    useEffect(() => {
         if (posts) {
             setPostsArray([...postsArray, posts]);
+        } else if (!posts) {
+            setPostsArray([]);
         }
     }, [])
 
+    function fetchAgain () {
+        if (posts) {
+            setPostsArray([...postsArray, posts]);
+        } else if (!posts) {
+            setPostsArray([]);
+        }
+    }
+
     if (!postsArray) {
-        return (<LoadingSpinner open={true} />)
+        return (
+            <LoadingSpinner open={true} />
+        )
+    } else if (postsArray.length < 1) {
+        return (
+            <div className="w-full h-fit mt-12 px-6 ">
+                This post does not exist.
+            </div>
+        )
     } else {
         return (
             <div className="w-full h-full sm:mt-top-margin-dsk mt-top-margin-mob">
@@ -70,7 +84,7 @@ export default function PostOrPostsPage () {
                 <div className="sm:w-1/2 w-95 h-fit mx-auto py-4 bg-var-1 ">
                     {postsArray && <div>
                         {postsArray.map((post, index) => {
-                            return <Post classnames=" mt-2 mb-6 " key={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={user_id} />
+                            return <Post classnames=" mt-2 mb-6 " fetchAgain={fetchAgain} key={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={user_id} />
                         })}
                     </div>}
                 </div>
