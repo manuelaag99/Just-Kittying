@@ -53,7 +53,6 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
             console.log(err);
         }
     }
-    console.log(postPhoto)
     
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
