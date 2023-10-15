@@ -45,13 +45,15 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const [postPhoto, setPostPhoto] = useState();
     async function fetchPostPhoto () {
         try {
-            const { data, error } = await supabase.storage.from("public-bucket").getPublicUrl("jk-images/" + post.post_photo_path);
+            // const { data, error } = await supabase.storage.from("public-bucket").getPublicUrl("jk-images/" + post.post_photo_path);
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("postPics/" + post.post_photo_path);
             if (error) console.log(error);
             setPostPhoto(data.publicUrl);
         } catch (err) {
             console.log(err);
         }
     }
+    console.log(postPhoto)
     
     const [postUserData, setPostUserData] = useState();
     async function fetchPostUserData () {
