@@ -170,10 +170,10 @@ export default function UserProfilePage () {
     } else {
         return (
             <div>
-                {auth.isLoggedIn && <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={user_id} />}
-                {auth.isLoggedIn && <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={user_id} />}
+                {auth.isLoggedIn && <AddButton onAdd={() => setCreatePostWindow(true)} open={true} userId={auth.userId} />}
+                {auth.isLoggedIn && <CreateOrUpdatePost fetchAgain={fetchPosts} onClose={() => setCreatePostWindow(false)} open={createPostWindow} userId={auth.userId} />}
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
+                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={auth.userId} />} />
                 {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-fit">
@@ -211,8 +211,8 @@ export default function UserProfilePage () {
                             </div>
                         </div>
                         
-                        {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={user_id} />}
-                        {(tabsSection === friendsTab) && <UsersList allUsers={users} selectedUsersArray={userFriends} userId={user_id} />}
+                        {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={auth.userId} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={users} selectedUsersArray={userFriends} userId={auth.userId} />}
 
                     </div>
                 </div>
