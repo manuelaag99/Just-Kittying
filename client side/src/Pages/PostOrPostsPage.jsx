@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import NavigationBar from "../Components/NavigationBar";
 import NavTopContent from "../Components/NavTopContent";
@@ -15,7 +15,8 @@ export default function PostOrPostsPage () {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const { posts, user_id } = location.state
+    const { posts, user_id } = location.state;
+    const { postid } = useParams();
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -49,32 +50,35 @@ export default function PostOrPostsPage () {
     }
 
     const [postsArray, setPostsArray] = useState([]);
+    async function checkIfPostExists () {
+        try {
+            const { data, error } = await supabase.from("jk-posts").select().eq("post_id", postid);
+            if (error) console.log(error);
+            if (data.length < 1) {
+                setPostsArray([]);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         checkIfUserHasDisplayName();
+        checkIfPostExists();
         if (posts) {
-            setPostsArray([...postsArray, posts]);
+            setPostsArray([posts]);
         } else if (!posts) {
-            setPostsArray([]);
+            setPostsArray();
         }
     }, [])
 
     function fetchAgain () {
-        if (posts) {
-            setPostsArray([...postsArray, posts]);
-        } else if (!posts) {
-            setPostsArray([]);
-        }
+        checkIfPostExists();
     }
 
     if (!postsArray) {
         return (
-            <LoadingSpinner open={true} />
-        )
-    } else if (postsArray.length < 1) {
-        return (
-            <div className="w-full h-fit mt-12 px-6 ">
-                This post does not exist.
-            </div>
+            <LoadingSpinner open={loading} />
         )
     } else {
         return (
@@ -82,10 +86,15 @@ export default function PostOrPostsPage () {
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent />}/>
                 <div className="sm:w-1/2 w-95 h-fit mx-auto py-4 bg-var-1 ">
-                    {postsArray && <div>
+                    {(postsArray.length > 0) && <div>
                         {postsArray.map((post, index) => {
                             return <Post classnames=" mt-2 mb-6 " fetchAgain={fetchAgain} key={index} post={post} postCreatorId={post.post_creator_id} postCreationDate={post.post_creation_date} postDescription={post.post_caption} postId={post.post_id} postImageUrl={post.post_photo_url} userId={user_id} />
                         })}
+                    </div>}
+                    {(postsArray.length < 1) && <div className="flex justify-center mt-5">
+                        <p className="text-gray-400 text-center">
+                            This post does not exist.
+                        </p>
                     </div>}
                 </div>
             </div>

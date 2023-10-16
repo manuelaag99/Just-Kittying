@@ -5,7 +5,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import filterArrayByUniqueByKey from "../functions";
 import CreateOrUpdatePost from "./Portals/CreateOrUpdatePost";
 import RoundPhoto from "./RoundPhoto";
 import PostPhoto from "./PostPhoto";
@@ -140,7 +139,6 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         } else {
             openSignInHandle();
         }
-        
     }
 
     async function unlikePost() {
@@ -233,6 +231,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         try {
             const { error } = await supabase.from("jk-posts").delete().eq("post_id", post.post_id);
             if (error) console.log(error);
+            setPostOptions(false);
             fetchAgain();
         } catch (err) {
             console.log(err);
@@ -248,7 +247,7 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                 <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
-                    <Link className="flex flex-col w-8/10 h-full px-2" onClick={() => setPostOptions(false)} to={"/profile/" + postUserData.user_id}>
+                    <Link className="flex flex-col w-8/10 h-full px-2" to={"/profile/" + postUserData.user_id}>
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
                         <div className="flex flex-row w-full cursor-pointer">
                             <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
