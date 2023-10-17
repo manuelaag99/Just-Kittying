@@ -161,7 +161,11 @@ export default function UserProfilePage () {
     }
 
     const [createPostWindow, setCreatePostWindow] = useState();
-    console.log(createPostWindow)
+
+    function checkIfNavigatingUserIsInProfileUserFriendList (navigatingUser) {
+        console.log(navigatingUser)
+        console.log(userFriends)
+    }
 
     if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
@@ -186,7 +190,7 @@ export default function UserProfilePage () {
                                 <div className="flex flex-col w-7/10 pr-8">
                                     <div className="flex flex-row justify-start font-bold text-profileDisplayName">
                                         <p>{selectedUser.display_name}</p>
-                                        {(selectedUser.user_id !== user_id) && <button className="ml-3" onClick={addPersonHandle}>
+                                        {(auth.isLoggedIn) && (selectedUser.user_id !== auth.userId) && <button className="ml-3" onClick={() => checkIfNavigatingUserIsInProfileUserFriendList(auth.userId)}>
                                             <PersonAddAlt1Icon className="text-black hover:text-var-2 duration-100" fontSize="medium" />
                                         </button>}
                                     </div>
