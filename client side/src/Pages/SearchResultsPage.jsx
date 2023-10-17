@@ -91,7 +91,6 @@ export default function SearchResultsPage () {
         setSearchQuery(searchQuery);
         if (searchQuery) {
             let searchQueryInLowerCase = searchQuery.toLowerCase();
-            console.log(searchQueryInLowerCase)
             if (searchQuery.trim() !== "") {
                 const filteredUsers = users.filter(user => (user.username.toLowerCase().includes(searchQueryInLowerCase)) || (user.display_name.toLowerCase().includes(searchQueryInLowerCase)) || (searchQueryInLowerCase.includes(user.username)) || (searchQueryInLowerCase.includes(user.display_name.toLowerCase()))).map(user => user.user_id);
                 if (filteredUsers.length < 1) {
@@ -99,7 +98,7 @@ export default function SearchResultsPage () {
                 } else {
                     setSearchResultsInUsers(filteredUsers);
                 }
-                const filteredPosts = posts.filter(post => (post.post_caption.includes(searchQuery)) || (searchQuery.includes(post.post_caption)));
+                const filteredPosts = posts.filter(post => (post.post_caption.toLowerCase().includes(searchQueryInLowerCase)) || (searchQueryInLowerCase.includes(post.post_caption.toLowerCase())));
                 if (filteredPosts.length < 1) {
                     setSearchResultsInPosts([]);
                 } else {

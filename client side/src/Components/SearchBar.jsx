@@ -1,29 +1,19 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { useEffect, useState } from "react";
 import { useSearch } from '../context/SearchQueryContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function SearchBar () {
     const navigate = useNavigate();
     const { searchQuery, setSearchQuery } = useSearch();
-    // const [searchQueryState, setSearchQueryState] = useState("");
 
     function inputChangeHandle (event) {
         // setSearchQueryState(event.target.value);
         setSearchQuery(event.target.value);
     }
 
-    console.log(searchQuery)
-    // useEffect(() => {
-    //     if (searchQuery) {
-    //         setSearchQueryState(searchQuery);
-    //     }
-    // }, [])
-
     function submitSearchHandle (e) {
         e.preventDefault();
         navigate("/searchresults");
-        // sendSearchQuery(searchQuery);
     }
 
     return (
