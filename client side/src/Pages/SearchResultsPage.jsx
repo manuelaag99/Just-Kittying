@@ -90,8 +90,10 @@ export default function SearchResultsPage () {
     function sendSearchQueryToSearchResultsPage () {
         setSearchQuery(searchQuery);
         if (searchQuery) {
+            let searchQueryInLowerCase = searchQuery.toLowerCase();
+            console.log(searchQueryInLowerCase)
             if (searchQuery.trim() !== "") {
-                const filteredUsers = users.filter(user => (user.username.includes(searchQuery)) || (user.display_name.includes(searchQuery)) || (searchQuery.includes(user.username)) || (searchQuery.includes(user.display_name))).map(user => user.user_id);
+                const filteredUsers = users.filter(user => (user.username.toLowerCase().includes(searchQueryInLowerCase)) || (user.display_name.toLowerCase().includes(searchQueryInLowerCase)) || (searchQueryInLowerCase.includes(user.username)) || (searchQueryInLowerCase.includes(user.display_name.toLowerCase()))).map(user => user.user_id);
                 if (filteredUsers.length < 1) {
                     setSearchResultsInUsers([]);
                 } else {
