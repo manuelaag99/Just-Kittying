@@ -7,10 +7,12 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
+import AddFriend from "./Portals/AddFriend";
+
 export default function UserInList ({ index, userId, userInListId }) {
     const auth = useContext(AuthContext);
     const [userInfo, setUserInfo] = useState();
-
+    
     console.log(userInListId)
     async function fetchUserInfo () {
         if (userInListId) {
@@ -27,6 +29,8 @@ export default function UserInList ({ index, userId, userInListId }) {
         fetchUserInfo();
     }, [userInListId])
 
+    const [addFriendWindow, setAddFriendWindow] = useState(false);
+
     if (!userId && !userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
@@ -42,6 +46,7 @@ export default function UserInList ({ index, userId, userInListId }) {
     } else if (userId && userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
+                <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />
                 <Link className="flex flex-row justify-start w-8/10" to={"/profile/" + userInListId}>
                     <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userId.profile_pic_url || null} />
                     <div className="flex flex-col w-fit pl-4 pr-2">
@@ -50,7 +55,7 @@ export default function UserInList ({ index, userId, userInListId }) {
                     </div>
                 </Link>
                 <div className="flex flex-row w-fit justify-center items-center">
-                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
                         <p className="text-center">
                             <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
