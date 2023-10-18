@@ -13,7 +13,6 @@ export default function UserInList ({ index, userId, userInListId }) {
     const auth = useContext(AuthContext);
     const [userInfo, setUserInfo] = useState();
     
-    console.log(userInListId)
     async function fetchUserInfo () {
         if (userInListId) {
             try {
