@@ -14,6 +14,7 @@ import MessageWindow from "../Components/Portals/MessageWindow";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "../Components/custom-hooks";
 import { supabase } from "../supabase/client";
+import ImageUpload from "../Components/ImageUpload";
 
 export default function ProfileSettingsPage () {
     const auth = useContext(AuthContext);
@@ -54,6 +55,10 @@ export default function ProfileSettingsPage () {
     }
 
     const [stateOfForm, formHandler] = useForm(initialFormState);
+
+    const [profilePicture, setProfilePicture] = useState();
+    console.log(profilePicture)
+
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
@@ -115,8 +120,9 @@ export default function ProfileSettingsPage () {
                 </div>
                 <div className="w-full sm:w-2/3 flex flex-col justify-center items-center bg-var-1 drop-shadow-navbar z-5">
                     <div className="flex flex-col justify-center w-full h-fit py-2 bg-var-4 bg-opacity-50">
-                        <RoundPhoto classesForRoundPhoto="flex justify-center items-center mx-auto my-3 sm:w-2/10 w-4/10 aspect-square drop-shadow-button" imageAlt={null} imageSource="https://img.freepik.com/free-photo/portrait-handsome-young-man-with-crossed-arms_176420-15569.jpg?w=2000" />
-                        <button className="text-black hover:text-var-3 duration-200">Change my profile picture</button>
+                        <div className="w-4/10 mx-auto">
+                            <ImageUpload imageClassnames="rounded-circular border-black border-solid border" isPostPhoto={false} sendFile={(file) => setProfilePicture(file)} />
+                        </div>
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">
                         

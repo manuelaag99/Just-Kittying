@@ -78,7 +78,7 @@ export default function CreateOrUpdatePost ({ fetchAgain, onClose, open, post, u
             <div className="flex flex-col fixed justify-center items-center z-50 top-[7%] md:left-[30%] left-[10%] md:w-4/10 w-8/10 h-fit bg-var-1 rounded-button drop-shadow-navbar">
                 <div className="flex justify-center items-center w-9/10 h-6/10 md:my-6 mt-6 mb-4">
                     <div className="flex flex-col justify-center items-center w-9/10 aspect-square bg-var-2 mx-auto">
-                        <ImageUpload sendFile={(file) => setPostContentState({...postContentState, postContentPhoto: file})} />
+                        <ImageUpload imageClassnames={null} isPostPhoto={true} sendFile={(file) => setPostContentState({...postContentState, postContentPhoto: file})} />
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center w-9/10 h-1/10 mb-5">
