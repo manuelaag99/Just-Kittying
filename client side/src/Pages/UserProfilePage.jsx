@@ -71,6 +71,17 @@ export default function UserProfilePage () {
 		}
     }
 
+    const [selectedUserProfilePic, setSelectedUserProfilePic] = useState();
+    async function fetchSelectedUserProfilePic () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + selectedUser.profile_pic_path);
+            if (error) console.log(error);
+            setSelectedUserProfilePic(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const [users, setUsers] = useState();
     async function fetchUsers() {
         try {
@@ -136,6 +147,12 @@ export default function UserProfilePage () {
     }, []);
 
     useEffect(() => {
+        if (selectedUser) {
+            fetchSelectedUserProfilePic();
+        }
+    }, [selectedUser])
+
+    useEffect(() => {
         if (usersThatAreFriendsWithCurrentUser && usersThatCurrentUserIsFriendsWith) {
             organizeFriends();
         }
@@ -185,7 +202,8 @@ export default function UserProfilePage () {
                         <div className="flex-col">
                             <div className="flex flex-row h-[100px]">
                                 <div className="flex justify-center w-3/10 h-full items-start ">
-                                    <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={selectedUser.profile_pic_url || "images/Generic-Profile-v2.png"} />
+                                    {!selectedUserProfilePic && <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={null} />}
+                                    {selectedUserProfilePic && <RoundPhoto classesForRoundPhoto="aspect-square w-7/10" imageAlt="profile-picture" imageSource={selectedUserProfilePic} />}
                                 </div>
                                 <div className="flex flex-col w-7/10 pr-8">
                                     <div className="flex flex-row justify-start font-bold text-profileDisplayName">
