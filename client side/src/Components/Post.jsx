@@ -64,6 +64,22 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
         }
     }
 
+    const [postUserProfilePic, setPostUserProfilePic] = useState();
+    async function fetchPostUserProfilePic () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + postUserData.profile_pic_path);
+            if (error) console.log(error);
+            setPostUserProfilePic(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        if (postUserData) {
+            fetchPostUserProfilePic();
+        }
+    }, [postUserData])
+
     const [favorite, setFavorite] = useState(false)
     const [postLikes, setPostLikes] = useState();
     async function fetchPostLikes () {
@@ -246,7 +262,8 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                 <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign in"} onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
                 <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
-                    <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />
+                    {!postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />}
+                    {postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={postUserProfilePic} />}
                     <Link className="flex flex-col w-8/10 h-full px-2" to={"/profile/" + postUserData.user_id}>
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
                         <div className="flex flex-row w-full cursor-pointer">
