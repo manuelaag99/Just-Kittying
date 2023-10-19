@@ -28,6 +28,22 @@ export default function UserInList ({ index, userId, userInListId }) {
         fetchUserInfo();
     }, [userInListId])
 
+    const [userProfilePic, setUserProfilePic] = useState();
+    async function fetchUserProfilePic () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + userInfo.profile_pic_path);
+            if (error) console.log(error);
+            setUserProfilePic(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        if (userInfo) {
+            fetchUserProfilePic();
+        }
+    }, [userInfo])
+
     const [addFriendWindow, setAddFriendWindow] = useState(false);
 
     if (!userId && !userInfo) {
@@ -47,7 +63,8 @@ export default function UserInList ({ index, userId, userInListId }) {
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
                 <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />
                 <Link className="flex flex-row justify-start w-8/10" to={"/profile/" + userInListId}>
-                    <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userId.profile_pic_url || null} />
+                    {!userProfilePic && <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={null} />}
+                    {userProfilePic && <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userProfilePic} />}
                     <div className="flex flex-col w-fit pl-4 pr-2">
                         <div className="font-bold" >{userInfo.display_name}</div>
                         <div className="opacity-30" >{userInfo.username}</div>
