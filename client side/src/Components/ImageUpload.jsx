@@ -51,10 +51,10 @@ export default function ImageUpload ({ imageClassnames, isPostPhoto, sendFile })
                         <InsertPhotoIcon />  Select an image
                     </p>
                 </button>}
-                {file && previewPhotoUrl && <img alt="image" className={"object-contain w-full z-10 cursor-pointer  " + imageClassnames} src={previewPhotoUrl}  />}
+                {file && previewPhotoUrl && <img alt="image" className={"object-contain aspect-square w-full z-10 cursor-pointer  " + imageClassnames} src={previewPhotoUrl}  />}
                 <input className="w-9/10 text-center hidden" onChange={(e) => uploadImage(e)} ref={imageSelectorRef} type="file" />
             </div>
-            {!isPostPhoto && <div className="flex w-full">
+            {!isPostPhoto && <div className="flex w-full mt-2">
                 <button className="text-black hover:text-var-3 duration-200" onClick={(e) => selectFileHandler(e)}>Change my profile picture</button>
             </div>}
         </div>
