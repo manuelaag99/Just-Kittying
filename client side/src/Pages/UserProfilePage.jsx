@@ -137,6 +137,17 @@ export default function UserProfilePage () {
         setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
 
+    const [generalProfilePic, setGeneralProfilePic] = useState();
+    async function fetchGeneralProfilePic () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/Generic-Profile-v2.png");
+            if (error) console.log(error);
+            setGeneralProfilePic(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         checkIfUserHasDisplayName();
 		fetchUsers();
@@ -144,11 +155,16 @@ export default function UserProfilePage () {
 		fetchSelectedUserData();
         fetchFriendsOne();
         fetchFriendsTwo();
+        fetchGeneralProfilePic();
     }, []);
 
     useEffect(() => {
         if (selectedUser) {
-            fetchSelectedUserProfilePic();
+            if (selectedUser.profile_pic_path) {
+                fetchSelectedUserProfilePic();
+            } else {
+                setSelectedUserProfilePic(generalProfilePic);
+            }
         }
     }, [selectedUser])
 
@@ -183,6 +199,8 @@ export default function UserProfilePage () {
         console.log(navigatingUser)
         console.log(userFriends)
     }
+
+    console.log(generalProfilePic)
 
     if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
