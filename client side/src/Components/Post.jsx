@@ -66,13 +66,23 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
 
     const [postUserProfilePic, setPostUserProfilePic] = useState();
     async function fetchPostUserProfilePic () {
-        try {
-            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + postUserData.profile_pic_path);
-            if (error) console.log(error);
-            setPostUserProfilePic(data.publicUrl);
-        } catch (err) {
-            console.log(err);
-        }
+        if (postUserData.profile_pic_path) {
+            try {
+                const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + postUserData.profile_pic_path);
+                if (error) console.log(error);
+                setPostUserProfilePic(data.publicUrl);
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            try {
+                const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/Generic-Profile-v2.png");
+                if (error) console.log(error);
+                setPostUserProfilePic(data.publicUrl);
+            } catch (err) {
+                console.log(err);
+            }
+        }   
     }
     useEffect(() => {
         if (postUserData) {
