@@ -197,6 +197,20 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
         }
     }, [stateOfForm])
 
+    const [logo, setLogo] = useState();
+    async function fetchLogo () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/logo.png");
+            if (error) console.log(error);
+            setLogo(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        fetchLogo();
+    }, [])
+
     const signInOrSignUpWindow = (
         <div>
             <div onClick={onClose} className="bg-black opacity-50 fixed top-0 bottom-0 w-screen h-screen z-20"></div>
@@ -204,7 +218,7 @@ export default function SignInOrSignUpWindow({ open, onClose, switchToSignIn, sw
             <div className={"flex flex-col fixed justify-center items-center z-30 sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button  text-signInOrsignUpMob sm:text-signInOrsignUpDsk duration-500 " + (textForSignInOrSignUpButton === "Sign up" ? "top-[7%] " : "top-[15%] ")}>
                 
                 <div className=" flex justify-center items-center w-7/10 h-10 mt-5">
-                    <img className="h-full object-cover " src="images/logo.png" alt="just-kittying-logo" />
+                    {logo && <img className="h-full object-cover " src={logo} alt="just-kittying-logo" />}
                 </div>
 
                 <div className="w-8/10 h-fit mt-4">

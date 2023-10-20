@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import LightModeIcon from '@mui/icons-material/LightMode';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Menu from "./Portals/Menu";
 import SearchBar from "./SearchBar";
 import { AuthContext } from "../context/AuthContext";
+import { supabase } from "../supabase/client";
 
 export default function NavTopContent ({ userId }) {
     const auth = useContext(AuthContext);
@@ -22,13 +23,27 @@ export default function NavTopContent ({ userId }) {
         setShowMenu(true)
     }
 
+    const [logo, setLogo] = useState();
+    async function fetchLogo () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/logo.png");
+            if (error) console.log(error);
+            setLogo(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        fetchLogo();
+    }, [])
+
     return (
         <div className="flex flex-row h-full w-full sm:py-3 py-1 justify-evenly items-center">
             <Menu onClose={closeMenuHandle} open={showMenu} userId={userId} />
             <div className="flex justify-center sm:w-1/4 w-1/5 sm:h-full h-3/4 my-auto text-var-3">
                 <Link className="flex flex-row justify-center items-center lg:text-logoSizeLarge md:text-logoSizeMedium w-full" to="/">
-                    <div className="flex h-full w-fit sm:w-3/10 md:w-fit items-center">
-                        <img className="w-full h-full object-cover p-1" src="images/logo.png" alt="jk-logo" />
+                    <div className="flex justify-center h-full w-fit sm:w-3/10 md:w-fit items-center">
+                        {logo && <img className="w-full h-full object-cover p-2 " src={logo} alt="jk-logo" />}
                     </div>
                     <p className="sm:w-fit hidden md:block sm:pl-2 hover:text-var-3-hovered">Just Kittying!</p>
                 </Link>
