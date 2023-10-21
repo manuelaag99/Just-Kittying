@@ -13,6 +13,7 @@ import RoundPhoto from "../Components/RoundPhoto";
 import UsersList from "../Components/UsersList";
 
 import AddButton from "../Components/Portals/AddButton";
+import AddFriend from "../Components/Portals/AddFriend";
 import CreateOrUpdatePost from "../Components/Portals/CreateOrUpdatePost";
 import MessageWindow from "../Components/Portals/MessageWindow";
 
@@ -179,20 +180,21 @@ export default function UserProfilePage () {
         organizeFriends();
     };
 
-    function addPersonHandle () {
-        console.log("added friend!");
-    }
-
-    function removePersonHandle () {
-        console.log("removed friend!");
-    }
-
     const [createPostWindow, setCreatePostWindow] = useState();
 
-    function checkIfNavigatingUserIsInProfileUserFriendList (navigatingUser) {
-        console.log(navigatingUser)
-        console.log(userFriends)
-    }
+    const [addFriendWindow, setAddFriendWindow] = useState(false);
+    const [isUserInListUserFriends, setIsUserInListUserFriends] = useState();
+    useEffect(() => {
+        if (userFriends) {
+            if (userFriends.length > 0) {
+                if (userFriends.includes(auth.userId)) {
+                    setIsUserInListUserFriends(true);
+                } else {
+                    setIsUserInListUserFriends(false);
+                }
+            }
+        }
+    }, [userFriends])
 
     if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
@@ -206,9 +208,9 @@ export default function UserProfilePage () {
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
                 <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={auth.userId} />} />
                 {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
+                <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={auth.userId} userToAddId={user_id} />
                 <div className="flex justify-center mt-top-margin-mob sm:m-top-margin-dsk">
                     <div className="flex flex-col w-full sm:mt-3 sm:w-2/3 bg-var-1 h-fit">
-                        
                         <div className="flex-col">
                             <div className="flex flex-row h-[100px]">
                                 <div className="flex justify-center w-3/10 h-full items-start ">
@@ -218,11 +220,13 @@ export default function UserProfilePage () {
                                 <div className="flex flex-col w-7/10 pr-8">
                                     <div className="flex flex-row justify-start font-bold text-profileDisplayName">
                                         <p>{selectedUser.display_name}</p>
-                                        {(auth.isLoggedIn) && (selectedUser.user_id !== auth.userId) && <button className="ml-3" onClick={() => checkIfNavigatingUserIsInProfileUserFriendList(auth.userId)}>
+                                        {(auth.isLoggedIn) && (selectedUser.user_id !== auth.userId) && !isUserInListUserFriends && <button className="ml-3" onClick={() => setAddFriendWindow(true)}>
                                             <PersonAddAlt1Icon className="text-black hover:text-var-2 duration-100" fontSize="medium" />
                                         </button>}
+                                        {(auth.isLoggedIn) && (selectedUser.user_id !== auth.userId) && isUserInListUserFriends && <button className="ml-3">
+                                            <PersonRemoveIcon className="text-black hover:text-var-2 duration-100" fontSize="medium" />
+                                        </button>}
                                     </div>
-                                    
                                     <div className="font-semibold opacity-30 text-profileOtherText">{selectedUser.username}</div>
                                     <div className="font-light text-profileOtherText">{selectedUser.short_bio}</div>
                                 </div>
@@ -242,14 +246,10 @@ export default function UserProfilePage () {
                                 </div>}
                             </div>
                         </div>
-                        
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={auth.userId} />}
                         {(tabsSection === friendsTab) && <UsersList allUsers={users} selectedUsersArray={userFriends} userId={auth.userId} />}
-
                     </div>
                 </div>
-                    
-                
             </div>
         )
     }
