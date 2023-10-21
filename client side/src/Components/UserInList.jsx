@@ -81,12 +81,12 @@ export default function UserInList ({ index, userId, userInListId }) {
                     </div>
                 </Link>
                 <div className="flex flex-row w-fit justify-center items-center">
-                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
                         <p className="text-center">
                             <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
-                    {auth.isLoggedIn && (userInListId !== userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && <button className="flex justify-center px-3 w-fit items-center ">
                         <p className="text-center">
                             <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
