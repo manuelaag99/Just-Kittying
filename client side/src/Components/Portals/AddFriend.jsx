@@ -26,6 +26,32 @@ export default function AddFriend ({ onClose, open, userId, userToAddId }) {
         fetchUserInfo();
     }, [])
 
+    const [userProfilePic, setUserProfilePic] = useState();
+    async function fetchUserProfilePic () {
+        if (userInfo.profile_pic_path) {
+            try {
+                const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + userInfo.profile_pic_path);
+                if (error) console.log(error);
+                setUserProfilePic(data.publicUrl);
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            try {
+                const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/Generic-Profile-v2.png");
+                if (error) console.log(error);
+                setUserProfilePic(data.publicUrl);
+            } catch (err) {
+                console.log(err);
+            }
+        }   
+    }
+    useEffect(() => {
+        if (userInfo) {
+            fetchUserProfilePic();
+        }
+    }, [userInfo])
+
     const [requestMessage, setRequestMessage] = useState();
     let friend_request_id;
     async function sendFriendRequest () {
@@ -60,9 +86,9 @@ export default function AddFriend ({ onClose, open, userId, userToAddId }) {
             <div className="flex flex-col fixed justify-center items-center z-30 sm:left-[25%] left-[5%] sm:w-5/10 w-9/10 h-fit bg-var-1 rounded-button text-signInOrsignUpMob sm:text-signInOrsignUpDsk duration-500 ">
 				<div className="flex flex-row justify-around items-center w-full h-fit max-h-24 px-5 pt-5 pb-2 ">
                     <div className="flex w-15 h-full ">
-                        <RoundPhoto classesForRoundPhoto=" aspect-square h-full " imageAlt="user-photo" imageSource={null} photoPath={null} />
+                        <RoundPhoto classesForRoundPhoto=" aspect-square h-full " imageAlt="user-photo" imageSource={userProfilePic} />
                     </div>
-                    <div className="flex w-85 px-2">
+                    <div className="flex w-8/10 px-2">
                         {!userInfo && <div className="rounded-button bg-gray-600 w-5/10 h-4"></div>}
                         {userInfo && <p className="text-left">Do you want to add a message to your friend request to {userInfo.display_name}?</p>}
                     </div>

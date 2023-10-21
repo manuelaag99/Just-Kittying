@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PhotoCloseUp from "./Portals/PhotoCloseUp";
 import { supabase } from "../supabase/client";
 
-export default function RoundPhoto ({ classesForRoundPhoto, imageAlt, imageSource, photoPath }) {
+export default function RoundPhoto ({ classesForRoundPhoto, imageAlt, imageSource }) {
     const [openPhotoCloseUp, setOpenPhotoCloseUp] = useState(false);
 
     function openImageHandle () {
@@ -13,20 +13,6 @@ export default function RoundPhoto ({ classesForRoundPhoto, imageAlt, imageSourc
     function closeImageHandle () {
         setOpenPhotoCloseUp(false);
     }
-
-    const [photo, setPhoto] = useState();
-    async function fetchPhoto () {
-        try {
-            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + photoPath);
-            if (error) console.log(error);
-            setPhoto(data.publicUrl);
-        } catch (err) {
-            console.log(err);
-        }
-    }
-    // useEffect(() => {
-    //     fetchPhoto();
-    // }, [])
 
     return (
         <div className={classesForRoundPhoto}>

@@ -54,6 +54,9 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [userInfo])
 
+    console.log(userInfo)
+    console.log(userProfilePic)
+
     const [userFriends, setUserFriends] = useState();
     const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
     const [usersThatAreFriendsWithCurrentUser, setUsersThatAreFriendsWithCurrentUser] = useState();
@@ -100,7 +103,7 @@ export default function UserInList ({ index, userId, userInListId }) {
 
     console.log(userFriends)
 
-    if (!userId && !userInfo) {
+    if (!userId && !userInfo && !userProfilePic) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
                 <div className="flex flex-row justify-start w-8/10">
@@ -112,7 +115,7 @@ export default function UserInList ({ index, userId, userInListId }) {
                 </div>
             </div>
         )
-    } else if (userId && userInfo) {
+    } else if (userId && userInfo && userProfilePic) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
                 <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />
