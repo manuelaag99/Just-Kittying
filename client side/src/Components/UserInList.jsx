@@ -54,7 +54,51 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [userInfo])
 
+    const [userFriends, setUserFriends] = useState();
+    const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
+    const [usersThatAreFriendsWithCurrentUser, setUsersThatAreFriendsWithCurrentUser] = useState();
+    async function fetchFriendsOne () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", userInListId);
+			if (error) console.log(error);
+			setUsersThatCurrentUserIsFriendsWith(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    async function fetchFriendsTwo () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", userInListId);
+			if (error) console.log(error);
+            setUsersThatAreFriendsWithCurrentUser(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    useEffect(() => {
+        fetchFriendsOne();
+        fetchFriendsTwo();
+    }, [])
+
+    let idsOfFriendsOne;
+    let idsOfFriendsTwo;
+    function organizeFriends () {
+        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => user_id = user.user_1_id)
+        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => user_id = user.user_2_id)
+        setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
+    }
+
+    useEffect(() => {
+        if (usersThatAreFriendsWithCurrentUser && usersThatCurrentUserIsFriendsWith) {
+            organizeFriends();
+        }
+    }, [usersThatCurrentUserIsFriendsWith, usersThatAreFriendsWithCurrentUser])
+
     const [addFriendWindow, setAddFriendWindow] = useState(false);
+
+    console.log(userFriends)
 
     if (!userId && !userInfo) {
         return (
