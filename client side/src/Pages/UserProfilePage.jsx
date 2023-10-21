@@ -26,9 +26,7 @@ export default function UserProfilePage () {
     const [loading, setLoading] = useState(true);
 
     let { userid } = useParams();
-    let user_id = userid
-    const userIsLoggedIn = false; //remove 
-    // let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
+    let user_id = userid;
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isMessageWindowOpen, setIsMessageWindowOpen] = useState(false);
@@ -148,6 +146,15 @@ export default function UserProfilePage () {
         setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
 
+    // useEffect(() => {
+    //     checkIfUserHasDisplayName();
+	// 	fetchUsers();
+	// 	fetchPosts();
+	// 	fetchSelectedUserData();
+    //     fetchFriendsOne();
+    //     fetchFriendsTwo();
+    // }, []);
+
     useEffect(() => {
         checkIfUserHasDisplayName();
 		fetchUsers();
@@ -155,7 +162,7 @@ export default function UserProfilePage () {
 		fetchSelectedUserData();
         fetchFriendsOne();
         fetchFriendsTwo();
-    }, []);
+    }, [user_id])
 
     useEffect(() => {
         if (selectedUser) {
