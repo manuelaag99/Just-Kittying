@@ -101,7 +101,20 @@ export default function UserInList ({ index, userId, userInListId }) {
 
     const [addFriendWindow, setAddFriendWindow] = useState(false);
 
-    console.log(userFriends)
+    const [isUserInListUserFriends, setIsUserInListUserFriends] = useState();
+    useEffect(() => {
+        if (userFriends) {
+            if (userFriends.length > 0) {
+                if (userFriends.includes(auth.userId)) {
+                    setIsUserInListUserFriends(true);
+                } else {
+                    setIsUserInListUserFriends(false);
+                }
+            }
+        }
+    }, [userFriends])
+
+    console.log(isUserInListUserFriends)
 
     if (!userId && !userInfo && !userProfilePic) {
         return (
@@ -128,18 +141,17 @@ export default function UserInList ({ index, userId, userInListId }) {
                     </div>
                 </Link>
                 <div className="flex flex-row w-fit justify-center items-center">
-                    {auth.isLoggedIn && (userInListId !== auth.userId) && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && !isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
                         <p className="text-center">
                             <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
-                    {auth.isLoggedIn && (userInListId !== auth.userId) && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center ">
                         <p className="text-center">
                             <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
                 </div>
-                
             </div>
         )
     }
