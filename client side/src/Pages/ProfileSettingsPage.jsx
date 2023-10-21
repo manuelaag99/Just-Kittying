@@ -22,18 +22,38 @@ export default function ProfileSettingsPage () {
     const navigate = useNavigate();
 
     const [userInfo, setUserInfo] = useState();
-    useEffect(() => {
-        async function fetchData () {
-          try {
-            const { data, error } = await supabase.from("jk-users").select().eq("user_id", auth.userId);
-            if (error) console.log(error);
-            setUserInfo(data[0])
-          } catch (err) {
-            console.log(err)
-          }
+    async function fetchData () {
+        try {
+          const { data, error } = await supabase.from("jk-users").select().eq("user_id", auth.userId);
+          if (error) console.log(error);
+          setUserInfo(data[0])
+        } catch (err) {
+          console.log(err)
         }
+    }
+
+    const [initialUserProfilePic, setInitialUserProfilePic] = useState();
+    async function fetchUserProfilePic () {
+        try {
+            const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + userInfo.profile_pic_path);
+            if (error) console.log(error);
+            setInitialUserProfilePic(data.publicUrl);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (userInfo) {
+            if (userInfo.profile_pic_path) {
+                fetchUserProfilePic();
+            }
+        }
+    }, [userInfo])
 
     const initialFormState = {
         inputs: {
@@ -53,18 +73,27 @@ export default function ProfileSettingsPage () {
     async function updateUserInfo () {
         profilePicPath = uuidv4();
         try {
-            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value, profile_pic_path: profilePicPath }).eq("user_id", auth.userId);
+            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.userId);
             if (error) console.log(error);
         } catch (err) {
             console.log(err)
         }
-        try {
-            const { error } = await supabase.storage.from("jk-images").upload("userProfilePics/" + profilePicPath, profilePicture);
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err);
+        if (profilePicture)  {
+            try {
+                const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value, profile_pic_path: profilePicPath }).eq("user_id", auth.userId);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err)
+            }
+            try {
+                const { error } = await supabase.storage.from("jk-images").upload("userProfilePics/" + profilePicPath, profilePicture);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
+    console.log(profilePicture)
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();
@@ -104,6 +133,8 @@ export default function ProfileSettingsPage () {
         setConfirmWindowVisibility(false);
     }
 
+    console.log(initialUserProfilePic)
+
     if (!userInfo) {
         return (<LoadingSpinner open={true} />)
     } else {
@@ -127,7 +158,7 @@ export default function ProfileSettingsPage () {
                 <div className="w-full sm:w-2/3 flex flex-col justify-center items-center bg-var-1 drop-shadow-navbar z-5">
                     <div className="flex flex-col justify-center w-full h-fit py-2 bg-var-4 bg-opacity-50">
                         <div className="w-4/10 mx-auto">
-                            <ImageUpload imageClassnames="rounded-circular border-black border-solid border" isPostPhoto={false} sendFile={(file) => setProfilePicture(file)} />
+                            <ImageUpload imageClassnames="rounded-circular border-black border-solid border" initialImage={initialUserProfilePic} isPostPhoto={false} sendFile={(file) => setProfilePicture(file)} />
                         </div>
                     </div>
                     <div className="flex flex-col w-full h-fit border-var-2 border-solid border-2 mt-0 pt-3">

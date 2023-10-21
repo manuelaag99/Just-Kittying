@@ -15,7 +15,6 @@ export default function InputForForm ({ areBothPasswordsTheSame, errorMessage, i
 
     function inputBlurHandle () {
         dispatch({ type: "blur" })
-        // dispatch({ type: "focus out"})
     }
 
     function inputChangeHandle (e) {
@@ -33,7 +32,6 @@ export default function InputForForm ({ areBothPasswordsTheSame, errorMessage, i
         setPasswordVisibility(prevValue => !prevValue);
     }
 
-    console.log(inputValueAlreadyExists)
     return (
         <div className={largeDivClassnames} >
             {isInSettingsPage && <label className={labelClassnames} htmlFor="">{labelText}</label>}
