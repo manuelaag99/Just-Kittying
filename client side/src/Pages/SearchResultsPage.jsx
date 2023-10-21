@@ -15,8 +15,6 @@ import { useSearch } from "../context/SearchQueryContext";
 
 export default function SearchResultsPage () {
     const auth = useContext(AuthContext);
-    let user_id = "19ae918c-8adb-44e2-8456-f24ff1e85d59"
-    const userIsLoggedIn = false; //remove 
     const usersTab = "friends"
     const postsTab = "posts"
     const [tabsSection, setTabsSection] = useState(postsTab);
@@ -128,7 +126,7 @@ export default function SearchResultsPage () {
         return (
             <div className="bg-var-1 w-full h-full">
                 <MessageWindow isErrorMessage={isTextMessageAnError} onClose={closeMessageWindow} open={isMessageWindowOpen} textForMessage={textForMessageWindow} />
-                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={user_id} />} />
+                <NavigationBar navPosition=" fixed top-0 " navBackgColor=" bg-var-1 " content={<NavTopContent userId={auth.userId} />} />
                 {!auth.isLoggedIn && <NavigationBar navPosition=" fixed bottom-0 " navBackgColor=" bg-var-3 " content={<NavBottomContent />} />}
                 <div className="flex flex-col w-full mt-2 justify-center">
                     <div className="flex flex-row w-full sm:w-3/5 mt-16 mx-auto sm:mt-20">
@@ -148,7 +146,7 @@ export default function SearchResultsPage () {
     
                     {searchResultsInUsers && searchResultsInPosts && <div className="flex flex-col w-full sm:w-3/5 mx-auto">
                         {(tabsSection === postsTab) && <PostsGrid postsArray={searchResultsInPosts} />}
-                        {(tabsSection === usersTab) && <UsersList selectedUsersArray={searchResultsInUsers} userId={user_id} />}
+                        {(tabsSection === usersTab) && <UsersList selectedUsersArray={searchResultsInUsers} userId={auth.userId} />}
                     </div>}
                     
                     {!searchResultsInUsers || !searchResultsInPosts && <div className="flex flex-col w-full">

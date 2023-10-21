@@ -30,13 +30,15 @@ export default function Notifications ({ userId }) {
         }
     }
 
-    useEffect(() => {
+    function fetchNotifications () {
         fetchUserRequests();
         fetchCommentNotifications();
+    }
+
+    useEffect(() => {
+        fetchNotifications();
     }, [])
 
-    console.log(friendRequests)
-    console.log(commentNotifs)
 
     if (!friendRequests || !commentNotifs) {
         return (
@@ -46,10 +48,10 @@ export default function Notifications ({ userId }) {
         return (
             <div className="flex flex-col justify-center mx-auto w-full sm:w-6/10 bg-white sm:m-top-margin-dsk m-top-margin-mob">
                 {friendRequests && (friendRequests.length > 0) && friendRequests.map((friendRequest, index) => {
-                    return (<Notification key={index} index={index} friendRequest={friendRequest} />)
+                    return (<Notification fetchNotifications={fetchNotifications} key={index} index={index} friendRequest={friendRequest} />)
                 })}
                 {commentNotifs && (commentNotifs.length > 0) && commentNotifs.map((commentNotif, index) => {
-                    return (<Notification key={index} index={index} commentNotif={commentNotif} />)
+                    return (<Notification fetchNotifications={fetchNotifications} key={index} index={index} commentNotif={commentNotif} />)
                 })}
                 {(friendRequests.length < 1) && (commentNotifs.length < 1) && <div className="flex justify-center mt-4 px-5">
                     <p className="text-center text-black">

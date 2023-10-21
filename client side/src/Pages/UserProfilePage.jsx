@@ -180,6 +180,7 @@ export default function UserProfilePage () {
         organizeFriends();
     };
 
+    console.log(userFriends)
     const [createPostWindow, setCreatePostWindow] = useState();
 
     const [addFriendWindow, setAddFriendWindow] = useState(false);

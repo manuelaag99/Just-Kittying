@@ -11,8 +11,32 @@ import AddFriend from "./Portals/AddFriend";
 
 export default function UserInList ({ index, userId, userInListId }) {
     const auth = useContext(AuthContext);
-    const [userInfo, setUserInfo] = useState();
+    console.log(userId)
     
+    const [userFriends, setUserFriends] = useState();
+    const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
+    const [usersThatAreFriendsWithCurrentUser, setUsersThatAreFriendsWithCurrentUser] = useState();
+    async function fetchFriendsOne () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", userInListId);
+			if (error) console.log(error);
+			setUsersThatCurrentUserIsFriendsWith(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+
+    async function fetchFriendsTwo () {
+		try {
+			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", userInListId);
+			if (error) console.log(error);
+            setUsersThatAreFriendsWithCurrentUser(data);
+		} catch (err) {
+			console.log(err);
+		}
+    }
+    
+    const [userInfo, setUserInfo] = useState();    
     async function fetchUserInfo () {
         if (userInListId) {
             try {
@@ -26,7 +50,9 @@ export default function UserInList ({ index, userId, userInListId }) {
     }
     useEffect(() => {
         fetchUserInfo();
-    }, [userInListId])
+        fetchFriendsOne();
+        fetchFriendsTwo();
+    }, [])
 
     const [userProfilePic, setUserProfilePic] = useState();
     async function fetchUserProfilePic () {
@@ -54,42 +80,11 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [userInfo])
 
-    console.log(userInfo)
-    console.log(userProfilePic)
-
-    const [userFriends, setUserFriends] = useState();
-    const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
-    const [usersThatAreFriendsWithCurrentUser, setUsersThatAreFriendsWithCurrentUser] = useState();
-    async function fetchFriendsOne () {
-		try {
-			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", userInListId);
-			if (error) console.log(error);
-			setUsersThatCurrentUserIsFriendsWith(data);
-		} catch (err) {
-			console.log(err);
-		}
-    }
-
-    async function fetchFriendsTwo () {
-		try {
-			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", userInListId);
-			if (error) console.log(error);
-            setUsersThatAreFriendsWithCurrentUser(data);
-		} catch (err) {
-			console.log(err);
-		}
-    }
-
-    useEffect(() => {
-        fetchFriendsOne();
-        fetchFriendsTwo();
-    }, [])
-
     let idsOfFriendsOne;
     let idsOfFriendsTwo;
     function organizeFriends () {
-        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => user_id = user.user_1_id)
-        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => user_id = user.user_2_id)
+        idsOfFriendsOne = usersThatAreFriendsWithCurrentUser.map((user) => userInListId = user.user_1_id)
+        idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => userInListId = user.user_2_id)
         setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
 
@@ -114,9 +109,9 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [userFriends])
 
-    console.log(isUserInListUserFriends)
+    console.log(userInfo)
 
-    if (!userId && !userInfo && !userProfilePic) {
+    if (!userId && !userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
                 <div className="flex flex-row justify-start w-8/10">
@@ -128,7 +123,7 @@ export default function UserInList ({ index, userId, userInListId }) {
                 </div>
             </div>
         )
-    } else if (userId && userInfo && userProfilePic) {
+    } else if (userId && userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
                 <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />

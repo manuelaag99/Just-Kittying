@@ -1,11 +1,13 @@
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import { supabase } from '../supabase/client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../context/AuthContext';
 
-export default function Notification ({ commentNotif, friendRequest, index }) {
+export default function Notification ({ commentNotif, fetchNotifications, friendRequest, index }) {
+    const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
     function navigateToPost () {
@@ -40,33 +42,32 @@ export default function Notification ({ commentNotif, friendRequest, index }) {
     }, [])
 
     let friendship_id;
-    async function acceptRequestHandle (notification) {
-        console.log(notification)
+    async function acceptRequestHandle (friendRequest) {
         friendship_id = uuidv4();
         try {
-            const { error } = await supabase.from("jk-friends").insert({ friendship_id: friendship_id, user_1_id: userId, user_2_id: notification.request_sender_id });
+            const { error } = await supabase.from("jk-friends").insert({ friendship_id: friendship_id, user_1_id: auth.userId, user_2_id: friendRequest.request_sender_id });
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
         }
         try {
-            const { error } = await supabase.from("jk-friend-requests").update({ request_status: "accepted" }).eq("request_id", notification.request_id);
+            const { error } = await supabase.from("jk-friend-requests").update({ request_status: "accepted" }).eq("request_id", friendRequest.request_id);
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
         }
-        fetchUserRequests();
-    }
-
-    async function denyRequestHandle (notification) {
-        try {
-            const { error } = await supabase.from("jk-friend-requests").update({ request_status: "denied" }).eq("request_id", notification.request_id);
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err);
-        }
+        fetchNotifications();
     }
     console.log(friendRequest)
+
+    async function denyRequestHandle (friendRequest) {
+        try {
+            const { error } = await supabase.from("jk-friend-requests").update({ request_status: "denied" }).eq("request_id", friendRequest.request_id);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     if (!userInfo) {
         <div className="flex flex-col justify-center px-4 py-2 w-full border-b border-gray-400 mx-auto" key={index}>

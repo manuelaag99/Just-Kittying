@@ -6,16 +6,26 @@ import { supabase } from '../../supabase/client';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function ConfirmWindow({ onClose, onCloseConfirmWindowAndThenOpenMessageWindow, open, textForMessage, user }) {
+export default function ConfirmWindow({ idOfOtherUser, onClose, onCloseConfirmWindowAndThenOpenMessageWindow, open, textForMessage, user }) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
-    console.log(user)
     function actionButtonHandle () {
         if (textForMessage === "Are you sure you want to delete your account? This is permanent.") {
             deleteAccount();
-        } else if ((textForMessage === "Are you sure you want to change your password? If you confirm, you will get an email with a link to change it.")) {
+        } else if (textForMessage === "Are you sure you want to change your password? If you confirm, you will get an email with a link to change it.") {
             changePassword();
+        } else if (textForMessage === "Are you sure you want to remove this user from your friends?") {
+            removeFriend();
+        }
+    }
+
+    async function removeFriend () {
+        try {
+            const { error } = await supabase.from("jk-friends").select().eq("user_1_id", user.userId).eq("user_2_id", idOfOtherUser);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
         }
     }
 
