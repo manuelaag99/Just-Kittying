@@ -72,12 +72,6 @@ export default function ProfileSettingsPage () {
     let profilePicPath;
     async function updateUserInfo () {
         profilePicPath = uuidv4();
-        try {
-            const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.userId);
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err)
-        }
         if (profilePicture)  {
             try {
                 const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value, profile_pic_path: profilePicPath }).eq("user_id", auth.userId);
@@ -91,9 +85,29 @@ export default function ProfileSettingsPage () {
             } catch (err) {
                 console.log(err);
             }
+        } else if (!profilePicture && !initialUserProfilePic) {
+            try {
+                const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value }).eq("user_id", auth.userId);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err)
+            }
+        } else if (!profilePicture && initialUserProfilePic) {
+            try {
+                const { error } = await supabase.from("jk-users").update({ display_name: stateOfForm.inputs.displayname.value, username: stateOfForm.inputs.username.value, short_bio: stateOfForm.inputs.shortbio.value, account_privacy: stateOfForm.inputs.accountprivacy.value, feed_preference: stateOfForm.inputs.feedpreference.value, profile_pic_path: null }).eq("user_id", auth.userId);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err)
+            }
+            try {
+                const { error } = await supabase.storage.from("jk-images").remove("userProfilePics/" + userInfo.profile_pic_path);
+                if (error) console.log(error);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
-    console.log(profilePicture)
+    console.log(userInfo)
 
     const [textForMessageWindow, setTextForMessageWindow] = useState("");
     const [isTextMessageAnError, setIsTextMessageAnError] = useState();

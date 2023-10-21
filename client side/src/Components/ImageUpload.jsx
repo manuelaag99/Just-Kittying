@@ -8,14 +8,12 @@ export default function ImageUpload ({ imageClassnames, initialImage, isPostPhot
     const [file, setFile] = useState();
     const [previewPhotoUrl, setPreviewPhotoUrl] = useState();
 
-    // console.log(initialImage)
     useEffect(() => {
         if (initialImage) {
-            // setFile(initialImage);
             setPreviewPhotoUrl(initialImage);
         }
     }, [initialImage])
-    
+
     useEffect(() => {
         if (!file) return;
         const fileReader = new FileReader();
@@ -63,6 +61,9 @@ export default function ImageUpload ({ imageClassnames, initialImage, isPostPhot
             </div>
             {!isPostPhoto && <div className="flex justify-center w-full mt-2">
                 <button className="text-black text-center hover:text-var-3 duration-200" onClick={(e) => selectFileHandler(e)}>Change my profile picture</button>
+            </div>}
+            {!isPostPhoto && <div className="flex justify-center w-full mt-2">
+                <button className="text-black text-center hover:text-red-500 duration-200" onClick={cancelImageUpload}>Delete my profile picture</button>
             </div>}
         </div>
     )
