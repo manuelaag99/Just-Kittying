@@ -36,7 +36,9 @@ export default function UserProfilePage () {
         if (auth.isLoggedIn) {
             try {
                 const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.userId);
-                if (error) console.log(error);
+                if (error) {
+                    notifyError(error);
+                }
                 if (!error) {
                     if (data[0].display_name === "") {
                         setDoesUserHaveDisplayName(false);
@@ -47,7 +49,7 @@ export default function UserProfilePage () {
                     }
                 }
             } catch (err) {
-                console.log(err)
+                notifyError(err);
             }
         }
     }
@@ -63,11 +65,13 @@ export default function UserProfilePage () {
     async function fetchSelectedUserData () {
 		try {
 			const { data, error } = await supabase.from('jk-users').select("*").eq("user_id", user_id);
-			if (error) console.log(error);
+			if (error) {
+                notifyError(error);
+            }
 			setSelectedUser(data[0]);
 		} catch (err) {
-			console.log(err);
-		}
+            notifyError(err);
+        }
     }
 
     const [selectedUserProfilePic, setSelectedUserProfilePic] = useState();
@@ -75,18 +79,22 @@ export default function UserProfilePage () {
         if (selectedUser.profile_pic_path) {
             try {
                 const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("userProfilePics/" + selectedUser.profile_pic_path);
-                if (error) console.log(error);
+                if (error) {
+                    notifyError(error);
+                }
                 setSelectedUserProfilePic(data.publicUrl);
             } catch (err) {
-                console.log(err);
+                notifyError(err);
             }
         } else {
             try {
                 const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("generalPics/Generic-Profile-v2.png");
-                if (error) console.log(error);
+                if (error) {
+                    notifyError(error);
+                }
                 setSelectedUserProfilePic(data.publicUrl);
             } catch (err) {
-                console.log(err);
+                notifyError(err);
             }
         }        
     }
@@ -95,10 +103,12 @@ export default function UserProfilePage () {
     async function fetchUsers() {
         try {
             const { data, error } = await supabase.from("jk-users").select("*");
-            if (error) console.log(error);
+            if (error) {
+                notifyError(error);
+            }
             setUsers(data);
         } catch (err) {
-            console.log(err);
+            notifyError(err);
         }
     }
 
@@ -107,11 +117,13 @@ export default function UserProfilePage () {
     async function fetchPosts() {
         try {
             const { data, error } = await supabase.from("jk-posts").select("*");
-            if (error) console.log(error);
+            if (error) {
+                notifyError(error);
+            }
             setPosts(data);
             setUserPosts(data.filter(post => post.post_creator_id === user_id))
         } catch (err) {
-            console.log(err);
+            notifyError(err);
         }
     }
 
@@ -121,21 +133,31 @@ export default function UserProfilePage () {
     async function fetchFriendsOne () {
 		try {
 			const { data, error } = await supabase.from("jk-friends").select("user_2_id").eq("user_1_id", user_id);
-			if (error) console.log(error);
+			if (error) {
+                notifyError(error);
+            }
 			setUsersThatCurrentUserIsFriendsWith(data);
 		} catch (err) {
-			console.log(err);
-		}
+            notifyError(err);
+        }
     }
 
     async function fetchFriendsTwo () {
 		try {
 			const { data, error } = await supabase.from("jk-friends").select("user_1_id").eq("user_2_id", user_id);
-			if (error) console.log(error);
+			if (error) {
+                notifyError(error);
+            }
             setUsersThatAreFriendsWithCurrentUser(data);
 		} catch (err) {
-			console.log(err);
-		}
+            notifyError(err);
+        }
+    }
+
+    function notifyError (error) {
+        setIsTextMessageAnError(true);
+        setTextForMessageWindow(error);
+        setIsMessageWindowOpen(true);
     }
 
     let idsOfFriendsOne;
@@ -145,15 +167,6 @@ export default function UserProfilePage () {
         idsOfFriendsTwo = usersThatCurrentUserIsFriendsWith.map((user) => user_id = user.user_2_id)
         setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
-
-    // useEffect(() => {
-    //     checkIfUserHasDisplayName();
-	// 	fetchUsers();
-	// 	fetchPosts();
-	// 	fetchSelectedUserData();
-    //     fetchFriendsOne();
-    //     fetchFriendsTwo();
-    // }, []);
 
     useEffect(() => {
         checkIfUserHasDisplayName();
@@ -187,7 +200,6 @@ export default function UserProfilePage () {
         organizeFriends();
     };
 
-    console.log(userFriends)
     const [createPostWindow, setCreatePostWindow] = useState();
 
     const [addFriendWindow, setAddFriendWindow] = useState(false);
