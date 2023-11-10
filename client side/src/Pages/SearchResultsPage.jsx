@@ -27,7 +27,9 @@ export default function SearchResultsPage () {
         if (auth.isLoggedIn) {
             try {
                 const { data, error } = await supabase.from("jk-users").select("display_name").eq("user_id", auth.userId);
-                if (error) console.log(error);
+                if (error) {
+                    notifyError (error);
+                }
                 if (!error) {
                     if (data[0].display_name === "") {
                         setDoesUserHaveDisplayName(false);
@@ -38,7 +40,7 @@ export default function SearchResultsPage () {
                     }
                 }
             } catch (err) {
-                console.log(err)
+                notifyError (err);
             }
         }
     }
@@ -46,6 +48,12 @@ export default function SearchResultsPage () {
     useEffect(() => {
         checkIfUserHasDisplayName();
     }, [])
+
+    function notifyError (error) {
+        setIsTextMessageAnError(true);
+        setTextForMessageWindow(error);
+        setIsMessageWindowOpen(true);
+    }
 
     function closeMessageWindow () {
         if (!doesUserHaveDisplayName) {
@@ -58,10 +66,12 @@ export default function SearchResultsPage () {
     async function fetchUsers() {
         try {
             const { data, error } = await supabase.from("jk-users").select("*");
-            if (error) console.log(error);
+            if (error) {
+                notifyError (error);
+            }
             setUsers(data);
         } catch (err) {
-            console.log(err);
+            notifyError (err);
         }
     }
 
@@ -69,10 +79,12 @@ export default function SearchResultsPage () {
     async function fetchPosts() {
         try {
             const { data, error } = await supabase.from("jk-posts").select("*");
-            if (error) console.log(error);
+            if (error) {
+                notifyError (error);
+            }
             setPosts(data);
         } catch (err) {
-            console.log(err);
+            notifyError (err);
         }
     }
 
