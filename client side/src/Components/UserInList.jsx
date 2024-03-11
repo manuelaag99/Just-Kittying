@@ -11,7 +11,6 @@ import AddFriend from "./Portals/AddFriend";
 
 export default function UserInList ({ index, userId, userInListId }) {
     const auth = useContext(AuthContext);
-    console.log(userId)
     
     const [userFriends, setUserFriends] = useState();
     const [usersThatCurrentUserIsFriendsWith, setUsersThatCurrentUserIsFriendsWith] = useState();
@@ -109,9 +108,7 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [userFriends])
 
-    console.log(userInfo)
-
-    if (!userId && !userInfo) {
+    if (!userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer ">
                 <div className="flex flex-row justify-start w-8/10">
@@ -123,7 +120,7 @@ export default function UserInList ({ index, userId, userInListId }) {
                 </div>
             </div>
         )
-    } else if (userId && userInfo) {
+    } else if (userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
                 <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />

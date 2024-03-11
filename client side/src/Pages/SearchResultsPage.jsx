@@ -130,6 +130,7 @@ export default function SearchResultsPage () {
         }
     }, [users, posts, searchQuery])
 
+    console.log(searchResultsInUsers)
     if (!posts || !users) {
         return (
             <LoadingSpinner open={true} />
