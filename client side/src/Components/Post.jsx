@@ -15,6 +15,7 @@ import Comment from "./Comment";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import SignInOrSignUpWindow from "./Portals/SignInOrSignUpWindow";
+import ConfirmWindow from "./Portals/ConfirmWindow";
 
 export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const auth = useContext(AuthContext);
@@ -44,7 +45,6 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const [postPhoto, setPostPhoto] = useState();
     async function fetchPostPhoto () {
         try {
-            // const { data, error } = await supabase.storage.from("public-bucket").getPublicUrl("jk-images/" + post.post_photo_path);
             const { data, error } = await supabase.storage.from("jk-images").getPublicUrl("postPics/" + post.post_photo_path);
             if (error) console.log(error);
             setPostPhoto(data.publicUrl);
@@ -253,15 +253,16 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     const [postOptions, setPostOptions] = useState(false);
     const [updatePostWindowVisibility, setUpdatePostWindowVisibility] = useState(false);    
 
-    async function deletePost () {
-        try {
-            const { error } = await supabase.from("jk-posts").delete().eq("post_id", post.post_id);
-            if (error) console.log(error);
-            setPostOptions(false);
-            fetchAgain();
-        } catch (err) {
-            console.log(err);
-        }
+    const [postToDelete, setPostToDelete] = useState();
+    const [isConfirmWindowModalVisible, setIsConfirmWindowModalVisible] = useState();
+    function deletePost () {
+        setPostToDelete(post);
+        setIsConfirmWindowModalVisible(true);
+    }
+
+    function closeConfirmWindowAndThenFetchAgain () {
+        setIsConfirmWindowModalVisible(false);
+        fetchAgain();
     }
 
     if (!postUserData) {
@@ -269,8 +270,6 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
     } else if (postUserData) {
         return (
             <div className={"w-full h-fit flex flex-col border-var-2 border-2 border-solid rounded-post my-10 " + classnames} key={index}>
-                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign in"} onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
-                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     {!postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />}
                     {postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={postUserProfilePic} />}
@@ -336,6 +335,9 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                     </div>
                 </div>
 
+                <ConfirmWindow idOfOtherUser={null} item={postToDelete} onClose={closeConfirmWindowAndThenFetchAgain} onCloseConfirmWindowAndThenOpenMessageWindow={null} open={isConfirmWindowModalVisible} textForMessage="Are you sure you want to remove this post? This is permanent." user={userId} />
+                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign in"} onClose={closeSignInHandle} open={signInWindow} switchToSignUp={switchHandle} />
+                <SignInOrSignUpWindow textForSignInOrSignUpButton={"Sign up"} onClose={closeSignUpHandle} open={signUpWindow} switchToSignIn={switchHandle} />
                 <CreateOrUpdatePost fetchAgain={() => fetchAgain()} onClose={() => setUpdatePostWindowVisibility(false)} open={updatePostWindowVisibility} post={post} userId={userId} />
             </div>
         )

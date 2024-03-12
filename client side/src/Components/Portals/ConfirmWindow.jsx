@@ -17,6 +17,8 @@ export default function ConfirmWindow({ idOfOtherUser, item, onClose, onCloseCon
             changePassword();
         } else if (textForMessage === "Are you sure you want to remove this user from your friends?") {
             removeFriend();
+        } else if (textForMessage === "Are you sure you want to remove this post? This is permanent.") {
+            removePost();
         } else if (textForMessage === "Are you sure you want to remove this comment? This is permanent.") {
             removeComment();
         }
@@ -25,6 +27,28 @@ export default function ConfirmWindow({ idOfOtherUser, item, onClose, onCloseCon
     async function removeComment () {
         try {
             const { error } = await supabase.from("jk-comments").delete().eq("comment_id", item.comment_id);
+            if (error) console.log(error);
+            if (!error) onClose();
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function removePost () {
+        try {
+            const { error } = await supabase.from("jk-posts").delete().eq("post_id", item.post_id);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-likes").delete().eq("like_post_id", item.post_id);
+            if (error) console.log(error);
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const { error } = await supabase.from("jk-comments").delete().eq("comment_post_id", item.post_id);
             if (error) console.log(error);
             if (!error) onClose();
         } catch (err) {
