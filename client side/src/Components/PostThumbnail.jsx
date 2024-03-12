@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabase/client";
 import { Link } from "react-router-dom";
 
-export default function PostThumbnail ({ index, key, post, userId }) {
+export default function PostThumbnail ({ index, post, userId }) {
     const [arePostLikesVisible, setArePostLikesVisible] = useState(false);
     const [postPhoto, setPostPhoto] = useState();
     async function fetchPostPhoto () {
