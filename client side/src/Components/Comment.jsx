@@ -5,9 +5,9 @@ import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import EditSharpIcon from '@mui/icons-material/EditSharp';
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ConfirmWindow from "./Portals/ConfirmWindow";
 
 export default function Comment ({ commentData, editSpecificComment, fetchAgain, index, userId }) {
-    const auth = useContext(AuthContext);
     const navigate = useNavigate();
     const [commentUserData, setCommentUserData] = useState();
     async function fetchCommentUserData () {
@@ -28,13 +28,15 @@ export default function Comment ({ commentData, editSpecificComment, fetchAgain,
         editSpecificComment();
     }
 
-    async function deleteComment () {
-        try {
-            const { error } = await supabase.from("jk-comments").delete().eq("comment_id", commentData.comment_id);
-            if (error) console.log(error);
-        } catch (err) {
-            console.log(err);
-        }
+    const [commentToDelete, setCommentToDelete] = useState();
+    const [isConfirmWindowModalVisible, setIsConfirmWindowModalVisible] = useState(false);
+    function deleteComment () {
+        setCommentToDelete(commentData);
+        setIsConfirmWindowModalVisible(true);
+    }
+
+    function closeConfirmWindowAndThenFetchAgain () {
+        setIsConfirmWindowModalVisible(false);
         fetchAgain();
     }
 
@@ -49,20 +51,23 @@ export default function Comment ({ commentData, editSpecificComment, fetchAgain,
         ) 
     } else if (commentUserData) {
         return (
-            <div key={index} className="flex flex-row justify-between pb-1 w-full ">
-                <div className="flex flex-row justify-start w-8/10 pr-2">
-                    <p className="mr-2 font-bold cursor-pointer" onClick={() => navigate("/profile/" + commentData.comment_creator_id)}>{commentUserData.display_name}</p>
-                    <p className="font-light">{commentData.comment_text}</p>
+            <>
+                <div key={index} className="flex flex-row justify-between pb-1 w-full ">
+                    <div className="flex flex-row justify-start w-8/10 pr-2">
+                        <p className="mr-2 font-bold cursor-pointer" onClick={() => navigate("/profile/" + commentData.comment_creator_id)}>{commentUserData.display_name}</p>
+                        <p className="font-light">{commentData.comment_text}</p>
+                    </div>
+                    {(userId === commentData.comment_creator_id) && <div className="flex flex-row w-2/10 justify-end">
+                        {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={editComment}>
+                            <EditSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                        </button>}
+                        {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={deleteComment}>
+                            <DeleteSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
+                        </button>}
+                    </div>}
                 </div>
-                {(auth.userId === commentData.comment_creator_id) && <div className="flex flex-row w-2/10 justify-end">
-                    {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={editComment}>
-                        <EditSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
-                    </button>}
-                    {(commentData.comment_creator_id === userId) && <button className="ml-1" onClick={deleteComment}>
-                        <DeleteSharpIcon className="text-gray-600 hover:text-var-2 duration-200 cursor-pointer" fontSize="small" />
-                    </button>}
-                </div>}
-            </div>
+                <ConfirmWindow idOfOtherUser={null} item={commentToDelete} onClose={closeConfirmWindowAndThenFetchAgain} onCloseConfirmWindowAndThenOpenMessageWindow={null} open={isConfirmWindowModalVisible} textForMessage="Are you sure you want to remove this comment? This is permanent." user={userId} />
+            </>
         )
     }
 }

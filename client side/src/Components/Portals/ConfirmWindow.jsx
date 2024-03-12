@@ -6,7 +6,7 @@ import { supabase } from '../../supabase/client';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function ConfirmWindow({ idOfOtherUser, onClose, onCloseConfirmWindowAndThenOpenMessageWindow, open, textForMessage, user }) {
+export default function ConfirmWindow({ idOfOtherUser, item, onClose, onCloseConfirmWindowAndThenOpenMessageWindow, open, textForMessage, user }) {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -17,6 +17,18 @@ export default function ConfirmWindow({ idOfOtherUser, onClose, onCloseConfirmWi
             changePassword();
         } else if (textForMessage === "Are you sure you want to remove this user from your friends?") {
             removeFriend();
+        } else if (textForMessage === "Are you sure you want to remove this comment? This is permanent.") {
+            removeComment();
+        }
+    }
+
+    async function removeComment () {
+        try {
+            const { error } = await supabase.from("jk-comments").delete().eq("comment_id", item.comment_id);
+            if (error) console.log(error);
+            if (!error) onClose();
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -114,8 +126,8 @@ export default function ConfirmWindow({ idOfOtherUser, onClose, onCloseConfirmWi
                     <p className='text-center'>{textForMessage}</p>
                 </div>
                 <div className='flex flex-row w-full px-4 pt-2 pb-5 justify-around'>
-                    <Button clickButtonFunction={actionButtonHandle} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
-                    <Button clickButtonFunction={onClose} classnames="mx-2 py-2 sm:px-4 px-7 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />
+                    <Button clickButtonFunction={actionButtonHandle} classnames="mx-2 py-2 px-9 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
+                    <Button clickButtonFunction={onClose} classnames="mx-2 py-2 px-9 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />
                 </div>
             </div>
         </div>
