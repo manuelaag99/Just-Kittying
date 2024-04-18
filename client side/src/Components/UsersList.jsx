@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 
 import UserInList from "./UserInList";
 
-export default function ({ selectedUsersArray, userId }) {
+export default function ({ fetchAgain, selectedUsersArray, userId }) {
+
     if (!selectedUsersArray || selectedUsersArray.length === 0) {
         return (
             <div className="flex justify-center mt-5">
@@ -15,7 +16,7 @@ export default function ({ selectedUsersArray, userId }) {
         return (
             <div className="flex flex-col justify-center w-full ">
                 {selectedUsersArray && selectedUsersArray.map((user, index) => {
-                    return <UserInList key={index} index={index} userId={userId} userInListId={user} />
+                    return <UserInList fetchAgain={fetchAgain} key={index} index={index} userId={userId} userInListId={user} />
                 })}
             </div>
         )

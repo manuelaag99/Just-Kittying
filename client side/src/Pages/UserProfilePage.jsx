@@ -168,13 +168,17 @@ export default function UserProfilePage () {
         setUserFriends([...idsOfFriendsOne, ...idsOfFriendsTwo]);
     }
 
-    useEffect(() => {
+    function fetchData () {
         checkIfUserHasDisplayName();
 		fetchUsers();
 		fetchPosts();
 		fetchSelectedUserData();
         fetchFriendsOne();
         fetchFriendsTwo();
+    }
+
+    useEffect(() => {
+        fetchData();
     }, [user_id])
 
     useEffect(() => {
@@ -218,7 +222,7 @@ export default function UserProfilePage () {
 
     useEffect(() => {
         setTabsSection("photos");
-    }, [userid])
+    }, [selectedUser])
 
     if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
@@ -271,7 +275,7 @@ export default function UserProfilePage () {
                             </div>
                         </div>
                         {(tabsSection === photosTab) && <PostsGrid postsArray={userPosts} userId={auth.userId} />}
-                        {(tabsSection === friendsTab) && <UsersList allUsers={users} selectedUsersArray={userFriends} userId={auth.userId} />}
+                        {(tabsSection === friendsTab) && <UsersList allUsers={users} fetchAgain={fetchData} selectedUsersArray={userFriends} userId={auth.userId} />}
                     </div>
                 </div>
             </div>

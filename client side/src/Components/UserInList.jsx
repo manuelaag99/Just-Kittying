@@ -8,8 +8,10 @@ import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 import AddFriend from "./Portals/AddFriend";
+import ConfirmWindow from "./Portals/ConfirmWindow";
+import MessageWindow from "./Portals/MessageWindow";
 
-export default function UserInList ({ index, userId, userInListId }) {
+export default function UserInList ({ fetchAgain, index, userId, userInListId }) {
     const auth = useContext(AuthContext);
     
     const [userFriends, setUserFriends] = useState();
@@ -93,7 +95,8 @@ export default function UserInList ({ index, userId, userInListId }) {
         }
     }, [usersThatCurrentUserIsFriendsWith, usersThatAreFriendsWithCurrentUser])
 
-    const [addFriendWindow, setAddFriendWindow] = useState(false);
+    const [isAddFriendWindowVisible, setIsAddFriendWindowVisible] = useState(false);
+    const [isRemoveFriendWindowVisible, setIsRemoveFriendWindowVisible] = useState(false);
 
     const [isUserInListUserFriends, setIsUserInListUserFriends] = useState();
     useEffect(() => {
@@ -107,6 +110,17 @@ export default function UserInList ({ index, userId, userInListId }) {
             }
         }
     }, [userFriends])
+
+    const [isMessageWindowVisible, setIsMessageWindowVisible] = useState(false);
+    const [messageWindowText, setMessageWindowText] = useState("");
+    const [isMessageWindowForAnError, setIsMessageWindowForAnError] = useState(false);
+
+    function openMessageWindowAfterRemovingFriend () {
+        fetchAgain();
+        setMessageWindowText("Successfully removed this user from your list of friends.");
+        setIsRemoveFriendWindowVisible(false);
+        setIsMessageWindowVisible(true);
+    }
 
     if (!userInfo) {
         return (
@@ -123,7 +137,7 @@ export default function UserInList ({ index, userId, userInListId }) {
     } else if (userInfo) {
         return (
             <div key={index} className="flex flex-row w-full py-2 hover:bg-var-2 duration-200 cursor-pointer justify-between px-2 ">
-                <AddFriend onClose={() => setAddFriendWindow(false)} open={addFriendWindow} userId={userId} userToAddId={userInListId} />
+                <AddFriend onClose={() => setIsAddFriendWindowVisible(false)} open={isAddFriendWindowVisible} userId={userId} userToAddId={userInListId} />
                 <Link className="flex flex-row justify-start w-8/10" to={"/profile/" + userInListId}>
                     {!userProfilePic && <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={null} />}
                     {userProfilePic && <RoundPhoto classesForRoundPhoto="flex justify-center items-center h-userProfileFriendsTabPhotoHeight aspect-square ml-2" imageAlt="friend-profile-pic" imageSource={userProfilePic} />}
@@ -133,17 +147,19 @@ export default function UserInList ({ index, userId, userInListId }) {
                     </div>
                 </Link>
                 <div className="flex flex-row w-fit justify-center items-center">
-                    {auth.isLoggedIn && (userInListId !== auth.userId) && !isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setAddFriendWindow(true)} >
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && !isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setIsAddFriendWindowVisible(true)} >
                         <p className="text-center">
                             <PersonAddAlt1Icon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
-                    {auth.isLoggedIn && (userInListId !== auth.userId) && isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center ">
+                    {auth.isLoggedIn && (userInListId !== auth.userId) && isUserInListUserFriends && <button className="flex justify-center px-3 w-fit items-center " onClick={() => setIsRemoveFriendWindowVisible(true)}>
                         <p className="text-center">
                             <PersonRemoveIcon className="text-black hover:text-var-4 duration-100" fontSize="small" />
                         </p>
                     </button>}
                 </div>
+                <ConfirmWindow idOfOtherUser={userInListId} item={null} onClose={() => setIsRemoveFriendWindowVisible(false)} onCloseConfirmWindowAndThenOpenMessageWindow={openMessageWindowAfterRemovingFriend} open={isRemoveFriendWindowVisible} textForMessage="Are you sure you want to remove this user from your friends?" user={userInfo} />
+                <MessageWindow isErrorMessage={isMessageWindowForAnError} onClose={() => setIsMessageWindowVisible(false)} open={isMessageWindowVisible} textForMessage={messageWindowText} />
             </div>
         )
     }

@@ -58,11 +58,12 @@ export default function ConfirmWindow({ idOfOtherUser, item, onClose, onCloseCon
 
     async function removeFriend () {
         try {
-            const { error } = await supabase.from("jk-friends").select().eq("user_1_id", user.userId).eq("user_2_id", idOfOtherUser);
+            const { error } = await supabase.from("jk-friends").delete().eq("user_1_id", auth.userId).eq("user_2_id", idOfOtherUser);
             if (error) console.log(error);
         } catch (err) {
             console.log(err);
         }
+        onCloseConfirmWindowAndThenOpenMessageWindow();
     }
 
     async function changePassword () {
@@ -149,9 +150,9 @@ export default function ConfirmWindow({ idOfOtherUser, item, onClose, onCloseCon
                 <div className="py-3 px-6">
                     <p className='text-center'>{textForMessage}</p>
                 </div>
-                <div className='flex flex-row w-full px-4 pt-2 pb-5 justify-around'>
-                    <Button clickButtonFunction={actionButtonHandle} classnames="mx-2 py-2 px-9 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
-                    <Button clickButtonFunction={onClose} classnames="mx-2 py-2 px-9 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />
+                <div className='flex flex-col sm:flex-row w-fit px-4 pt-2 pb-5 justify-center sm:justify-around'>
+                    <Button clickButtonFunction={actionButtonHandle} classnames="mx-auto sm:mx-2 my-2 w-full py-2 px-6 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Confirm" />
+                    <Button clickButtonFunction={onClose} classnames="mx-auto sm:mx-2 my-2 w-full py-2 px-6 bg-var-3 whitespace-no-wrap hover:bg-var-3-hovered text-white duration-200 drop-shadow-button" textForButton="Cancel" />
                 </div>
             </div>
         </div>
