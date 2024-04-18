@@ -216,6 +216,10 @@ export default function UserProfilePage () {
         }
     }, [userFriends])
 
+    useEffect(() => {
+        setTabsSection("photos");
+    }, [userid])
+
     if (!selectedUser || !users || !userPosts | !userFriends ) {
         return (
             <LoadingSpinner open={loading} />
