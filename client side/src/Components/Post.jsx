@@ -273,11 +273,11 @@ export default function Post ({ classnames, fetchAgain, index, post, userId }) {
                 <div className="flex flex-row justify-start items-center h-[50px] w-full p-1 border-var-2 border-solid border-b-2">
                     {!postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={null} />}
                     {postUserProfilePic && <RoundPhoto classesForRoundPhoto="w-[40px] h-full mx-1 " imageSource={postUserProfilePic} />}
-                    <Link className="flex flex-col w-8/10 h-full px-2" to={"/profile/" + postUserData.user_id}>
+                    <Link className="flex flex-col w-8/10 h-full px-2 overflow-hidden" to={"/profile/" + postUserData.user_id}>
                         <p className="text-postDisplayOrUserName font-bold">{postUserData.display_name}</p>
                         <div className="flex flex-row w-full cursor-pointer">
                             <p className="text-postDisplayOrUserName font-extralight">{postUserData.username}</p>
-                            <p className="text-postDisplayOrUserName font-extralight text-gray-500">, {post.post_creation_date.split("T")[0]}</p>    
+                            <p className="text-postDisplayOrUserName font-extralight text-gray-500 overflow-hidden">, {post.post_creation_date.split("T")[0]}</p>    
                         </div>
                     </Link>
                     {auth.isLoggedIn && (auth.userId === post.post_creator_id) && <div className="flex w-1/10 h-full items-center justify-center relative">
